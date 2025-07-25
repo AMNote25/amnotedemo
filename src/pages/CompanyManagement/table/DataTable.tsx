@@ -124,10 +124,10 @@ export function DataTable<T extends BaseTableItem>({
   return (
     <div className="overflow-x-auto relative">
       <table className="min-w-full table-auto">
-        <thead className="bg-red-50">
+        <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]">
           <tr>
             <th
-              className="sticky left-0 z-20 bg-red-50 px-4 py-3 text-left"
+              className="sticky left-0 z-20 bg-[#f5f5f5] border-t border-b border-[#e0e0e0] px-4 py-3 text-left text-[#212121] font-bold"
               style={{ width: "30px", minWidth: "30px", maxWidth: "30px" }}
             >
               <input
@@ -143,7 +143,7 @@ export function DataTable<T extends BaseTableItem>({
               return (
                 <th
                   key={col.id}
-                  className="px-4 py-3 text-left text-sm font-semibold text-red-700 select-none group"
+                  className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]"
                   style={{
                     width: col.width,
                     minWidth: col.width,
@@ -174,7 +174,7 @@ export function DataTable<T extends BaseTableItem>({
               );
             })}
             <th
-              className="sticky right-0 z-10 bg-red-50 px-4 py-3 text-center text-sm font-semibold text-red-700"
+              className="sticky right-0 z-10 bg-[#f5f5f5] border-t border-b border-[#e0e0e0] px-4 py-3 text-center text-sm font-bold text-[#212121]"
               style={{ width: "100px", minWidth: "100px", maxWidth: "100px" }}
             >
               Thao tác

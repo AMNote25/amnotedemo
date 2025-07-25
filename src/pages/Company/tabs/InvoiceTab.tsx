@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Save, X, Receipt, Settings, Key, FileText, Mail, Smartphone, Usb } from 'lucide-react';
+import { Save, Receipt, FileText, Mail, Smartphone, Usb } from 'lucide-react';
 import type { InvoiceSettings, FormErrors } from '../types';
 
 
@@ -209,10 +209,6 @@ const InvoiceTab: React.FC = () => {
                 <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Lưu
               </button>
-              <button type="button" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-100 text-blue-700 font-medium rounded-md hover:bg-blue-200 focus:outline-none transition-colors duration-200 text-sm">
-                <X className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                Hủy
-              </button>
             </div>
           </form>
         )}
@@ -240,10 +236,6 @@ const InvoiceTab: React.FC = () => {
                 <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Lưu
               </button>
-              <button type="button" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-100 text-blue-700 font-medium rounded-md hover:bg-blue-200 focus:outline-none transition-colors duration-200 text-sm">
-                <X className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                Hủy
-              </button>
             </div>
           </form>
         )}
@@ -257,10 +249,6 @@ const InvoiceTab: React.FC = () => {
               <button type="submit" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-sm">
                 <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Lưu
-              </button>
-              <button type="button" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-100 text-blue-700 font-medium rounded-md hover:bg-blue-200 focus:outline-none transition-colors duration-200 text-sm">
-                <X className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                Hủy
               </button>
             </div>
           </form>

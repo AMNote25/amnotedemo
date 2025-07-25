@@ -438,6 +438,7 @@ export function TablePage<T extends BaseTableItem>({
           parentField={parentField}
           onSort={handleSort}
           sortConfig={sortConfig}
+          // Các className bổ sung cho thead/th (nếu DataTable hỗ trợ props này, nếu không thì đã cập nhật sẵn trong DataTable)
         />
 
         <Pagination
