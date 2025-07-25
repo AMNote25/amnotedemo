@@ -7,7 +7,6 @@ export interface User {
   phone: string
   issueDate: string
   notes: string
-  shinhanOnline: boolean
   password?: string
   password2?: string
   lockOption: "cannot_lock" | "can_lock"

@@ -5,6 +5,7 @@
 - **Luôn phản hồi bằng tiếng Việt**: Copilot chỉ trả lời và sinh mã ví dụ bằng tiếng Việt để tối ưu cho đội dự án.
 
 - **Tránh code làm sai hoặc phá vỡ design**: Không sinh mã thay đổi cấu trúc UI/UX so với thiết kế gốc, không sử dụng mã tắt, code nhanh làm mất bố cục hoặc logic đặc thù của giao diện.
+Các input khi hover là border màu xanh dương, khi lỗi là border màu đỏ
 
 - **Cấu trúc trang chuẩn hóa**: Mỗi module/trang bắt buộc có đủ chức năng:
   - Thêm mới (Create)

@@ -27,7 +27,7 @@ const generateUserData = (count: number): User[] => {
         .toISOString()
         .split("T")[0],
       notes: `Ghi chú cho người dùng ${i}`,
-      shinhanOnline: Math.random() > 0.5,
+      // ...existing code...
       lockOption: Math.random() > 0.5 ? "can_lock" : "cannot_lock",
       cannotDeleteLinked: Math.random() > 0.5,
       cannotEditLocked: Math.random() > 0.5,
@@ -131,37 +131,7 @@ export default function UserManagementPage() {
   }, [data])
 
   // Custom cell renderer for permission and shinhanOnline
-  const renderCustomCell = useCallback((item: User, column: any) => {
-    if (column.dataField === "permission") {
-      const permissionLabels = {
-        admin: "Quản trị cao nhất",
-        user: "Người sử dụng",
-        viewer: "Người xem"
-      }
-      const colors = {
-        admin: "bg-red-100 text-red-800",
-        user: "bg-blue-100 text-blue-800",
-        viewer: "bg-gray-100 text-gray-800"
-      }
-      return (
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors[item.permission]}`}>
-          {permissionLabels[item.permission]}
-        </span>
-      )
-    }
-    
-    if (column.dataField === "shinhanOnline") {
-      return (
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-          item.shinhanOnline ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
-        }`}>
-          {item.shinhanOnline ? "Có" : "Không"}
-        </span>
-      )
-    }
-
-    return null
-  }, [])
+  
 
   return (
     <TablePage
@@ -186,7 +156,6 @@ export default function UserManagementPage() {
       FormModalComponent={UserFormModal}
       deleteConfig={userDeleteConfig}
       bulkDeleteConfig={userBulkDeleteConfig}
-      renderCustomCell={renderCustomCell}
     />
   )
 }

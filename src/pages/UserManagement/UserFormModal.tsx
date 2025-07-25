@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback, useEffect } from "react"
-import { X, Save, AlertCircle, Info, Loader2, Eye, EyeOff, Search, ChevronDown, ChevronRight } from "lucide-react"
+import { X, Save, AlertCircle, Loader2, Eye, EyeOff, Search, ChevronDown, ChevronRight, User, Settings } from "lucide-react"
 
 interface UserFormModalProps {
   isOpen: boolean
@@ -90,7 +90,7 @@ export default function UserFormModal({
         cannotAddLock: mode === "edit" ? initialData.cannotAddLock || false : false,
         editReservedName: mode === "edit" ? initialData.editReservedName || false : false,
         showDocumentsByUser: mode === "edit" ? initialData.showDocumentsByUser || false : false,
-        shinhanOnline: mode === "edit" ? initialData.shinhanOnline || false : false,
+        // ...existing code...
       }
       if (mode === "edit" && initialData.id) {
         defaultData.id = initialData.id
@@ -235,11 +235,28 @@ export default function UserFormModal({
   }
 
   const togglePermission = (permissionId: string) => {
-    setSelectedPermissions(prev => 
-      prev.includes(permissionId)
-        ? prev.filter(id => id !== permissionId)
-        : [...prev, permissionId]
-    )
+    const group = menuPermissions.find(g => g.id === permissionId)
+    if (group) {
+      // Nếu là parent, check/uncheck tất cả child
+      const allIds = [group.id, ...group.children.map(child => child.id)]
+      setSelectedPermissions(prev => {
+        const isChecked = prev.includes(group.id)
+        if (isChecked) {
+          // Bỏ check parent và tất cả child
+          return prev.filter(id => !allIds.includes(id))
+        } else {
+          // Check parent và tất cả child
+          return [...prev, ...allIds.filter(id => !prev.includes(id))]
+        }
+      })
+    } else {
+      // Nếu là child, chỉ toggle child
+      setSelectedPermissions(prev =>
+        prev.includes(permissionId)
+          ? prev.filter(id => id !== permissionId)
+          : [...prev, permissionId]
+      )
+    }
   }
 
   const selectAllPermissions = () => {
@@ -283,29 +300,31 @@ export default function UserFormModal({
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200 bg-gray-50">
-          <div className="flex">
+        <div className="border-b border-gray-200 bg-gray-50 flex-shrink-0">
+          <nav className="flex space-x-2 sm:space-x-8 px-4 sm:px-6 overflow-x-auto">
             <button
               onClick={() => setActiveTab(0)}
-              className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
                 activeTab === 0
-                  ? "border-blue-600 text-blue-600 bg-white"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
+              <User className="inline h-4 w-4 mr-1 sm:mr-2" />
               Thông tin người dùng
             </button>
             <button
               onClick={() => setActiveTab(1)}
-              className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
                 activeTab === 1
-                  ? "border-blue-600 text-blue-600 bg-white"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
+              <Settings className="inline h-4 w-4 mr-1 sm:mr-2" />
               Quyền & Thiết lập nâng cao
             </button>
-          </div>
+          </nav>
         </div>
 
         {/* Form */}
@@ -315,9 +334,9 @@ export default function UserFormModal({
             {activeTab === 0 && (
               <div className="space-y-6 p-6">
                 {/* Thông tin bắt buộc */}
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <h4 className="text-lg font-medium text-red-900 mb-4 flex items-center">
-                    <AlertCircle size={16} className="mr-2" />
+                <div className="bg-blue-50 border border-blue-300 rounded-xl p-4 shadow-sm">
+                  <h4 className="text-lg font-medium text-blue-900 mb-4 flex items-center">
+                    <AlertCircle size={16} className="mr-2 text-blue-500" />
                     Thông tin bắt buộc
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -465,7 +484,7 @@ export default function UserFormModal({
                 </div>
 
                 {/* Thông tin bổ sung */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                   <h4 className="text-lg font-medium text-blue-900 mb-4">Thông tin bổ sung</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Tên */}
@@ -565,33 +584,8 @@ export default function UserFormModal({
                       )}
                     </div>
 
-                    {/* Ngày cấp */}
-                    <div className="space-y-2">
-                      <label htmlFor="issueDate" className="block text-sm font-medium text-gray-700">
-                        Ngày cấp
-                      </label>
-                      <input
-                        id="issueDate"
-                        name="issueDate"
-                        type="date"
-                        value={formData.issueDate || ""}
-                        onChange={(e) => handleFieldChange("issueDate", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      />
-                    </div>
+                    
 
-                    {/* Shinhan trực tuyến */}
-                    <div className="space-y-2">
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={formData.shinhanOnline || false}
-                          onChange={(e) => handleFieldChange("shinhanOnline", e.target.checked)}
-                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Shinhan trực tuyến</span>
-                      </label>
-                    </div>
 
                     {/* Ghi chú */}
                     <div className="space-y-2 md:col-span-2">

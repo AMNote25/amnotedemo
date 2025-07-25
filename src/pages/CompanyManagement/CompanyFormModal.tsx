@@ -160,7 +160,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
         </div>
 
         {/* Tabs */}
-        <div className="border-b flex-shrink-0">
+        <div className="border-b bg-gray-50 flex-shrink-0">
           <nav className="flex space-x-2 sm:space-x-8 px-4 sm:px-6 overflow-x-auto">
             <button
               onClick={() => setActiveTab('info')}

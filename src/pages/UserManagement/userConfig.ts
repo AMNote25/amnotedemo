@@ -64,15 +64,6 @@ export const userColumns: ColumnConfig[] = [
     pinned: false,
     originalOrder: 6,
   },
-  {
-    id: "shinhanOnline",
-    dataField: "shinhanOnline",
-    displayName: "Shinhan trực tuyến",
-    width: 150,
-    visible: true,
-    pinned: false,
-    originalOrder: 7,
-  },
   // Các cột ẩn
   {
     id: "lockOption",
