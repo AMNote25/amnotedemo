@@ -26,6 +26,7 @@ interface DataTableProps<T extends BaseTableItem> {
   renderCustomCell?: (item: T, column: ColumnConfig, depth: number) => React.ReactNode
   onSort?: (field: string) => void
   sortConfig?: { field: string; order: "asc" | "desc" }
+  renderCustomCell?: (item: T, column: ColumnConfig, depth: number) => React.ReactNode
 }
 
 export function DataTable<T extends BaseTableItem>({
@@ -45,7 +46,7 @@ export function DataTable<T extends BaseTableItem>({
   expandedParents = [],
   onToggleExpand,
   parentField = "parentObject",
-  renderCustomCell,
+  renderCustomCell: propRenderCustomCell,
   onSort,
   sortConfig,
 }: DataTableProps<T>) {
@@ -77,8 +78,8 @@ export function DataTable<T extends BaseTableItem>({
 
   const renderCell = useCallback(
     (item: T, column: ColumnConfig, depth: number) => {
-      if (renderCustomCell) {
-        const customCell = renderCustomCell(item, column, depth)
+      if (propRenderCustomCell) {
+        const customCell = propRenderCustomCell(item, column, depth)
         if (customCell) return customCell
       }
 
@@ -118,7 +119,7 @@ export function DataTable<T extends BaseTableItem>({
 
       return <span>{String(value || "")}</span>
     },
-    [enableTreeView, childrenMap, expandedParents, onToggleExpand, parentField, renderCustomCell],
+    [enableTreeView, childrenMap, expandedParents, onToggleExpand, parentField, propRenderCustomCell],
   )
 
   return (
