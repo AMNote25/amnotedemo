@@ -61,7 +61,7 @@ export default function UserFormModal({
   existingData = [],
   mode,
 }: UserFormModalProps) {
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeStep, setActiveStep] = useState(0)
   const [formData, setFormData] = useState<any>({})
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -74,6 +74,7 @@ export default function UserFormModal({
 
   useEffect(() => {
     if (isOpen) {
+      setActiveStep(0) // Luôn reset về bước đầu tiên khi mở form
       const defaultData: any = {
         costCenterCode: mode === "edit" ? initialData.costCenterCode || "" : "",
         userId: mode === "edit" ? initialData.userId || "" : "",
@@ -195,7 +196,6 @@ export default function UserFormModal({
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault()
-      
       const allTouched: { [key: string]: boolean } = {}
       const fields = ["costCenterCode", "userId", "password", "name", "permission"]
       fields.forEach((field) => {
@@ -209,7 +209,14 @@ export default function UserFormModal({
 
       setIsSubmitting(true)
       try {
-        await onSubmit({ ...formData, permissions: selectedPermissions })
+        // Nếu là edit thì merge dữ liệu cũ với dữ liệu mới
+        let submitData: any = {}
+        if (mode === "edit") {
+          submitData = { ...initialData, ...formData, permissions: selectedPermissions }
+        } else {
+          submitData = { ...formData, permissions: selectedPermissions }
+        }
+        await onSubmit(submitData)
         onClose()
       } catch (error) {
         console.error("Form submission error:", error)
@@ -217,7 +224,7 @@ export default function UserFormModal({
         setIsSubmitting(false)
       }
     },
-    [formData, selectedPermissions, validateForm, onSubmit, onClose],
+    [formData, selectedPermissions, validateForm, onSubmit, onClose, initialData, mode],
   )
 
   const handleClose = useCallback(() => {
@@ -279,7 +286,7 @@ export default function UserFormModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] flex flex-col">
+      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
           <div>
@@ -299,27 +306,38 @@ export default function UserFormModal({
           </button>
         </div>
 
-        {/* Tabs */}
+        {/* Step Header giữ kiểu tab */}
         <div className="border-b border-gray-200 bg-gray-50 flex-shrink-0">
           <nav className="flex space-x-2 sm:space-x-8 px-4 sm:px-6 overflow-x-auto">
             <button
-              onClick={() => setActiveTab(0)}
+              type="button"
+              onClick={() => setActiveStep(0)}
               className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
-                activeTab === 0
+                activeStep === 0
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
+              disabled={activeStep === 0}
             >
               <User className="inline h-4 w-4 mr-1 sm:mr-2" />
               Thông tin người dùng
             </button>
             <button
-              onClick={() => setActiveTab(1)}
+              type="button"
+              onClick={() => {
+                // Chỉ cho phép sang bước 2 nếu validate xong bước 1
+                const fields = ["costCenterCode", "userId", "password", "name", "permission"];
+        const allTouched: { [key: string]: boolean } = {};
+                fields.forEach((field) => { allTouched[field] = true; });
+                setTouched(allTouched);
+                if (validateForm()) setActiveStep(1);
+              }}
               className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
-                activeTab === 1
+                activeStep === 1
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
+              disabled={activeStep === 1}
             >
               <Settings className="inline h-4 w-4 mr-1 sm:mr-2" />
               Quyền & Thiết lập nâng cao
@@ -330,8 +348,8 @@ export default function UserFormModal({
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
           <div className="flex-1 min-h-0 overflow-y-auto">
-            {/* Tab 1: User Information */}
-            {activeTab === 0 && (
+            {/* Step 1: User Information */}
+            {activeStep === 0 && (
               <div className="space-y-6 p-6">
                 {/* Thông tin bắt buộc */}
                 <div className="bg-blue-50 border border-blue-300 rounded-xl p-4 shadow-sm">
@@ -607,8 +625,8 @@ export default function UserFormModal({
               </div>
             )}
 
-            {/* Tab 2: Permissions & Advanced Settings */}
-            {activeTab === 1 && (
+            {/* Step 2: Permissions & Advanced Settings */}
+            {activeStep === 1 && (
               <div className="flex h-full">
                 {/* Left Panel: Permissions */}
                 <div className="w-1/2 border-r border-gray-200 p-6">
@@ -786,23 +804,52 @@ export default function UserFormModal({
             >
               Hủy
             </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  <span>Đang lưu...</span>
-                </>
-              ) : (
-                <>
-                  <Save size={16} />
-                  <span>Lưu</span>
-                </>
-              )}
-            </button>
+            {activeStep === 1 && (
+              <button
+                type="button"
+                onClick={() => setActiveStep(0)}
+                disabled={isSubmitting}
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+              >
+                Quay lại
+              </button>
+            )}
+            {activeStep === 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  // Validate step 1 trước khi sang bước 2
+                  const fields = ["costCenterCode", "userId", "password", "name", "permission"];
+        const allTouched: { [key: string]: boolean } = {};
+                  fields.forEach((field) => { allTouched[field] = true; });
+                  setTouched(allTouched);
+                  if (validateForm()) setActiveStep(1);
+                }}
+                disabled={isSubmitting}
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span>Tiếp tục</span>
+              </button>
+            )}
+            {activeStep === 1 && (
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>Đang lưu...</span>
+                  </>
+                ) : (
+                  <>
+                    <Save size={16} />
+                    <span>Lưu</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </form>
       </div>
