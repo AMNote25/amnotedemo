@@ -4,7 +4,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { TablePage } from "@/components/table/TablePage";
 import { khoColumns } from "./khoConfig";
-import { khoFormConfig, khoDeleteConfig, khoBulkDeleteConfig } from "./khoFormConfig";
+import { khoDeleteConfig, khoBulkDeleteConfig } from "./khoFormConfig";
+import KhoFormModal from "./KhoFormModal";
 import { khoPrintConfig } from "./khoPrintConfig";
 import { customerImportConfig as khoImportConfig } from "./khoImportConfig";
 import type { Kho } from "../../types/kho";
@@ -217,9 +218,11 @@ export default function KhoManagementPage() {
       }}
       excelImportConfig={khoImportConfig}
       printConfig={khoPrintConfig}
-      formConfig={khoFormConfig}
+      FormModalComponent={KhoFormModal}
       deleteConfig={khoDeleteConfig}
       bulkDeleteConfig={khoBulkDeleteConfig}
+      onAdd={handleAdd}
+      onEdit={handleEdit}
     />
   );
 }

@@ -5,8 +5,8 @@ import { TablePage } from "@/components/table/TablePage"
 import { bankManagementColumns } from "./bankManagementConfig"
 import { bankImportConfig } from "./bankImportConfig"
 import { bankPrintConfig } from "./bankPrintConfig"
-// Add imports for the new form configs
-import { bankFormConfig, bankDeleteConfig, bankBulkDeleteConfig } from "./bankFormConfig"
+import { bankDeleteConfig, bankBulkDeleteConfig } from "./bankFormConfig"
+import BankFormModal from "./BankFormModal"
 import { exportToExcel } from "@/lib/excelUtils" // Import the new utility function
 
 interface BankAccount {
@@ -140,9 +140,11 @@ export default function BankManagementPage() {
       }}
       excelImportConfig={bankImportConfig}
       printConfig={bankPrintConfig}
-      formConfig={bankFormConfig}
+      FormModalComponent={BankFormModal}
       deleteConfig={bankDeleteConfig}
       bulkDeleteConfig={bankBulkDeleteConfig}
+      onAdd={handleAdd}
+      onEdit={handleEdit}
     />
   )
 }

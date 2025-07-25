@@ -9,7 +9,6 @@ import { TableSettings } from "./TableSettings"
 import Pagination from "@/components/table/Pagination"
 import ExcelImportModal from "@/components/modals/ExcelImportModal"
 import PrintModal from "@/components/modals/PrintModal"
-import FormModal from "@/components/forms/FormModal"
 import DeleteModal from "@/components/modals/DeleteModal"
 import { Toast } from "@/components/ui/toast" // Import the new Toast component
 // Remove hardcoded customer delete API. Use onDelete prop instead.
@@ -19,6 +18,7 @@ import type { FormConfig, DeleteConfig } from "@/types/form"
 
 // Update the interface to include the new config props
 export interface TablePagePropsWithConfigs<T extends BaseTableItem> extends TablePageProps<T> {
+  FormModalComponent?: React.ComponentType<any>
 }
 
 export function TablePage<T extends BaseTableItem>({
@@ -43,6 +43,7 @@ export function TablePage<T extends BaseTableItem>({
   bulkDeleteConfig,
   isInitialLoading = false, // Default to false
   onDelete,
+  FormModalComponent,
 }: TablePagePropsWithConfigs<T>) {
   const localStorageKey = `${title.replace(/\s+/g, "")}TableColumnConfigs`
 
@@ -154,29 +155,6 @@ export function TablePage<T extends BaseTableItem>({
 
   // Prepare form config with dynamic options (for parent selection in tree view)
   // Chuẩn bị config cho FormModal, giữ nguyên cấu trúc tabs nếu có
-  const preparedFormConfig = useMemo(() => {
-    if (!formConfig) return undefined
-    // Nếu có tree view và parentField, cập nhật options cho field cha (chỉ khi không dùng tabs)
-    if (enableTreeView && parentField && formConfig.fields) {
-      const config = { ...formConfig }
-      const parentFieldConfig = config.fields.find((field: any) => field.name === parentField)
-      if (parentFieldConfig && parentFieldConfig.type === "select") {
-        const parentOptions = [
-          { value: "0", label: "Không có cha (đối tượng gốc)" },
-          ...tableData
-            .filter((item) => item.id !== editingItem?.id)
-            .map((item) => ({
-              value: item.id,
-              label: `${(item as any).code} - ${(item as any).nameVi || (item as any).name || item.id}`,
-            })),
-        ]
-        parentFieldConfig.options = parentOptions
-      }
-      return config
-    }
-    // Nếu là dạng tabs thì trả về nguyên vẹn
-    return formConfig
-  }, [formConfig, tableData, enableTreeView, parentField, editingItem])
 
   const handleRefreshData = useCallback(async () => {
     setIsRefreshing(true)
@@ -207,22 +185,22 @@ export function TablePage<T extends BaseTableItem>({
 
   // Form handlers
   const handleAddClick = useCallback(() => {
-    if (formConfig) {
+    if (FormModalComponent) {
       setFormMode("add")
       setEditingItem(null)
       setIsFormModalOpen(true)
     }
-  }, [formConfig])
+  }, [FormModalComponent])
 
   const handleEditClick = useCallback(
     (item: T) => {
-      if (formConfig) {
+      if (FormModalComponent) {
         setFormMode("edit")
         setEditingItem(item)
         setIsFormModalOpen(true)
       }
     },
-    [formConfig],
+    [FormModalComponent],
   )
 
   const handleDeleteClick = useCallback(
@@ -390,7 +368,7 @@ export function TablePage<T extends BaseTableItem>({
             </button>
           )}
 
-          {formConfig && ( // Logic gọi API cho thêm mới/chỉnh sửa nên được xử lý ở hàm `onAdd` hoặc `onEdit` được truyền từ component cha (ví dụ: `app/customer/page.tsx`)
+          {FormModalComponent && (
             <button
               onClick={handleAddClick}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 hover:bg-blue-700"
@@ -502,12 +480,11 @@ export function TablePage<T extends BaseTableItem>({
         />
       )}
 
-      {preparedFormConfig && (
-        <FormModal
+      {FormModalComponent && (
+        <FormModalComponent
           isOpen={isFormModalOpen}
           onClose={() => setIsFormModalOpen(false)}
           onSubmit={handleFormSubmit} // This will now call onAdd/onEdit from parent
-          config={preparedFormConfig}
           initialData={editingItem || {}}
           existingData={tableData} // Pass tableData for validation
           mode={formMode}

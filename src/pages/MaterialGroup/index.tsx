@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { TablePage } from "@/components/table/TablePage";
 import { materialGroupColumns } from "./materialGroupConfig";
-import { materialGroupFormConfig as rawMaterialGroupFormConfig } from "./materialGroupFormConfig";
+import MaterialGroupFormModal from "./MaterialGroupFormModal";
 import { materialGroupPrintConfig } from "./materialGroupPrintConfig";
 import { materialGroupImportConfig } from "./materialGroupImportConfig";
 import { materialGroupDeleteConfig, materialGroupBulkDeleteConfig } from "./materialGroupDeleteConfig";
@@ -13,14 +13,6 @@ import { login } from "@/lib/login";
 import { addMaterialGroupAPI, updateMaterialGroupAPI, deleteMaterialGroupAPI } from "./materialGroupApi";
 
 const API_URL = "http://118.69.170.50/API/api/ProductKind/getAllProductKind";
-
-const materialGroupFormConfig = {
-  ...rawMaterialGroupFormConfig,
-  fields: rawMaterialGroupFormConfig.fields.map(field => ({
-    ...field,
-    type: field.type as "number" | "text" | "textarea" | "select" | "email" | "tel"
-  }))
-};
 
 export default function MaterialGroupPage() {
   const [data, setData] = useState<MaterialKind[]>([]);
@@ -190,10 +182,12 @@ export default function MaterialGroupPage() {
       }}
       excelImportConfig={materialGroupImportConfig}
       printConfig={materialGroupPrintConfig}
-      formConfig={materialGroupFormConfig}
+      FormModalComponent={MaterialGroupFormModal}
       deleteConfig={materialGroupDeleteConfig}
       bulkDeleteConfig={materialGroupBulkDeleteConfig}
       onDelete={handleDelete}
+      onAdd={handleAdd}
+      onEdit={handleEdit}
     />
   );
 }

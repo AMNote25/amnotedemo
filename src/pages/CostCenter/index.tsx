@@ -5,7 +5,8 @@ import { TablePage } from "@/components/table/TablePage"
 import { costObjectColumns } from "./costObjectConfig"
 import { costObjectImportConfig } from "./costObjectImportConfig"
 import { costObjectPrintConfig } from "./costObjectPrintConfig"
-import { costObjectFormConfig, costObjectDeleteConfig, costObjectBulkDeleteConfig } from "./costObjectFormConfig"
+import { costObjectDeleteConfig, costObjectBulkDeleteConfig } from "./costObjectFormConfig"
+import CostCenterFormModal from "./CostCenterFormModal"
 import { exportToExcel } from "@/lib/excelUtils"
 
 interface DoiTuongTapHopChiPhi {
@@ -115,9 +116,11 @@ export default function CostObjectPage() {
       }}
       excelImportConfig={costObjectImportConfig}
       printConfig={costObjectPrintConfig}
-      formConfig={costObjectFormConfig}
+      FormModalComponent={CostCenterFormModal}
       deleteConfig={costObjectDeleteConfig}
       bulkDeleteConfig={costObjectBulkDeleteConfig}
+      onAdd={handleAdd}
+      onEdit={handleEdit}
     />
   )
 }

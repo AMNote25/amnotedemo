@@ -4,7 +4,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { TablePage } from "@/components/table/TablePage";
 import { customerColumns } from "./customerConfig";
-import { customerFormConfig, customerDeleteConfig, customerBulkDeleteConfig } from "./customerFormConfig";
+import { customerDeleteConfig, customerBulkDeleteConfig } from "./customerFormConfig";
+import CustomerFormModal from "./CustomerFormModal";
 import { customerPrintConfig } from "./customerPrintConfig";
 import { customerImportConfig } from "./customerImportConfig"
 import { exportToExcel } from "@/lib/excelUtils";
@@ -252,10 +253,12 @@ export default function CustomerManagementPage() {
       }}
       excelImportConfig={customerImportConfig}
       printConfig={customerPrintConfig}
-      formConfig={customerFormConfig}
+      FormModalComponent={CustomerFormModal}
       deleteConfig={customerDeleteConfig}
       bulkDeleteConfig={customerBulkDeleteConfig}
       onDelete={handleDelete}
+      onAdd={handleAdd}
+      onEdit={handleEdit}
     />
   );
 }
