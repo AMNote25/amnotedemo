@@ -71,18 +71,36 @@ export default function CostObjectPage() {
   }, [])
 
   // Update handlers to work with the form modal
-  const handleAdd = useCallback((newItem: DoiTuongTapHopChiPhi) => {
-    console.log("Add new item:", newItem)
-    setData((prev) => [...prev, newItem])
+  const handleAdd = useCallback(async (newItem: DoiTuongTapHopChiPhi) => {
+    try {
+      setData((prev) => [...prev, newItem])
+      return { success: true, message: "Thêm mới đối tượng thành công!" }
+    } catch (error) {
+      console.error("Lỗi khi thêm đối tượng:", error)
+      return { success: false, message: "Có lỗi xảy ra khi thêm đối tượng!" }
+    }
   }, [])
 
-  const handleEdit = useCallback((updatedItem: DoiTuongTapHopChiPhi) => {
-    console.log("Edit item:", updatedItem)
-    setData((prev) => prev.map((item) => (item.id === updatedItem.id ? updatedItem : item)))
+  const handleEdit = useCallback(async (updatedItem: DoiTuongTapHopChiPhi) => {
+    try {
+      setData((prev) => prev.map((item) => (item.id === updatedItem.id ? updatedItem : item)))
+      return { success: true, message: "Cập nhật đối tượng thành công!" }
+    } catch (error) {
+      console.error("Lỗi khi cập nhật đối tượng:", error)
+      return { success: false, message: "Có lỗi xảy ra khi cập nhật đối tượng!" }
+    }
   }, [])
 
-  // onDelete and handleBulkDelete are now handled internally by TablePage for undo functionality.
-  // So, these functions are no longer passed as props to TablePage.
+  // Hàm xử lý xóa đối tượng tập hợp chi phí
+  const handleDelete = useCallback(async (id: string) => {
+    try {
+      setData((prev) => prev.filter((item) => item.id !== id))
+      return { success: true, message: "Xóa đối tượng thành công!" }
+    } catch (error) {
+      console.error("Lỗi khi xóa đối tượng:", error)
+      return { success: false, message: "Có lỗi xảy ra khi xóa đối tượng!" }
+    }
+  }, [])
 
   const handleRefresh = useCallback(async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -104,6 +122,7 @@ export default function CostObjectPage() {
       onPrint={handlePrint}
       onAdd={handleAdd}
       onEdit={handleEdit}
+      onDelete={handleDelete}
       onRefresh={handleRefresh}
       onExport={handleExport}
       searchFields={["code", "nameVi", "nameEn", "nameKo"]}
@@ -119,8 +138,6 @@ export default function CostObjectPage() {
       FormModalComponent={CostCenterFormModal}
       deleteConfig={costObjectDeleteConfig}
       bulkDeleteConfig={costObjectBulkDeleteConfig}
-      onAdd={handleAdd}
-      onEdit={handleEdit}
     />
   )
 }

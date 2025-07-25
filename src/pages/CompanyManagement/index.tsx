@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react"
 
-import { TablePage } from "./table/TablePage"
+import { TablePage } from "@/components/table/TablePage"
 import { companyColumns } from "./companyConfig"
 import CompanyFormModal from "./CompanyFormModal"
 import { companyFormConfig, companyDeleteConfig, companyBulkDeleteConfig } from "./companyFormConfig"
@@ -81,30 +81,15 @@ export default function CompanyManagementPage() {
   }
 
   // Hàm xử lý xóa company
-  const handleDeleteCompany = async (id: string) => {
+  const handleDeleteCompany = useCallback(async (id: string) => {
     try {
-      const response = await fetch(`/api/company/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Xóa công ty thất bại!");
-      }
-
-      const result = await response.json();
-
-      if (result.success) {
-        setData((prev) => prev.filter((c) => c.id !== id));
-        return { success: true, message: "Xóa công ty thành công!" };
-      } else {
-        throw new Error(result.message || "Xóa công ty thất bại!");
-      }
+      setData((prev) => prev.filter((c) => c.id !== id));
+      return { success: true, message: "Xóa công ty thành công!" };
     } catch (error) {
-      const errMessage = (error as Error).message;
-      console.error("Lỗi khi xóa công ty:", errMessage);
-      return { success: false, message: errMessage || "Có lỗi xảy ra khi xóa công ty!" };
+      console.error("Lỗi khi xóa công ty:", error);
+      return { success: false, message: "Có lỗi xảy ra khi xóa công ty!" };
     }
-  }
+  }, []);
 
   const handleRefresh = useCallback(async () => {
     setData(generateMockData(100))
