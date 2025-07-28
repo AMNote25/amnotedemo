@@ -25,6 +25,7 @@ export default function CustomerFormModal({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({})
   const [activeTab, setActiveTab] = useState(0)
+  const [completedSteps, setCompletedSteps] = useState<number[]>([0])
 
   useEffect(() => {
     if (isOpen) {
@@ -54,8 +55,49 @@ export default function CustomerFormModal({
       setActiveTab(0)
       setErrors({})
       setTouched({})
+      setCompletedSteps([0])
     }
   }, [isOpen, initialData, mode])
+  // Validate từng step
+  // Nếu nhập số điện thoại thì phải hợp lệ mới cho next, nếu không nhập thì không bắt buộc
+  const stepFields = [
+    ["nameVi", "customerType", "categoryCode"], // Step 0
+    ["taxCode", "tel"], // Step 1: kiểm tra tel nếu có nhập
+    [], // Step 2
+    ["address"] // Step 3
+  ]
+
+  const isStepValid = (step: number) => {
+    const fields = stepFields[step] || []
+    return fields.every((field) => {
+      const errs = validateField(field, formData[field])
+      return !errs || errs.length === 0
+    })
+  }
+
+  const handleNext = () => {
+    if (isStepValid(activeTab)) {
+      setCompletedSteps((prev) => Array.from(new Set([...prev, activeTab + 1])))
+      setActiveTab((prev) => prev + 1)
+    } else {
+      // Đánh dấu touched và show lỗi
+      const fields = stepFields[activeTab] || []
+      const newTouched: any = { ...touched }
+      fields.forEach((field) => {
+        newTouched[field] = true
+      })
+      setTouched(newTouched)
+      const newErrors: any = { ...errors }
+      fields.forEach((field) => {
+        newErrors[field] = validateField(field, formData[field])
+      })
+      setErrors(newErrors)
+    }
+  }
+
+  const handlePrev = () => {
+    setActiveTab((prev) => Math.max(0, prev - 1))
+  }
 
   const validateField = useCallback(
     (fieldName: string, value: any) => {
@@ -67,11 +109,32 @@ export default function CustomerFormModal({
             fieldErrors.push("Tên tiếng Việt là bắt buộc")
           }
           break
+        case "customerType":
+          if (!value || String(value).trim() === "") {
+            fieldErrors.push("Loại khách hàng là bắt buộc")
+          }
+          break
+        case "categoryCode":
+          if (!value || String(value).trim() === "") {
+            fieldErrors.push("Mã danh mục là bắt buộc")
+          }
+          break
         case "taxCode":
           if (!value || String(value).trim() === "") {
             fieldErrors.push("Mã số thuế là bắt buộc")
           } else if (!/^\d{10}$|^\d{13}$/.test(String(value))) {
             fieldErrors.push("Mã số thuế phải có 10 hoặc 13 chữ số")
+          } else {
+            // Kiểm tra trùng mã số thuế trong existingData (trừ trường hợp đang sửa chính bản ghi đó)
+            const trimmedValue = String(value).trim();
+            const isDuplicate = existingData?.some((item) => {
+              if (!item.taxCode) return false;
+              if (mode === "edit" && formData.id && item.id === formData.id) return false;
+              return String(item.taxCode).trim() === trimmedValue;
+            });
+            if (isDuplicate) {
+              fieldErrors.push("Mã số thuế đã tồn tại trong hệ thống")
+            }
           }
           break
         case "address":
@@ -82,6 +145,11 @@ export default function CustomerFormModal({
         case "email":
           if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value))) {
             fieldErrors.push("Email không hợp lệ")
+          }
+          break
+        case "tel":
+          if (value && !/^\d{10}$/.test(String(value).trim())) {
+            fieldErrors.push("Số điện thoại phải gồm đúng 10 chữ số")
           }
           break
       }
@@ -195,54 +263,33 @@ export default function CustomerFormModal({
         {/* Tabs/Steps */}
         <div className="border-b border-gray-200 bg-gray-50 flex-shrink-0">
           <nav className="flex space-x-2 sm:space-x-8 px-4 sm:px-6 overflow-x-auto">
-            <button
-              type="button"
-              onClick={() => setActiveTab(0)}
-              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
-                activeTab === 0
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <Building2 className="inline h-4 w-4 mr-1 sm:mr-2" />
-              Thông tin cơ bản
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab(1)}
-              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
-                activeTab === 1
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <Receipt className="inline h-4 w-4 mr-1 sm:mr-2" />
-              Thông tin thuế và liên hệ
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab(2)}
-              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
-                activeTab === 2
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <Store className="inline h-4 w-4 mr-1 sm:mr-2" />
-              Thông tin kinh doanh
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab(3)}
-              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
-                activeTab === 3
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <MapPin className="inline h-4 w-4 mr-1 sm:mr-2" />
-              Thông tin địa chỉ
-            </button>
+            {[
+              { label: 'Thông tin cơ bản', icon: Building2 },
+              { label: 'Thông tin thuế và liên hệ', icon: Receipt },
+              { label: 'Thông tin kinh doanh', icon: Store },
+              { label: 'Thông tin địa chỉ', icon: MapPin },
+            ].map((tab, idx) => {
+              const Icon = tab.icon
+              const isClickable = completedSteps.includes(idx) || idx === activeTab
+              return (
+                <button
+                  key={tab.label}
+                  type="button"
+                  onClick={() => isClickable && setActiveTab(idx)}
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
+                    activeTab === idx
+                      ? 'border-blue-500 text-blue-600'
+                      : isClickable
+                        ? 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        : 'border-transparent text-gray-500 cursor-not-allowed opacity-60'
+                  }`}
+                  disabled={!isClickable}
+                >
+                  <Icon className="inline h-4 w-4 mr-1 sm:mr-2" />
+                  {tab.label}
+                </button>
+              )
+            })}
           </nav>
         </div>
 
@@ -267,13 +314,69 @@ export default function CustomerFormModal({
                       onChange={(e) => handleFieldChange("nameVi", e.target.value)}
                       onBlur={() => handleFieldBlur("nameVi")}
                       placeholder="Nhập tên tiếng Việt"
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                        errors.nameVi?.length ? "border-red-300 bg-red-50" : "border-gray-300"
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:border-2 transition-colors ${
+                        errors.nameVi?.length ? "border-red-500 bg-red-50" : "border-gray-300"
                       }`}
                     />
                     {errors.nameVi?.length > 0 && (
                       <div className="space-y-1">
                         {errors.nameVi.map((error, index) => (
+                          <div key={index} className="flex items-start space-x-2 text-xs text-red-600">
+                            <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
+                            <span>{error}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {/* Loại khách hàng */}
+                  <div className="space-y-2">
+                    <label htmlFor="customerType" className="block text-sm font-medium text-gray-700">
+                      Loại khách hàng <span className="text-red-500 ml-1">*</span>
+                    </label>
+                    <input
+                      id="customerType"
+                      name="customerType"
+                      type="text"
+                      value={formData.customerType || ""}
+                      onChange={(e) => handleFieldChange("customerType", e.target.value)}
+                      onBlur={() => handleFieldBlur("customerType")}
+                      placeholder="Ví dụ: 1 (Nội địa), 2 (Nước ngoài)"
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:border-2 transition-colors ${
+                        errors.customerType?.length ? "border-red-500 bg-red-50" : "border-gray-300"
+                      }`}
+                    />
+                    {errors.customerType?.length > 0 && (
+                      <div className="space-y-1">
+                        {errors.customerType.map((error, index) => (
+                          <div key={index} className="flex items-start space-x-2 text-xs text-red-600">
+                            <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
+                            <span>{error}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {/* Mã danh mục */}
+                  <div className="space-y-2">
+                    <label htmlFor="categoryCode" className="block text-sm font-medium text-gray-700">
+                      Mã danh mục <span className="text-red-500 ml-1">*</span>
+                    </label>
+                    <input
+                      id="categoryCode"
+                      name="categoryCode"
+                      type="text"
+                      value={formData.categoryCode || ""}
+                      onChange={(e) => handleFieldChange("categoryCode", e.target.value)}
+                      onBlur={() => handleFieldBlur("categoryCode")}
+                      placeholder="Mã danh mục khách hàng"
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:border-2 transition-colors ${
+                        errors.categoryCode?.length ? "border-red-500 bg-red-50" : "border-gray-300"
+                      }`}
+                    />
+                    {errors.categoryCode?.length > 0 && (
+                      <div className="space-y-1">
+                        {errors.categoryCode.map((error, index) => (
                           <div key={index} className="flex items-start space-x-2 text-xs text-red-600">
                             <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
                             <span>{error}</span>
@@ -334,6 +437,22 @@ export default function CustomerFormModal({
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                     />
                   </div>
+                  {/* Mã ngân hàng */}
+                  <div className="space-y-2">
+                    <label htmlFor="bankCD" className="block text-sm font-medium text-gray-700">
+                      Mã ngân hàng
+                    </label>
+                    <input
+                      id="bankCD"
+                      name="bankCD"
+                      type="text"
+                      value={formData.bankCD || ""}
+                      onChange={(e) => handleFieldChange("bankCD", e.target.value)}
+                      onBlur={() => handleFieldBlur("bankCD")}
+                      placeholder="Nhập mã ngân hàng"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -360,6 +479,16 @@ export default function CustomerFormModal({
                         errors.taxCode?.length ? "border-red-300 bg-red-50" : "border-gray-300"
                       }`}
                     />
+                    {errors.taxCode?.length > 0 && (
+                      <div className="space-y-1">
+                        {errors.taxCode.map((error, index) => (
+                          <div key={index} className="flex items-start space-x-2 text-xs text-red-600">
+                            <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
+                            <span>{error}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   {/* Email */}
                   <div className="space-y-2">
@@ -396,6 +525,16 @@ export default function CustomerFormModal({
                         errors.tel?.length ? "border-red-300 bg-red-50" : "border-gray-300"
                       }`}
                     />
+                    {errors.tel?.length > 0 && (
+                      <div className="space-y-1">
+                        {errors.tel.map((error, index) => (
+                          <div key={index} className="flex items-start space-x-2 text-xs text-red-600">
+                            <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
+                            <span>{error}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   {/* Fax */}
                   <div className="space-y-2">
@@ -496,6 +635,16 @@ export default function CustomerFormModal({
                         errors.address?.length ? "border-red-300 bg-red-50" : "border-gray-300"
                       }`}
                     />
+                    {errors.address?.length > 0 && (
+                      <div className="space-y-1">
+                        {errors.address.map((error, index) => (
+                          <div key={index} className="flex items-start space-x-2 text-xs text-red-600">
+                            <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
+                            <span>{error}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   {/* Zip code */}
                   <div className="space-y-2">
@@ -514,37 +663,36 @@ export default function CustomerFormModal({
                     />
                   </div>
                 </div>
+                {/* Ghi chú - chỉ hiển thị ở tab cuối cùng */}
+                <div className="space-y-2 mt-6">
+                  <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
+                    Ghi chú
+                  </label>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    value={formData.notes || ""}
+                    onChange={(e) => handleFieldChange("notes", e.target.value)}
+                    onBlur={() => handleFieldBlur("notes")}
+                    placeholder="Nhập ghi chú (tùy chọn)"
+                    rows={3}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                      errors.notes?.length ? "border-red-300 bg-red-50" : "border-gray-300"
+                    }`}
+                  />
+                  {errors.notes?.length > 0 && (
+                    <div className="space-y-1">
+                      {errors.notes.map((error, index) => (
+                        <div key={index} className="flex items-start space-x-2 text-xs text-red-600">
+                          <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
+                          <span>{error}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
-
-            {/* Ghi chú */}
-            <div className="space-y-2 mt-6">
-              <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
-                Ghi chú
-              </label>
-              <textarea
-                id="notes"
-                name="notes"
-                value={formData.notes || ""}
-                onChange={(e) => handleFieldChange("notes", e.target.value)}
-                onBlur={() => handleFieldBlur("notes")}
-                placeholder="Nhập ghi chú (tùy chọn)"
-                rows={3}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                  errors.notes?.length ? "border-red-300 bg-red-50" : "border-gray-300"
-                }`}
-              />
-              {errors.notes?.length > 0 && (
-                <div className="space-y-1">
-                  {errors.notes.map((error, index) => (
-                    <div key={index} className="flex items-start space-x-2 text-xs text-red-600">
-                      <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
-                      <span>{error}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Footer */}
@@ -557,23 +705,45 @@ export default function CustomerFormModal({
             >
               Hủy
             </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  <span>Đang lưu...</span>
-                </>
-              ) : (
-                <>
-                  <Save size={16} />
-                  <span>Lưu</span>
-                </>
-              )}
-            </button>
+            {activeTab > 0 && (
+              <button
+                type="button"
+                onClick={handlePrev}
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                disabled={isSubmitting}
+              >
+                Quay lại
+              </button>
+            )}
+            {activeTab < 3 && (
+              <button
+                type="button"
+                onClick={handleNext}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                disabled={isSubmitting}
+              >
+                Tiếp theo
+              </button>
+            )}
+            {activeTab === 3 && (
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>Đang lưu...</span>
+                  </>
+                ) : (
+                  <>
+                    <Save size={16} />
+                    <span>Lưu</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </form>
       </div>

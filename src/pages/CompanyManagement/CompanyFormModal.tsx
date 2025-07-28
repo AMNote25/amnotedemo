@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { X, AlertCircle, Usb, Shield, Building2, Settings, CreditCard, FileSignature, Receipt, Check, Mail, MessageSquare, Upload, Trash2, CheckSquare, Square, Plus, Edit2, ChevronLeft, ChevronRight } from "lucide-react"
 
 interface CompanyFormModalProps {
@@ -34,6 +34,7 @@ const TAX_METHODS = [
 export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialData = {}, mode }: CompanyFormModalProps) {
   const [formData, setFormData] = useState<any>({})
   const [currentStep, setCurrentStep] = useState(0)
+  const [completedSteps, setCompletedSteps] = useState<number[]>([0])
   const [activeInvoiceTab, setActiveInvoiceTab] = useState<'email'|'sms'|'digital-signature'>('email')
   const [isSubmitting, setIsSubmitting] = useState(false)
   
@@ -60,6 +61,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
   useEffect(() => {
     if (isOpen) {
       setCurrentStep(0)
+      setCompletedSteps([0])
       setActiveInvoiceTab('email')
       setFormData({
         name: initialData.name || '',
@@ -92,21 +94,21 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
   // Validate tax code
   const validateTaxCode = (taxCode: string) => /^\d{10}$|^\d{13}$/.test(taxCode)
 
-  // Validate current step
-  const validateCurrentStep = () => {
-    switch (currentStep) {
-      case 0: // Thông tin công ty
+  // Validate từng step, trả về true nếu hợp lệ
+  const validateStep = useCallback((step: number) => {
+    switch (step) {
+      case 0:
         if (!formData.name?.trim() || !formData.address?.trim() || !formData.taxCode?.trim() || !formData.province?.trim()) return false
         if (!formData.companyType?.trim() || !formData.accountingCompany?.trim() || !formData.accountingPeriod?.trim()) return false
         if (!validateTaxCode(formData.taxCode)) return false
         return true
-      case 1: // Thiết lập kế toán
+      case 1:
         if (!formData.settings?.accounting?.decision || !formData.settings?.accounting?.pricing || !formData.settings?.accounting?.tax || !formData.settings?.accounting?.lockMethod) return false
         return true
       default:
         return true
     }
-  }
+  }, [formData])
 
   // Validate form
   const validateForm = () => {
@@ -117,7 +119,8 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
   }
 
   const handleNext = () => {
-    if (validateCurrentStep() && currentStep < steps.length - 1) {
+    if (validateStep(currentStep) && currentStep < steps.length - 1) {
+      setCompletedSteps((prev) => Array.from(new Set([...prev, currentStep + 1])))
       setCurrentStep(currentStep + 1)
     }
   }
@@ -158,23 +161,39 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
           </button>
         </div>
 
-        {/* Steps Navigation */}
+        {/* Steps Navigation - Chuẩn hóa logic giống User/Customer */}
         <div className="border-b bg-gray-50 flex-shrink-0">
           <nav className="flex space-x-2 sm:space-x-8 px-4 sm:px-6 overflow-x-auto">
-            {steps.map((step, index) => (
-              <button
-                key={step.id}
-                onClick={() => setCurrentStep(index)}
-                className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
-                  currentStep === index
-                    ? 'border-blue-500 text-blue-600' 
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <step.icon className="inline h-4 w-4 mr-1 sm:mr-2" />
-                {step.title}
-              </button>
-            ))}
+            {steps.map((step, index) => {
+              const isClickable = completedSteps.includes(index) || index === currentStep
+              return (
+                <button
+                  key={step.id}
+                  type="button"
+                  onClick={() => {
+                    if (!isClickable) return;
+                    // Nếu chuyển sang step khác, validate step hiện tại
+                    if (index !== currentStep) {
+                      if (validateStep(currentStep)) {
+                        setCompletedSteps((prev) => Array.from(new Set([...prev, index])))
+                        setCurrentStep(index)
+                      }
+                    }
+                  }}
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
+                    currentStep === index
+                      ? 'border-blue-500 text-blue-600'
+                      : isClickable
+                        ? 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        : 'border-transparent text-gray-500 cursor-not-allowed opacity-60'
+                  }`}
+                  disabled={!isClickable}
+                >
+                  <step.icon className="inline h-4 w-4 mr-1 sm:mr-2" />
+                  {step.title}
+                </button>
+              )
+            })}
           </nav>
         </div>
 
@@ -1604,12 +1623,35 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
               {currentStep < steps.length - 1 ? (
                 <button
                   type="button"
-                  onClick={handleNext}
-                  disabled={!validateCurrentStep()}
+                  onClick={() => {
+                    if (validateStep(currentStep)) {
+                      handleNext();
+                    } else {
+                      // Đánh dấu touched các trường bắt buộc của step hiện tại để show lỗi
+                      if (!touched) return;
+                      const stepFields = [
+                        // Step 0: Thông tin công ty
+                        ["companyType", "name", "taxCode", "address", "province", "taxOfficeCode", "accountingCompany", "accountingPeriod"],
+                        // Step 1: Thiết lập kế toán
+                        ["settings.accounting.decision", "settings.accounting.pricing", "settings.accounting.tax", "settings.accounting.lockMethod"],
+                        // Step 2: Ngân hàng (không bắt buộc)
+                        [],
+                        // Step 3: Chữ ký (không bắt buộc)
+                        [],
+                        // Step 4: Hóa đơn (không bắt buộc)
+                        []
+                      ];
+                      const fields = stepFields[currentStep] || [];
+                      const newTouched = { ...touched };
+                      fields.forEach((field) => {
+                        newTouched[field] = true;
+                      });
+                      setTouched(newTouched);
+                      // Có thể setErrors nếu muốn show lỗi rõ hơn
+                    }
+                  }}
                   className={`inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                    validateCurrentStep()
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    'bg-blue-600 text-white hover:bg-blue-700'
                   }`}
                 >
                   Tiếp tục

@@ -22,3 +22,6 @@ Các input khi hover là border màu xanh dương, khi lỗi là border màu đ�
 - **Luôn đảm bảo phát triển các màn hình nhập excel, xác thực dữ liệu và giao diện thân thiện với người dùng. Xuất excel phải đồng bộ tiêu chuẩn.**
 
 - **Các thao tác liên quan tới quản lý dữ liệu (reload, filter, cài đặt cột...) phải đồng bộ trải nghiệm, sao chép logic từ các trang dữ liệu đã tồn tại.**
+- ** Hãy hỏi lại tôi các câu làm rõ đến khi bạn không chắc chắn về 95% có thể hoàn thành tốt nhiệm vụ.**
+- ** Một người thuộc 0,1% trong lĩnh vực này sẽ nghĩ thế nào về code của bạn? Hãy tự hỏi bản thân câu này trước khi gửi code.**
+- ** Hãy trình bày theo cách khiến tôi có thể hiểu được logic của bạn. Nếu bạn không thể giải thích rõ ràng, hãy xem lại code của mình.**

@@ -234,9 +234,7 @@ export const customerDeleteConfig: DeleteConfig = {
   message: "Bạn có chắc chắn muốn xóa khách hàng {item}?",
   confirmText: "Xóa",
   cancelText: "Hủy",
-  warningMessage: "Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan sẽ bị mất.",
-  // Hàm thực thi xóa, sẽ được truyền vào TablePage hoặc modal xác nhận xóa
-  deleteHandler: deleteCustomerAPI,
+  warningMessage: "Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan sẽ bị mất."
 }
 
 export const customerBulkDeleteConfig: DeleteConfig = {
@@ -246,5 +244,5 @@ export const customerBulkDeleteConfig: DeleteConfig = {
   multipleMessage: "Bạn có chắc chắn muốn xóa {count} khách hàng đã chọn?",
   confirmText: "Xóa tất cả",
   cancelText: "Hủy",
-  warningMessage: "Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan sẽ bị mất.",
+  warningMessage: "Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan sẽ bị mất."
 }
