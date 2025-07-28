@@ -19,6 +19,7 @@ import type { FormConfig, DeleteConfig } from "@/types/form"
 // Update the interface to include the new config props
 export interface TablePagePropsWithConfigs<T extends BaseTableItem> extends TablePageProps<T> {
   FormModalComponent?: React.ComponentType<any>
+  customToolbar?: (props: any) => React.ReactNode
 }
 
 export function TablePage<T extends BaseTableItem>({
@@ -44,6 +45,7 @@ export function TablePage<T extends BaseTableItem>({
   isInitialLoading = false, // Default to false
   onDelete,
   FormModalComponent,
+  customToolbar,
 }: TablePagePropsWithConfigs<T>) {
   const localStorageKey = `${title.replace(/\s+/g, "")}TableColumnConfigs`
 
@@ -381,16 +383,29 @@ export function TablePage<T extends BaseTableItem>({
 
       {/* TABLE CONTAINER */}
       <div className="bg-white rounded-xl shadow border">
-        <TableToolbar
-          searchTerm={searchTerm}
-          onSearch={handleSearch}
-          isRefreshing={isRefreshing}
-          onRefresh={handleRefreshData}
-          onExport={onExport}
-          onSettings={() => setShowSettingsPanel(true)}
-          selectedCount={selectedItems.length}
-          onBulkDelete={bulkDeleteConfig ? handleBulkDeleteInternal : undefined}
-        />
+        {customToolbar ? (
+          customToolbar({
+            searchTerm,
+            onSearch: handleSearch,
+            isRefreshing,
+            onRefresh: handleRefreshData,
+            onExport,
+            onSettings: () => setShowSettingsPanel(true),
+            selectedCount: selectedItems.length,
+            onBulkDelete: bulkDeleteConfig ? handleBulkDeleteInternal : undefined,
+          })
+        ) : (
+          <TableToolbar
+            searchTerm={searchTerm}
+            onSearch={handleSearch}
+            isRefreshing={isRefreshing}
+            onRefresh={handleRefreshData}
+            onExport={onExport}
+            onSettings={() => setShowSettingsPanel(true)}
+            selectedCount={selectedItems.length}
+            onBulkDelete={bulkDeleteConfig ? handleBulkDeleteInternal : undefined}
+          />
+        )}
 
         <DataTable
           data={displayed}

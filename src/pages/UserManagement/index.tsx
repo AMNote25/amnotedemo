@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { TablePage } from "@/components/table/TablePage"
+import { UserTableToolbar } from "@/components/table/UserTableToolbar"
 import { userColumns } from "./userConfig"
 import { userPrintConfig } from "./userPrintConfig"
 import { userImportConfig } from "./userImportConfig"
@@ -48,6 +49,29 @@ const generateUserData = (count: number): User[] => {
 
 export default function UserManagementPage() {
   const [data, setData] = useState<User[]>(() => generateUserData(100))
+  const [userTypeFilter, setUserTypeFilter] = useState("")
+  const [filteredData, setFilteredData] = useState<User[]>(data)
+
+  // Filter data based on user type
+  const applyFilters = useCallback((users: User[], typeFilter: string) => {
+    let filtered = users
+    
+    if (typeFilter) {
+      filtered = filtered.filter(user => user.permission === typeFilter)
+    }
+    
+    return filtered
+  }, [])
+
+  // Update filtered data when data or filters change
+  useEffect(() => {
+    const filtered = applyFilters(data, userTypeFilter)
+    setFilteredData(filtered)
+  }, [data, userTypeFilter, applyFilters])
+
+  const handleUserTypeFilterChange = useCallback((type: string) => {
+    setUserTypeFilter(type)
+  }, [])
 
   const handleImport = useCallback(
     (rows: any[], method: "add" | "update" | "overwrite") => {
@@ -140,7 +164,7 @@ export default function UserManagementPage() {
       title="Quản lý người dùng"
       description="Quản lý danh sách người dùng hệ thống"
       columns={userColumns}
-      data={data}
+      data={filteredData}
       onImport={handleImport}
       onPrint={handlePrint}
       printConfig={userPrintConfig}
@@ -160,6 +184,14 @@ export default function UserManagementPage() {
       FormModalComponent={UserFormModal}
       deleteConfig={userDeleteConfig}
       bulkDeleteConfig={userBulkDeleteConfig}
+      // Sử dụng custom toolbar
+      customToolbar={(props) => (
+        <UserTableToolbar
+          {...props}
+          userTypeFilter={userTypeFilter}
+          onUserTypeFilterChange={handleUserTypeFilterChange}
+        />
+      )}
     />
   )
 }
