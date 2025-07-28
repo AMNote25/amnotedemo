@@ -3,6 +3,8 @@
 import { useState, useCallback } from "react"
 import { TablePage } from "@/components/table/TablePage"
 import { userColumns } from "./userConfig"
+import { userPrintConfig } from "./userPrintConfig"
+import { userImportConfig } from "./userImportConfig"
 import { userDeleteConfig, userBulkDeleteConfig } from "./userFormConfig"
 import UserFormModal from "./UserFormModal"
 import { exportToExcel } from "@/lib/excelUtils"
@@ -141,6 +143,8 @@ export default function UserManagementPage() {
       data={data}
       onImport={handleImport}
       onPrint={handlePrint}
+      printConfig={userPrintConfig}
+      excelImportConfig={userImportConfig}
       onAdd={handleAdd}
       onEdit={handleEdit}
       onDelete={handleDelete}
