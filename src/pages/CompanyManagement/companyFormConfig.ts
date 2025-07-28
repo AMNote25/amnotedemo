@@ -104,12 +104,14 @@ export const companyFormConfig: FormConfig = {
 
 export const companyDeleteConfig: DeleteConfig = {
   title: "Xóa công ty",
+  message: "Bạn có chắc chắn muốn xóa công ty này? Hành động này không thể hoàn tác.",
   confirmText: "Xóa",
   cancelText: "Hủy",
 }
 
 export const companyBulkDeleteConfig: DeleteConfig = {
   title: "Xóa nhiều công ty",
+  message: "Bạn có chắc chắn muốn xóa tất cả các công ty đã chọn? Hành động này không thể hoàn tác.",
   confirmText: "Xóa tất cả",
   cancelText: "Hủy",
 }

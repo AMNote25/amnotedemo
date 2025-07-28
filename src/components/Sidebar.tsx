@@ -419,11 +419,19 @@ export default function Sidebar({
 
   const handleMenuSelect = (menuId: string) => {
     const path = findPathToNode(menuGroups.flatMap(g => g.items), menuId);
-    if (path) setExpandedPath(path);
-    onMenuSelect(menuId);
-    // Nếu đang search, cập nhật lại trạng thái activeMenu tạm thời
-    if (searchTerm && !originalMenuState) {
-      setOriginalMenuState({ expandedPath, activeMenu });
+    if (path) {
+      // Nếu menuId hợp lệ (có trên sidebar), chỉ set expandedPath và activeMenu, KHÔNG đóng menu
+      setExpandedPath(path);
+      onMenuSelect(menuId);
+      // Nếu đang search, cập nhật lại trạng thái activeMenu tạm thời
+      if (searchTerm && !originalMenuState) {
+        setOriginalMenuState({ expandedPath, activeMenu });
+      }
+    } else {
+      // Nếu menuId không tồn tại trên sidebar (ví dụ /profile), chỉ đóng menu khi load hoặc chuyển route ngoài sidebar
+      // Để tránh đóng menu khi click vào menu sidebar hợp lệ
+      // Không gọi setExpandedPath([]) ở đây khi click menu sidebar
+      onMenuSelect("");
     }
   };
 
