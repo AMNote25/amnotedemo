@@ -47,19 +47,7 @@ export function UserTableToolbar({
           />
         </div>
 
-        {/* User Type Filter - Tính năng riêng cho user management */}
-        <div className="relative">
-          <select
-            value={userTypeFilter}
-            onChange={(e) => onUserTypeFilterChange(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-sm"
-          >
-            <option value="">Tất cả loại người dùng</option>
-            <option value="admin">Quản trị cao nhất</option>
-            <option value="user">Người sử dụng</option>
-            <option value="viewer">Người xem</option>
-          </select>
-        </div>
+        
 
         <div className="flex items-center bg-gray-50 rounded-lg p-1 space-x-1">
           <div className="relative group">
@@ -103,6 +91,19 @@ export function UserTableToolbar({
               Thiết lập
             </div>
           </div>
+        </div>
+        {/* User Type Filter - Tính năng riêng cho user management */}
+        <div className="relative">
+          <select
+            value={userTypeFilter}
+            onChange={(e) => onUserTypeFilterChange(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-sm"
+          >
+            <option value="">Tất cả loại người dùng</option>
+            <option value="admin">Quản trị cao nhất</option>
+            <option value="user">Người sử dụng</option>
+            <option value="viewer">Người xem</option>
+          </select>
         </div>
       </div>
 

@@ -31,99 +31,151 @@ const TAX_METHODS = [
   { value: 'hybrid', label: 'Phương pháp hỗn hợp' },
 ];
 
+// Khai báo các bước (steps) cho form, mỗi bước có id, title, icon
+const steps = [
+  { id: 0, title: 'Thông tin công ty', icon: AlertCircle },
+  { id: 1, title: 'Thiết lập kế toán', icon: AlertCircle },
+  { id: 2, title: 'Ngân hàng', icon: AlertCircle },
+  { id: 3, title: 'Bảo mật', icon: AlertCircle },
+  { id: 4, title: 'Hoàn tất', icon: AlertCircle },
+];
+
 export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialData = {}, mode }: CompanyFormModalProps) {
   const [formData, setFormData] = useState<any>({})
   const [currentStep, setCurrentStep] = useState(0)
   const [completedSteps, setCompletedSteps] = useState<number[]>([0])
   const [activeInvoiceTab, setActiveInvoiceTab] = useState<'email'|'sms'|'digital-signature'>('email')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  
-  const steps = [
-    { id: 'info', title: 'Thông tin công ty', icon: Building2 },
-    { id: 'accounting', title: 'Thiết lập kế toán', icon: Settings },
-    { id: 'firmbanking', title: 'Firmbanking', icon: CreditCard },
-    { id: 'signature', title: 'Chữ ký', icon: FileSignature },
-    { id: 'invoice', title: 'Hóa đơn', icon: Receipt }
-  ]
-  const [showAddBankModal, setShowAddBankModal] = useState(false)
-  const [newBankAccount, setNewBankAccount] = useState({
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  // Sửa lỗi thiếu khai báo state cho bank modal và security modal
+  const [showAddBankModal, setShowAddBankModal] = useState(false);
+  const [newBankAccount, setNewBankAccount] = useState<{ bankName: string; accountNumber: string; accountOwner: string; branch: string }>({
     bankName: '',
     accountNumber: '',
     accountOwner: '',
     branch: ''
-  })
-  const [showAddSecurityModal, setShowAddSecurityModal] = useState(false)
-  const [newSecurityQuestion, setNewSecurityQuestion] = useState({
-    question: '',
-    answer: ''
-  })
+  });
+  const [showAddSecurityModal, setShowAddSecurityModal] = useState(false);
+  const [newSecurityQuestion, setNewSecurityQuestion] = useState<{ question: string; answer: string }>({ question: '', answer: '' });
 
-  useEffect(() => {
-    if (isOpen) {
-      setCurrentStep(0)
-      setCompletedSteps([0])
-      setActiveInvoiceTab('email')
-      setFormData({
-        name: initialData.name || '',
-        address: initialData.address || '',
-        taxCode: initialData.taxCode || '',
-        province: initialData.province || '',
-        taxOfficeCode: initialData.taxOfficeCode || '',
-        phone: initialData.phone || '',
-        email: initialData.email || '',
-        industry: initialData.industry || [],
-        companyType: initialData.companyType || '',
-        accountingCompany: initialData.accountingCompany || '',
-        accountingPeriod: initialData.accountingPeriod || '',
-        directorName: initialData.directorName || '',
-        businessRegistrationNumber: initialData.businessRegistrationNumber || '',
-        businessForm: initialData.businessForm || '',
-        businessType: initialData.businessType || '',
-        fax: initialData.fax || '',
-        operationStartDate: initialData.operationStartDate || '',
-        positionVietnamese: initialData.positionVietnamese || 'Giám đốc',
-        positionEnglish: initialData.positionEnglish || 'Director',
-        positionKorean: initialData.positionKorean || '감독',
-        positionChinese: initialData.positionChinese || '董事',
-        settings: initialData.settings || {},
-        id: initialData.id
-      })
-    }
-  }, [isOpen, initialData])
+  const requiredFieldsByStep: Record<number, string[]> = {
+    0: ["companyType", "name", "taxCode", "address", "province", "taxOfficeCode", "accountingCompany", "accountingPeriod"],
+    1: ["settings.accounting.decision", "settings.accounting.pricing", "settings.accounting.tax", "settings.accounting.lockMethod", "settings.accounting.decimal"],
+    2: [],
+    3: [],
+    4: []
+  };
 
-  // Validate tax code
-  const validateTaxCode = (taxCode: string) => /^\d{10}$|^\d{13}$/.test(taxCode)
+  const getValueByPath = (obj: any, path: string) => {
+    if (!path) return undefined;
+    return path.split('.').reduce((o, k) => (o || {})[k], obj);
+  };
 
-  // Validate từng step, trả về true nếu hợp lệ
   const validateStep = useCallback((step: number) => {
-    switch (step) {
-      case 0:
-        if (!formData.name?.trim() || !formData.address?.trim() || !formData.taxCode?.trim() || !formData.province?.trim()) return false
-        if (!formData.companyType?.trim() || !formData.accountingCompany?.trim() || !formData.accountingPeriod?.trim()) return false
-        if (!validateTaxCode(formData.taxCode)) return false
-        return true
-      case 1:
-        if (!formData.settings?.accounting?.decision || !formData.settings?.accounting?.pricing || !formData.settings?.accounting?.tax || !formData.settings?.accounting?.lockMethod) return false
-        return true
-      default:
-        return true
-    }
-  }, [formData])
+    const fields = requiredFieldsByStep[step] || [];
+    const newErrors: Record<string, string> = {};
 
-  // Validate form
+    fields.forEach(field => {
+      const value = getValueByPath(formData, field);
+      if (value === undefined || value === null || (typeof value === 'string' && value.trim() === '')) {
+        newErrors[field] = 'Trường này là bắt buộc';
+      }
+    });
+
+    if (step === 0) {
+      if (formData.taxCode && !/^\d{10}$|^\d{13}$/.test(formData.taxCode)) {
+        newErrors.taxCode = 'Mã số thuế phải có 10 hoặc 13 chữ số';
+      }
+    }
+
+    if (step === 1) {
+      const decimalValue = getValueByPath(formData, 'settings.accounting.decimal');
+      if (decimalValue !== undefined && (isNaN(parseInt(decimalValue)) || parseInt(decimalValue) < 0 || parseInt(decimalValue) > 4)) {
+        newErrors['settings.accounting.decimal'] = 'Số thập phân phải từ 0 đến 4';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [formData]);
+
+  const hasError = (fieldName: string) => {
+    return !!(touched[fieldName] && errors[fieldName]);
+  }
+
+  const getInputClassName = (fieldName: string, baseClassName: string = "w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent") => {
+    if (hasError(fieldName)) {
+      return `${baseClassName.replace('border-gray-300', 'border-red-500')} border-red-500`;
+    }
+    return `${baseClassName} border-gray-300`;
+  };
+  
+  const getRadioContainerClassName = (fieldName: string) => {
+    if (hasError(fieldName)) {
+      return 'flex gap-6 border border-red-500 rounded px-3 py-2';
+    }
+    return 'flex gap-6 border border-gray-300 rounded px-3 py-2';
+  }
+
   const validateForm = () => {
-    if (!formData.name?.trim() || !formData.address?.trim() || !formData.taxCode?.trim() || !formData.province?.trim()) return false
-    if (!formData.companyType?.trim() || !formData.accountingCompany?.trim() || !formData.accountingPeriod?.trim()) return false
-    if (!validateTaxCode(formData.taxCode)) return false
-    return true
+    const allFields = Object.values(requiredFieldsByStep).flat();
+    const newTouched: Record<string, boolean> = {};
+    allFields.forEach(field => newTouched[field] = true);
+    setTouched(newTouched);
+
+    let isAllValid = true;
+    const allErrors: Record<string, string> = {};
+
+    for (const step of Object.keys(requiredFieldsByStep).map(Number)) {
+        const fields = requiredFieldsByStep[step] || [];
+        fields.forEach(field => {
+            const value = getValueByPath(formData, field);
+            if (value === undefined || value === null || (typeof value === 'string' && value.trim() === '')) {
+                allErrors[field] = 'Trường này là bắt buộc';
+                isAllValid = false;
+            }
+        });
+    }
+    
+    if (formData.taxCode && !/^\d{10}$|^\d{13}$/.test(formData.taxCode)) {
+        allErrors.taxCode = 'Mã số thuế phải có 10 hoặc 13 chữ số';
+        isAllValid = false;
+    }
+    const decimalValue = getValueByPath(formData, 'settings.accounting.decimal');
+    if (decimalValue !== undefined && (isNaN(parseInt(decimalValue)) || parseInt(decimalValue) < 0 || parseInt(decimalValue) > 4)) {
+        allErrors['settings.accounting.decimal'] = 'Số thập phân phải từ 0 đến 4';
+        isAllValid = false;
+    }
+
+    setErrors(allErrors);
+    if (!isAllValid) {
+        for (const step of Object.keys(requiredFieldsByStep).map(Number)) {
+            const hasErrorInStep = requiredFieldsByStep[step].some(field => allErrors[field]);
+            if (hasErrorInStep) {
+                setCurrentStep(step);
+                break;
+            }
+        }
+    }
+    return isAllValid;
   }
 
   const handleNext = () => {
-    if (validateStep(currentStep) && currentStep < steps.length - 1) {
-      setCompletedSteps((prev) => Array.from(new Set([...prev, currentStep + 1])))
-      setCurrentStep(currentStep + 1)
+    const fieldsToTouch = requiredFieldsByStep[currentStep] || [];
+    const newTouched = { ...touched };
+    fieldsToTouch.forEach(field => {
+      newTouched[field] = true;
+    });
+    setTouched(newTouched);
+
+    if (validateStep(currentStep)) {
+      if (currentStep < steps.length - 1) {
+        setCompletedSteps(prev => Array.from(new Set([...prev, currentStep + 1])));
+        setCurrentStep(currentStep + 1);
+      }
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentStep > 0) {
@@ -164,7 +216,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
         {/* Steps Navigation - Chuẩn hóa logic giống User/Customer */}
         <div className="border-b bg-gray-50 flex-shrink-0">
           <nav className="flex space-x-2 sm:space-x-8 px-4 sm:px-6 overflow-x-auto">
-            {steps.map((step, index) => {
+            {steps.map((step, index: number) => {
               const isClickable = completedSteps.includes(index) || index === currentStep
               return (
                 <button
@@ -218,12 +270,15 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                     <select
                       value={formData.companyType || ''}
                       onChange={e => setFormData({ ...formData, companyType: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={getInputClassName('companyType')}
                     >
                       <option value="">Chọn loại công ty</option>
                       <option value="company">Công ty</option>
                       <option value="individual">Cá nhân</option>
                     </select>
+                    {hasError('companyType') && (
+                      <p className="text-red-500 text-sm mt-1">{errors.companyType}</p>
+                    )}
                   </div>
 
                   {/* Company Name */}
@@ -235,9 +290,12 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       type="text"
                       value={formData.name || ''}
                       onChange={e => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={getInputClassName('name')}
                       placeholder="Nhập tên công ty"
                     />
+                    {hasError('name') && (
+                      <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                    )}
                   </div>
 
                   {/* Tax Code */}
@@ -249,12 +307,12 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       type="text"
                       value={formData.taxCode || ''}
                       onChange={e => setFormData({ ...formData, taxCode: e.target.value })}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${formData.taxCode && !validateTaxCode(formData.taxCode) ? 'border-red-300' : 'border-gray-300'}`}
+                      className={getInputClassName('taxCode')}
                       placeholder="Nhập mã số thuế"
                       maxLength={13}
                     />
-                    {formData.taxCode && !validateTaxCode(formData.taxCode) && (
-                      <p className="text-red-500 text-xs mt-1">Mã số thuế phải có 10 hoặc 13 chữ số</p>
+                    {hasError('taxCode') && (
+                      <p className="text-red-500 text-sm mt-1">{errors.taxCode}</p>
                     )}
                   </div>
 
@@ -267,9 +325,12 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       value={formData.address || ''}
                       onChange={e => setFormData({ ...formData, address: e.target.value })}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={getInputClassName('address')}
                       placeholder="Nhập địa chỉ công ty"
                     />
+                    {hasError('address') && (
+                      <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                    )}
                   </div>
 
                   {/* Province */}
@@ -280,13 +341,16 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                     <select
                       value={formData.province || ''}
                       onChange={e => setFormData({ ...formData, province: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={getInputClassName('province')}
                     >
                       <option value="">Chọn tỉnh/thành phố</option>
                       {PROVINCES.map(province => (
                         <option key={province} value={province}>{province}</option>
                       ))}
                     </select>
+                    {hasError('province') && (
+                      <p className="text-red-500 text-sm mt-1">{errors.province}</p>
+                    )}
                   </div>
 
                   {/* Tax Office Code */}
@@ -298,9 +362,12 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       type="text"
                       value={formData.taxOfficeCode || ''}
                       onChange={e => setFormData({ ...formData, taxOfficeCode: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={getInputClassName('taxOfficeCode')}
                       placeholder="Nhập mã cơ quan thuế"
                     />
+                    {hasError('taxOfficeCode') && (
+                      <p className="text-red-500 text-sm mt-1">{errors.taxOfficeCode}</p>
+                    )}
                   </div>
 
                   {/* Accounting Company */}
@@ -312,9 +379,12 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       type="text"
                       value={formData.accountingCompany || ''}
                       onChange={e => setFormData({ ...formData, accountingCompany: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={getInputClassName('accountingCompany')}
                       placeholder="Nhập tên công ty kế toán"
                     />
+                    {hasError('accountingCompany') && (
+                      <p className="text-red-500 text-sm mt-1">{errors.accountingCompany}</p>
+                    )}
                   </div>
 
                   {/* Accounting Period */}
@@ -325,7 +395,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                     <select
                       value={formData.accountingPeriod || ''}
                       onChange={e => setFormData({ ...formData, accountingPeriod: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className={getInputClassName('accountingPeriod')}
                     >
                       <option value="">Chọn kỳ kế toán</option>
                       <option value="2024">Năm 2024</option>
@@ -334,6 +404,9 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       <option value="2027">Năm 2027</option>
                       <option value="2028">Năm 2028</option>
                     </select>
+                    {hasError('accountingPeriod') && (
+                      <p className="text-red-500 text-sm mt-1">{errors.accountingPeriod}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -550,12 +623,15 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                               }
                             }
                           })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className={getInputClassName('settings.accounting.decision', "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent")}
                         >
                           <option value="">Chọn quyết định/thông tư</option>
                           <option value="c200">Quyết định 48/2006/QĐ-BTC (C200)</option>
                           <option value="c133">Thông tư 133/2016/TT-BTC (C133)</option>
                         </select>
+                        {hasError('settings.accounting.decision') && (
+                          <p className="text-red-500 text-sm mt-1">{errors['settings.accounting.decision']}</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -579,7 +655,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                             }
                           }
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className={getInputClassName('settings.accounting.pricing', "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent")}
                       >
                         <option value="">Chọn phương pháp tính giá</option>
                         {PRICING_METHODS.map(method => (
@@ -588,6 +664,9 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           </option>
                         ))}
                       </select>
+                      {hasError('settings.accounting.pricing') && (
+                        <p className="text-red-500 text-sm mt-1">{errors['settings.accounting.pricing']}</p>
+                      )}
                     </div>
 
                     {/* Tax Method */}
@@ -607,7 +686,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                             }
                           }
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className={getInputClassName('settings.accounting.tax', "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent")}
                       >
                         <option value="">Chọn phương pháp tính thuế</option>
                         {TAX_METHODS.map(method => (
@@ -616,6 +695,9 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           </option>
                         ))}
                       </select>
+                      {hasError('settings.accounting.tax') && (
+                        <p className="text-red-500 text-sm mt-1">{errors['settings.accounting.tax']}</p>
+                      )}
                     </div>
 
                     {/* Closing Method - radio */}
@@ -623,7 +705,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Phương pháp khóa sổ <span className="text-red-500">*</span>
                       </label>
-                      <div className="flex gap-6 border border-gray-300 rounded px-3 py-2">
+                      <div className={getRadioContainerClassName('settings.accounting.lockMethod')}>
                         <label className="flex items-center gap-2">
                           <input
                             type="radio"
@@ -665,6 +747,9 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           Trình tự
                         </label>
                       </div>
+                      {hasError('settings.accounting.lockMethod') && (
+                        <p className="text-red-500 text-sm mt-1">{errors['settings.accounting.lockMethod']}</p>
+                      )}
                     </div>
 
                     {/* Decimal Places - input number thay vì select */}
@@ -676,20 +761,23 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                         type="number"
                         min="0"
                         max="4"
-                        value={formData.settings?.accounting?.decimal || 2}
+                        value={formData.settings?.accounting?.decimal ?? ''}
                         onChange={e => setFormData({
                           ...formData,
                           settings: {
                             ...formData.settings!,
                             accounting: {
                               ...formData.settings?.accounting,
-                              decimal: parseInt(e.target.value)
+                              decimal: e.target.value === '' ? undefined : parseInt(e.target.value)
                             }
                           }
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className={getInputClassName('settings.accounting.decimal', "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent")}
                         placeholder="Nhập số thập phân (0-4)"
                       />
+                      {hasError('settings.accounting.decimal') && (
+                        <p className="text-red-500 text-sm mt-1">{errors['settings.accounting.decimal']}</p>
+                      )}
                     </div>
                   </div>
 
@@ -957,7 +1045,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <div className="space-y-3">
                   {formData.securityQuestions && formData.securityQuestions.length > 0 ? (
                     formData.securityQuestions.map((question: any, index: number) => (
-                      <div key={index} className="bg-white p-3 rounded-lg border border-gray-200">
+                      <div key={index as number} className="bg-white p-3 rounded-lg border border-gray-200">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <p className="font-medium text-gray-900">{question.question}</p>
@@ -1623,36 +1711,8 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
               {currentStep < steps.length - 1 ? (
                 <button
                   type="button"
-                  onClick={() => {
-                    if (validateStep(currentStep)) {
-                      handleNext();
-                    } else {
-                      // Đánh dấu touched các trường bắt buộc của step hiện tại để show lỗi
-                      if (!touched) return;
-                      const stepFields = [
-                        // Step 0: Thông tin công ty
-                        ["companyType", "name", "taxCode", "address", "province", "taxOfficeCode", "accountingCompany", "accountingPeriod"],
-                        // Step 1: Thiết lập kế toán
-                        ["settings.accounting.decision", "settings.accounting.pricing", "settings.accounting.tax", "settings.accounting.lockMethod"],
-                        // Step 2: Ngân hàng (không bắt buộc)
-                        [],
-                        // Step 3: Chữ ký (không bắt buộc)
-                        [],
-                        // Step 4: Hóa đơn (không bắt buộc)
-                        []
-                      ];
-                      const fields = stepFields[currentStep] || [];
-                      const newTouched = { ...touched };
-                      fields.forEach((field) => {
-                        newTouched[field] = true;
-                      });
-                      setTouched(newTouched);
-                      // Có thể setErrors nếu muốn show lỗi rõ hơn
-                    }
-                  }}
-                  className={`inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                    'bg-blue-600 text-white hover:bg-blue-700'
-                  }`}
+                  onClick={handleNext}
+                  className="inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Tiếp tục
                   <ChevronRight className="w-4 h-4 ml-2" />
@@ -1661,15 +1721,11 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <button
                   type="button"
                   onClick={handleSave}
-                  disabled={!validateForm() || isSubmitting}
-                  className={`inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                    validateForm() && !isSubmitting
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
+                  disabled={isSubmitting}
+                  className="inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
                   <Check className="h-4 w-4 mr-2" />
-                  {mode === 'edit' ? 'Cập nhật' : 'Thêm mới'}
+                  {isSubmitting ? 'Đang lưu...' : (mode === 'edit' ? 'Cập nhật' : 'Thêm mới')}
                 </button>
               )}
             </div>

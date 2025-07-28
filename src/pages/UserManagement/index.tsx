@@ -55,11 +55,9 @@ export default function UserManagementPage() {
   // Filter data based on user type
   const applyFilters = useCallback((users: User[], typeFilter: string) => {
     let filtered = users
-    
     if (typeFilter) {
       filtered = filtered.filter(user => user.permission === typeFilter)
     }
-    
     return filtered
   }, [])
 
