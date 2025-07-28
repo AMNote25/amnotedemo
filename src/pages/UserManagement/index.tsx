@@ -150,7 +150,7 @@ export default function UserManagementPage() {
       onDelete={handleDelete}
       onRefresh={handleRefresh}
       onExport={handleExport}
-      searchFields={["userId", "name", "costCenterCode", "phone", "notes"]}
+      searchFields={["userId", "name", "costCenterCode", "phone", "issueDate", "notes"]}
       enableTreeView={false}
       companyInfo={{
         name: "Công ty TNHH ABC Technology",
