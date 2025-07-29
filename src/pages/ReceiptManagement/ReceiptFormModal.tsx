@@ -318,66 +318,49 @@ export default function ReceiptFormModal({
           </div>
           {/* Footer */}
           <div className="flex items-center justify-end space-x-4 p-6 border-t border-gray-200 bg-white flex-shrink-0">
-            {/* Hủy */}
-            <div className="relative group">
-              <button
-                type="button"
-                onClick={handleClose}
-                disabled={isSubmitting}
-                className="p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                Hủy
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={handleClose}
+              disabled={isSubmitting}
+              className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            >
+              <X className="w-4 h-4" />
+              <span className="hidden sm:block">Hủy</span>
+            </button>
             {/* Quay lại */}
             {activeTab > 0 && (
-              <div className="relative group">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  className="p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-                  disabled={isSubmitting}
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                  Quay lại
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={handlePrev}
+                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                disabled={isSubmitting}
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span className="hidden sm:block">Quay lại</span>
+              </button>
             )}
             {/* Tiếp theo */}
             {activeTab < tabConfigs.length - 1 && (
-              <div className="relative group">
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  disabled={isSubmitting}
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                  Tiếp theo
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={handleNext}
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                disabled={isSubmitting}
+              >
+                <ChevronRight className="w-4 h-4" />
+                <span className="hidden sm:block">Tiếp tục</span>
+              </button>
             )}
             {/* Lưu */}
             {activeTab === tabConfigs.length - 1 && (
-              <div className="relative group">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Save className="w-5 h-5" />
-                </button>
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                  Lưu
-                </div>
-              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Save className="w-4 h-4" />
+                <span className="hidden sm:block">Lưu</span>
+              </button>
             )}
           </div>
         </form>

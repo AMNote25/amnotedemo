@@ -139,26 +139,29 @@ export default function InvoiceImportModal({
               <button
                 type="button"
                 onClick={handlePrev}
-                className="p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50"
+                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-4 h-4" />
+                <span className="hidden sm:block">Quay lại</span>
               </button>
             )}
             {activeTab < tabConfigs.length - 1 && (
               <button
                 type="button"
                 onClick={handleNext}
-                className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-4 h-4" />
+                <span className="hidden sm:block">Tiếp theo</span>
               </button>
             )}
             {activeTab === tabConfigs.length - 1 && (
               <button
                 type="submit"
-                className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
               >
-                <Save className="w-5 h-5" />
+                <Save className="w-4 h-4" />
+                <span className="hidden sm:block">Lưu</span>
               </button>
             )}
           </div>
