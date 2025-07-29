@@ -17,6 +17,7 @@ import SummaryPage from "./pages/Summary";
 import UserManagementPage from "./pages/UserManagement";
 import CompanyManagementPage from "./pages/CompanyManagement";
 import CompanyManagement from "./pages/Company";
+import ReceiptManagementPage from "./pages/ReceiptManagement";
 
 
 function findMenuTitleById(menuId: string) {
@@ -221,7 +222,7 @@ function AppContent() {
             
             {/* Add routes for the submenus under 'summary' */}
             <Route path="/documents" element={<ModuleContent moduleId="documents" />} />
-            <Route path="/receipt" element={<ModuleContent moduleId="receipt" />} />
+            <Route path="/receipt" element={<ReceiptManagementPage />} />
             <Route path="/payment" element={<ModuleContent moduleId="payment" />} />
             <Route path="/debt-note" element={<ModuleContent moduleId="debt-note" />} />
             <Route path="/credit-note" element={<ModuleContent moduleId="credit-note" />} />

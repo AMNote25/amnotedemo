@@ -20,6 +20,7 @@ import type { FormConfig, DeleteConfig } from "@/types/form"
 export interface TablePagePropsWithConfigs<T extends BaseTableItem> extends TablePageProps<T> {
   FormModalComponent?: React.ComponentType<any>
   customToolbar?: (props: any) => React.ReactNode
+  customHeaderActions?: React.ReactNode // Cho phép truyền thêm icon/nút action vào header
 }
 
 export function TablePage<T extends BaseTableItem>({
@@ -46,6 +47,7 @@ export function TablePage<T extends BaseTableItem>({
   onDelete,
   FormModalComponent,
   customToolbar,
+  customHeaderActions,
 }: TablePagePropsWithConfigs<T>) {
   const localStorageKey = `${title.replace(/\s+/g, "")}TableColumnConfigs`
 
@@ -351,11 +353,13 @@ export function TablePage<T extends BaseTableItem>({
           )}
         </div>
         <div className="flex items-center space-x-3 mt-4 sm:mt-0">
+          {/* Cho phép truyền thêm icon/nút action tuỳ biến từ page ngoài */}
+          {customHeaderActions}
           {onPrint && (
             <div className="relative group">
               <button
                 onClick={() => handlePrintInternal("vi")}
-                className="inline-flex items-center justify-center bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-200"
+                className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
                 aria-label="In ấn"
               >
                 <Icons.Printer size={16} />
@@ -370,7 +374,7 @@ export function TablePage<T extends BaseTableItem>({
             <div className="relative group">
               <button
                 onClick={() => setIsExcelModalOpen(true)}
-                className="inline-flex items-center justify-center bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700"
+                className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
                 aria-label="Nhập Excel"
               >
                 <Icons.Upload size={16} />
@@ -385,7 +389,7 @@ export function TablePage<T extends BaseTableItem>({
             <div className="relative group">
               <button
                 onClick={handleAddClick}
-                className="inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+                className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
                 aria-label="Thêm mới"
               >
                 <Icons.Plus size={16} />

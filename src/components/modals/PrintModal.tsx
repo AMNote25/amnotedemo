@@ -694,32 +694,34 @@ export default function PrintModal({ isOpen, onClose, data, config, companyInfo 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">Chọn ngôn ngữ in</label>
               <div className="grid grid-cols-1 gap-3">
-                {languages.map((language) => (
-                  <button
-                    key={language.code}
-                    onClick={() => handleLanguageChange(language)}
-                    className={`flex items-center space-x-3 p-4 border-2 rounded-lg transition-all ${
-                      selectedLanguage.code === language.code
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-200 hover:border-gray-300"
-                    }`}
-                  >
-                    <span className="text-2xl">{language.flag}</span>
-                    <div className="flex-1 text-left">
-                      <div className="font-medium text-gray-900">{language.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {language.code === "vi" && "Báo cáo bằng tiếng Việt"}
-                        {language.code === "en" && "Report in English"}
-                        {language.code === "ko" && "한국어 보고서"}
+                <div className="flex flex-col sm:flex-row gap-3 w-full">
+                  {languages.map((language) => (
+                    <button
+                      key={language.code}
+                      onClick={() => handleLanguageChange(language)}
+                      className={`flex-1 flex items-center space-x-3 p-4 border-2 rounded-lg transition-all justify-center sm:justify-start ${
+                        selectedLanguage.code === language.code
+                          ? "border-blue-500 bg-blue-50"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                    >
+                      <span className="text-2xl">{language.flag}</span>
+                      <div className="flex-1 text-left">
+                        <div className="font-medium text-gray-900">{language.name}</div>
+                        <div className="text-sm text-gray-500">
+                          {language.code === "vi" && "Báo cáo bằng tiếng Việt"}
+                          {language.code === "en" && "Report in English"}
+                          {language.code === "ko" && "한국어 보고서"}
+                        </div>
                       </div>
-                    </div>
-                    {selectedLanguage.code === language.code && (
-                      <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                      </div>
-                    )}
-                  </button>
-                ))}
+                      {selectedLanguage.code === language.code && (
+                        <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -792,7 +794,7 @@ export default function PrintModal({ isOpen, onClose, data, config, companyInfo 
             <div className="flex items-center space-x-3">
               <button
                 onClick={handlePreviewModeToggle}
-                className="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-600 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-colors"
               >
                 <FileText size={16} />
                 <span className="hidden sm:block">Xem trước</span>
@@ -800,7 +802,7 @@ export default function PrintModal({ isOpen, onClose, data, config, companyInfo 
 
               <button
                 onClick={handleDownloadPDF}
-                className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-600 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-colors"
               >
                 <Download size={16} />
                 <span className="hidden sm:block">Tải PDF</span>
@@ -808,7 +810,7 @@ export default function PrintModal({ isOpen, onClose, data, config, companyInfo 
 
               <button
                 onClick={handlePrintAll}
-                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-600 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-colors"
               >
                 <Printer size={16} />
                 <span className="hidden sm:block">In ngay</span>

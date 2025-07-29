@@ -26,7 +26,7 @@ interface DataTableProps<T extends BaseTableItem> {
   renderCustomCell?: (item: T, column: ColumnConfig, depth: number) => React.ReactNode
   onSort?: (field: string) => void
   sortConfig?: { field: string; order: "asc" | "desc" }
-  renderCustomCell?: (item: T, column: ColumnConfig, depth: number) => React.ReactNode
+
 }
 
 export function DataTable<T extends BaseTableItem>({
@@ -253,7 +253,7 @@ export function DataTable<T extends BaseTableItem>({
                         <div className="relative">
                           <button
                             onClick={() => onEdit(item)}
-                            className="peer p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            className="peer p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           >
                             <Icons.Edit size={16} />
                           </button>

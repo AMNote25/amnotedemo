@@ -27,3 +27,4 @@ Các input khi hover là border màu xanh dương, khi lỗi là border màu đ�
 - ** Hãy trình bày theo cách khiến tôi có thể hiểu được logic của bạn. Nếu bạn không thể giải thích rõ ràng, hãy xem lại code của mình.**
 - ** Các button thì luôn để chỉ icon, không có chữ. Khi hover sẽ hiện tooltip chữ.**
 - ** Ở popup form các button bên dưới footer chỉ để icon, không có chữ. Khi hover sẽ hiện tooltip chữ.**
+- ** Style button chung là: Nền trắng, border #ccc, màu chữ #666,  hover:bg-blue-600 và border cùng màu bg chữ trắng. **
