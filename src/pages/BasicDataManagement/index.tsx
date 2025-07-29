@@ -164,7 +164,7 @@ export default function BasicDataManagement() {
       {/* Header Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
         <div className="flex items-center space-x-4 mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
             <Database className="text-white" size={32} />
           </div>
           <div>
@@ -223,8 +223,8 @@ export default function BasicDataManagement() {
             onClick={() => handleMenuClick(item.slug)}
             className="group bg-white rounded-xl shadow-sm border border-gray-200 p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-gray-300"
           >
-            {/* Icon with gradient background */}
-            <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+            {/* Icon with unified gradient background */}
+            <div className="w-16 h-16 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
               <div className="text-white">
                 {item.icon}
               </div>
@@ -232,7 +232,7 @@ export default function BasicDataManagement() {
             
             {/* Content */}
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-red-600 transition-colors duration-300">
                 {item.title}
               </h3>
               <p className="text-sm text-gray-600 leading-relaxed">
