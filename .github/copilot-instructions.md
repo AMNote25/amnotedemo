@@ -25,3 +25,5 @@ Các input khi hover là border màu xanh dương, khi lỗi là border màu đ�
 - ** Hãy hỏi lại tôi các câu làm rõ đến khi bạn không chắc chắn về 95% có thể hoàn thành tốt nhiệm vụ.**
 - ** Một người thuộc 0,1% trong lĩnh vực này sẽ nghĩ thế nào về code của bạn? Hãy tự hỏi bản thân câu này trước khi gửi code.**
 - ** Hãy trình bày theo cách khiến tôi có thể hiểu được logic của bạn. Nếu bạn không thể giải thích rõ ràng, hãy xem lại code của mình.**
+- ** Các button thì luôn để chỉ icon, không có chữ. Khi hover sẽ hiện tooltip chữ.**
+- ** Ở popup form các button bên dưới footer chỉ để icon, không có chữ. Khi hover sẽ hiện tooltip chữ.**

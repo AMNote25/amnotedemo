@@ -169,14 +169,18 @@ const FirmbankingTab: React.FC = () => {
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-gray-800">Quản lý tài khoản ngân hàng</h3>
-              <button
-                type="button"
-                onClick={() => setShowAccountForm(true)}
-                className="inline-flex items-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200"
-              >
-                <Plus className="w-4 h-4 mr-1" />
-                Thêm tài khoản
-              </button>
+              <div className="relative group">
+                <button
+                  type="button"
+                  onClick={() => setShowAccountForm(true)}
+                  className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <Plus className="w-5 h-5" />
+                </button>
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                  Thêm tài khoản
+                </div>
+              </div>
             </div>
 
             {/* Bank Accounts List */}
@@ -356,14 +360,18 @@ const FirmbankingTab: React.FC = () => {
                 <Shield className="w-5 h-5 mr-2 text-red-600" />
                 Câu hỏi bảo mật
               </h3>
-              <button
-                type="button"
-                onClick={() => setShowQuestionForm(true)}
-                className="inline-flex items-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200"
-              >
-                <Plus className="w-4 h-4 mr-1" />
-                Thêm câu hỏi
-              </button>
+              <div className="relative group">
+                <button
+                  type="button"
+                  onClick={() => setShowQuestionForm(true)}
+                  className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <Plus className="w-5 h-5" />
+                </button>
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                  Thêm câu hỏi
+                </div>
+              </div>
             </div>
 
             {/* Security Questions List */}

@@ -33,11 +33,11 @@ const TAX_METHODS = [
 
 // Khai báo các bước (steps) cho form, mỗi bước có id, title, icon
 const steps = [
-  { id: 0, title: 'Thông tin công ty', icon: AlertCircle },
-  { id: 1, title: 'Thiết lập kế toán', icon: AlertCircle },
-  { id: 2, title: 'Ngân hàng', icon: AlertCircle },
-  { id: 3, title: 'Bảo mật', icon: AlertCircle },
-  { id: 4, title: 'Hoàn tất', icon: AlertCircle },
+  { id: 0, title: 'Thông tin công ty', icon: Building2 },
+  { id: 1, title: 'Thiết lập dữ liệu kế toán', icon: Settings },
+  { id: 2, title: 'Cài đặt Firmbanking', icon: CreditCard },
+  { id: 3, title: 'Cài đặt chữ ký', icon: FileSignature },
+  { id: 4, title: 'Cài đặt hóa đơn', icon: Receipt },
 ];
 
 export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialData = {}, mode }: CompanyFormModalProps) {
@@ -1688,45 +1688,62 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {currentStep > 0 && (
-                <button
-                  type="button"
-                  onClick={handlePrevious}
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  <ChevronLeft className="w-4 h-4 mr-2" />
-                  Quay lại
-                </button>
+                <div className="relative group">
+                  <button
+                    type="button"
+                    onClick={handlePrevious}
+                    className="p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                    Quay lại
+                  </div>
+                </div>
               )}
             </div>
 
             <div className="flex items-center space-x-3">
-              <button
-                type="button"
-                onClick={closeModal}
-                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Hủy
-              </button>
+              <div className="relative group">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                  Hủy
+                </div>
+              </div>
 
               {currentStep < steps.length - 1 ? (
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Tiếp tục
-                  <ChevronRight className="w-4 h-4 ml-2" />
-                </button>
+                <div className="relative group">
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                    Tiếp tục
+                  </div>
+                </div>
               ) : (
-                <button
-                  type="button"
-                  onClick={handleSave}
-                  disabled={isSubmitting}
-                  className="inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
-                >
-                  <Check className="h-4 w-4 mr-2" />
-                  {isSubmitting ? 'Đang lưu...' : (mode === 'edit' ? 'Cập nhật' : 'Thêm mới')}
-                </button>
+                <div className="relative group">
+                  <button
+                    type="button"
+                    onClick={handleSave}
+                    disabled={isSubmitting}
+                    className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? <Check className="h-5 w-5 animate-spin" /> : <Check className="h-5 w-5" />}
+                  </button>
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                    {isSubmitting ? 'Đang lưu...' : (mode === 'edit' ? 'Cập nhật' : 'Thêm mới')}
+                  </div>
+                </div>
               )}
             </div>
           </div>

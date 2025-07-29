@@ -352,31 +352,48 @@ export function TablePage<T extends BaseTableItem>({
         </div>
         <div className="flex items-center space-x-3 mt-4 sm:mt-0">
           {onPrint && (
-            <button
-              onClick={() => handlePrintInternal("vi")}
-              className="inline-flex items-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-200"
-            >
-              <Icons.Printer size={16} /> <span className="hidden sm:block">In ấn</span>
-            </button>
+            <div className="relative group">
+              <button
+                onClick={() => handlePrintInternal("vi")}
+                className="inline-flex items-center justify-center bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-200"
+                aria-label="In ấn"
+              >
+                <Icons.Printer size={16} />
+              </button>
+              <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+                In ấn
+              </div>
+            </div>
           )}
 
           {onImport && excelImportConfig && (
-            <button
-              onClick={() => setIsExcelModalOpen(true)}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 hover:bg-green-700"
-            >
-              <Icons.Upload size={16} /> <span className="hidden sm:block">Nhập Excel</span>
-              {/* Nút nhập Excel được kích hoạt thông qua prop excelImportConfig */}
-            </button>
+            <div className="relative group">
+              <button
+                onClick={() => setIsExcelModalOpen(true)}
+                className="inline-flex items-center justify-center bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700"
+                aria-label="Nhập Excel"
+              >
+                <Icons.Upload size={16} />
+              </button>
+              <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+                Nhập Excel
+              </div>
+            </div>
           )}
 
           {FormModalComponent && (
-            <button
-              onClick={handleAddClick}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 hover:bg-blue-700"
-            >
-              <Icons.Plus size={16} /> <span className="hidden sm:block">Thêm mới</span>
-            </button>
+            <div className="relative group">
+              <button
+                onClick={handleAddClick}
+                className="inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+                aria-label="Thêm mới"
+              >
+                <Icons.Plus size={16} />
+              </button>
+              <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+                Thêm mới
+              </div>
+            </div>
           )}
         </div>
       </div>
