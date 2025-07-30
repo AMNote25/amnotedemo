@@ -1692,13 +1692,11 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   <button
                     type="button"
                     onClick={handlePrevious}
-                    className="p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="flex items-center gap-2 p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     <ChevronLeft className="w-5 h-5" />
+                    <span className="hidden sm:inline">Quay lại</span>
                   </button>
-                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                    Quay lại
-                  </div>
                 </div>
               )}
             </div>
@@ -1708,13 +1706,11 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="flex items-center gap-2 p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   <X className="w-5 h-5" />
+                  <span className="hidden sm:inline">Hủy</span>
                 </button>
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                  Hủy
-                </div>
               </div>
 
               {currentStep < steps.length - 1 ? (
@@ -1722,13 +1718,11 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="flex items-center gap-2 p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     <ChevronRight className="w-5 h-5" />
+                    <span className="hidden sm:inline">Tiếp tục</span>
                   </button>
-                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                    Tiếp tục
-                  </div>
                 </div>
               ) : (
                 <div className="relative group">
@@ -1736,13 +1730,11 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                     type="button"
                     onClick={handleSave}
                     disabled={isSubmitting}
-                    className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? <Check className="h-5 w-5 animate-spin" /> : <Check className="h-5 w-5" />}
+                    <span className="hidden sm:inline">{isSubmitting ? 'Đang lưu...' : (mode === 'edit' ? 'Cập nhật' : 'Thêm mới')}</span>
                   </button>
-                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                    {isSubmitting ? 'Đang lưu...' : (mode === 'edit' ? 'Cập nhật' : 'Thêm mới')}
-                  </div>
                 </div>
               )}
             </div>

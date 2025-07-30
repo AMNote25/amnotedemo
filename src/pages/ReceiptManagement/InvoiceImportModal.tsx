@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { X, ChevronLeft, ChevronRight, Save } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { X, Save, ChevronLeft, ChevronRight, FileText, User, Building } from "lucide-react";
 
 interface InvoiceImportModalProps {
   isOpen: boolean;
@@ -16,6 +16,9 @@ export default function InvoiceImportModal({
 }: InvoiceImportModalProps) {
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [activeTab, setActiveTab] = useState(0);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [completedSteps, setCompletedSteps] = useState<number[]>([0]);
 
   useEffect(() => {
     if (isOpen) {
@@ -27,6 +30,7 @@ export default function InvoiceImportModal({
   const tabConfigs = [
     {
       label: "Thông tin bên bán",
+      icon: Building,
       fields: [
         { id: "sellerCompanyName", label: "Tên công ty", required: true },
         { id: "sellerAddress", label: "Địa chỉ", required: true },
@@ -36,6 +40,7 @@ export default function InvoiceImportModal({
     },
     {
       label: "Thông tin bên mua",
+      icon: User,
       fields: [
         { id: "buyerCustomerCode", label: "Mã số khách hàng", required: true },
         { id: "buyerCompanyName", label: "Tên công ty", required: true },
@@ -46,6 +51,7 @@ export default function InvoiceImportModal({
     },
     {
       label: "Thông tin hóa đơn",
+      icon: FileText,
       fields: [
         { id: "invoiceTemplate", label: "Mẫu hóa đơn", required: true },
         { id: "invoiceSymbol", label: "Ký hiệu hóa đơn", required: true },
@@ -62,8 +68,51 @@ export default function InvoiceImportModal({
     setFormData((prev: Record<string, any>) => ({ ...prev, [fieldName]: value }));
   }, []);
 
+  // Validate các trường bắt buộc của tab hiện tại
+  const validateCurrentTab = () => {
+    const currentFields = tabConfigs[activeTab].fields;
+    let valid = true;
+    const newTouched: Record<string, boolean> = { ...touched };
+    const newErrors: Record<string, string> = { ...errors };
+    currentFields.forEach(field => {
+      if (field.required && !formData[field.id]?.trim()) {
+        valid = false;
+        newTouched[field.id] = true;
+        newErrors[field.id] = 'Trường này là bắt buộc';
+      } else {
+        newErrors[field.id] = '';
+      }
+    });
+    setTouched(newTouched);
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const validateAll = () => {
+    let valid = true;
+    const newTouched: Record<string, boolean> = { ...touched };
+    const newErrors: Record<string, string> = { ...errors };
+    tabConfigs.forEach(tab => {
+      tab.fields.forEach(field => {
+        if (field.required && !formData[field.id]?.trim()) {
+          valid = false;
+          newTouched[field.id] = true;
+          newErrors[field.id] = 'Trường này là bắt buộc';
+        } else {
+          newErrors[field.id] = '';
+        }
+      });
+    });
+    setTouched(newTouched);
+    setErrors(newErrors);
+    return valid;
+  };
+
   const handleNext = () => {
-    setActiveTab((prev) => prev + 1);
+    if (validateCurrentTab()) {
+      setCompletedSteps(prev => Array.from(new Set([...prev, activeTab + 1])));
+      setActiveTab(prev => prev + 1);
+    }
   };
 
   const handlePrev = () => {
@@ -72,6 +121,7 @@ export default function InvoiceImportModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateAll()) return;
     await onSubmit(formData);
     onClose();
   };
@@ -95,20 +145,30 @@ export default function InvoiceImportModal({
         {/* Tabs */}
         <div className="border-b border-gray-200 bg-gray-50 flex-shrink-0">
           <nav className="flex space-x-2 px-4 overflow-x-auto">
-            {tabConfigs.map((tab, idx) => (
-              <button
-                key={tab.label}
-                type="button"
-                onClick={() => setActiveTab(idx)}
-                className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
-                  activeTab === idx
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+            {tabConfigs.map((tab, idx) => {
+              const Icon = tab.icon;
+              const hasError = tab.fields.some(field => errors[field.id]);
+              // Chỉ cho click vào step đã hoàn thành hoặc step hiện tại
+              const isClickable = idx === activeTab || completedSteps.includes(idx);
+              return (
+                <button
+                  key={tab.label}
+                  type="button"
+                  onClick={() => isClickable && setActiveTab(idx)}
+                  className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors flex items-center ${
+                    activeTab === idx
+                      ? "border-blue-500 text-blue-600"
+                      : hasError
+                        ? "border-red-500 text-red-500"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  } ${!isClickable ? "cursor-not-allowed opacity-60" : ""}`}
+                  disabled={!isClickable}
+                >
+                  <Icon className="inline h-4 w-4 mr-2" />
+                  {tab.label}
+                </button>
+              );
+            })}
           </nav>
         </div>
 
@@ -120,14 +180,23 @@ export default function InvoiceImportModal({
                 <div key={field.id} className="flex flex-col">
                   <label htmlFor={field.id} className="font-medium text-gray-700 mb-1">
                     {field.label}
+                    {field.required && <span className="text-red-500 ml-1">*</span>}
                   </label>
                   <input
                     id={field.id}
                     type="text"
                     value={formData[field.id] || ""}
                     onChange={(e) => handleFieldChange(field.id, e.target.value)}
-                    className="border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300"
+                    onBlur={() => setTouched(prev => ({ ...prev, [field.id]: true }))}
+                    className={`border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 ${
+                      (field.required && touched[field.id] && !formData[field.id]?.trim())
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
                   />
+                  {field.required && touched[field.id] && !formData[field.id]?.trim() && (
+                    <span className="text-red-500 text-xs mt-1">Trường này là bắt buộc</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -139,29 +208,29 @@ export default function InvoiceImportModal({
               <button
                 type="button"
                 onClick={handlePrev}
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50"
+                className="p-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 flex items-center space-x-2"
               >
-                <ChevronLeft className="w-4 h-4" />
-                <span className="hidden sm:block">Quay lại</span>
+                <ChevronLeft className="w-5 h-5" />
+                <span className="hidden sm:inline">Quay lại</span>
               </button>
             )}
             {activeTab < tabConfigs.length - 1 && (
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 flex items-center space-x-2"
               >
-                <ChevronRight className="w-4 h-4" />
-                <span className="hidden sm:block">Tiếp theo</span>
+                <span className="hidden sm:inline">Tiếp theo</span>
+                <ChevronRight className="w-5 h-5" />
               </button>
             )}
             {activeTab === tabConfigs.length - 1 && (
               <button
                 type="submit"
-                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                className="p-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 flex items-center space-x-2"
               >
-                <Save className="w-4 h-4" />
-                <span className="hidden sm:block">Lưu</span>
+                <Save className="w-5 h-5" />
+                <span className="hidden sm:inline">Lưu</span>
               </button>
             )}
           </div>

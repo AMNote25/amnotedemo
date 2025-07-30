@@ -84,7 +84,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             {/* Header */}
             <div className="bg-gradient-to-r from-red-600 to-red-700 px-8 py-6 text-center">
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-red-600">A</span>
+                <span className="text-2xl font-bold text-red-600">AM</span>
               </div>
               <h1 className="text-2xl font-bold text-white">AMnote</h1>
               <p className="text-red-100 text-sm mt-1">Phần mềm kế toán chuyên nghiệp</p>
@@ -173,7 +173,6 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                   onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
                   className="flex items-center space-x-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg px-3 py-2 transition-all"
                 >
-                  <span className="text-lg">{selectedLanguage.flag}</span>
                   <span className="text-white text-sm font-medium">{selectedLanguage.code.toUpperCase()}</span>
                   <Globe size={14} className="text-white" />
                 </button>
@@ -195,7 +194,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                               : 'text-gray-700'
                           }`}
                         >
-                          <span className="text-lg">{language.flag}</span>
+                          {/* <span className="text-lg">{language.flag}</span> */}
                           <span className="flex-1 text-left">{language.name}</span>
                           {selectedLanguage.code === language.code && (
                             <div className="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -209,10 +208,8 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             </div>
 
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl font-bold text-red-600">A</span>
+              <span className=" font-bold text-red-600">AMnote</span>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">AMnote</h1>
-            <p className="text-red-100">Phần mềm kế toán chuyên nghiệp</p>
           </div>
 
           {/* Login Form */}
@@ -222,16 +219,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               <p className="text-gray-600">Vui lòng nhập thông tin để truy cập hệ thống</p>
             </div>
 
-            {/* Demo Credentials Info */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <div className="flex items-start space-x-2">
-                <AlertCircle size={16} className="text-blue-600 mt-0.5 flex-shrink-0" />
-                <div className="text-sm">
-                  <p className="font-medium text-blue-900 mb-1">Nhấn "Đăng nhập" để vào dashboard</p>
-                  <p className="text-blue-700">Không cần nhập thông tin đăng nhập</p>
-                </div>
-              </div>
-            </div>
+           
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Company Tax Code */}

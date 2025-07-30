@@ -26,9 +26,13 @@ export function ReceiptTableToolbar({
 }: ReceiptTableToolbarProps) {
   const handleRefresh = async () => {
     if (onRefresh) {
-      await onRefresh()
+      await onRefresh();
     }
-  }
+  };
+
+  const handleImportXml = () => {
+    alert("Xin chào");
+  };
 
   return (
     <div className="block sm:flex items-center justify-between p-6">
@@ -39,14 +43,14 @@ export function ReceiptTableToolbar({
           <input
             type="date"
             value={startDate}
-            onChange={e => onStartDateChange(e.target.value)}
+            onChange={(e) => onStartDateChange(e.target.value)}
             className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
           />
           <span className="text-gray-500">~</span>
           <input
             type="date"
             value={endDate}
-            onChange={e => onEndDateChange(e.target.value)}
+            onChange={(e) => onEndDateChange(e.target.value)}
             className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
           />
         </div>

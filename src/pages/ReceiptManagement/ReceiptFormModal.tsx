@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useCallback, useEffect } from "react"
@@ -244,7 +243,7 @@ export default function ReceiptFormModal({
                   key={tab.label}
                   type="button"
                   onClick={() => isClickable && setActiveTab(idx)}
-                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors ${
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors flex items-center ${
                     activeTab === idx
                       ? 'border-blue-500 text-blue-600'
                       : isClickable
@@ -254,7 +253,7 @@ export default function ReceiptFormModal({
                   disabled={!isClickable}
                 >
                   <Icon className="inline h-4 w-4 mr-1 sm:mr-2" />
-                  {tab.label}
+                  <span>{tab.label}</span>
                 </button>
               )
             })}

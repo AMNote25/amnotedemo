@@ -528,7 +528,7 @@ export default function Sidebar({
         >
           <div className="p-3 border-b border-gray-200 flex-shrink-0">
             <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">A</span>
+              <span className="text-white font-bold text-sm">AM</span>
             </div>
           </div>
           <nav className="flex-1 overflow-y-auto p-2">
@@ -582,7 +582,7 @@ export default function Sidebar({
             <div className="p-4 border-b border-gray-200 flex-shrink-0">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">A</span>
+                  <span className="text-white font-bold text-sm">AM</span>
                 </div>
                 <div>
                   <h1 className="text-lg font-bold text-gray-900">AMnote</h1>
@@ -670,7 +670,7 @@ export default function Sidebar({
       <div className="p-4 border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">A</span>
+            <span className="text-white font-bold text-sm">AM</span>
           </div>
           <div>
             <h1 className="text-lg font-bold text-gray-900">AMnote</h1>
