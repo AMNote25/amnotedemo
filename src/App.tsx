@@ -176,7 +176,7 @@ function AppContent() {
         
         <main className="flex-1 overflow-auto p-6">
           <Routes>
-            <Route path="/" element={<UserManagementPage />} />
+            <Route path="/" element={<DashboardOverview />} />
             <Route path="/dashboard" element={<Navigate to="/" replace />} />
             <Route path="/cost-center" element={<CostObjectPage />} />
 
