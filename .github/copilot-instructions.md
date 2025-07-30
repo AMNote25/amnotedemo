@@ -26,3 +26,10 @@ Các input khi hover là border màu xanh dương, khi lỗi là border màu đ�
 - ** Một người thuộc 0,1% trong lĩnh vực này sẽ nghĩ thế nào về code của bạn? Hãy tự hỏi bản thân câu này trước khi gửi code.**
 - ** Hãy trình bày theo cách khiến tôi có thể hiểu được logic của bạn. Nếu bạn không thể giải thích rõ ràng, hãy xem lại code của mình.**
 - ** Style button chung là: Nền trắng, border #ccc, màu chữ #666,  hover:bg-blue-600 và border cùng màu bg chữ trắng. **
+- ** Font chữ chung là Inter, size 14px. Các tiêu đề lớn hơn có thể dùng Inter Bold.**
+- ** Font chữ cho các input là Inter, size 14px. Các tiêu đề lớn hơn có thể dùng Inter Bold.**
+- ** Font chữ header là Inter, size 16px. Các tiêu đề lớn hơn có thể dùng Inter Bold.**
+- ** Màu sắc của header của table là bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]
+- ** Font size của table header là 14px, font weight là 600.**
+- ** Màu sắc của các ô trong table là bg-white, border-b border-[#e0e0e0] text-[#212121].**
+- ** Font size của các ô trong table là 14px, font weight là 400.**

@@ -112,9 +112,27 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
   return (
     <div className="h-[calc(100vh-100px)] flex flex-col">
       {/* Tiêu đề và các nút action */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-200">
-        <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
-        <p className="text-sm text-gray-500 mt-1">Click vào một dòng để xem thông tin chi tiết</p>
+      <div className="flex-shrink-0 p-4 border-b border-gray-200 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
+          <p className="text-sm text-gray-500 mt-1">Click vào một dòng để xem thông tin chi tiết</p>
+        </div>
+        <div className="mt-4 flex space-x-2">
+          <button className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" title="In ấn">
+            <Printer className="w-5 h-5" />
+          </button>
+          <button className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" title="Xuất Excel">
+            <Upload className="w-5 h-5" />
+          </button>
+          
+          <button 
+            onClick={() => window.location.href = '/receipt-management/receipt-detail'}
+            className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" 
+            title="Thêm mới"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       {/* Container cho Toolbar, Bảng 1 và Bảng 2 */}
@@ -140,14 +158,14 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
         {/* Bảng 1 (List View) */}
         <div className="flex-1 overflow-y-auto">
           <div className="overflow-x-auto relative">
-            <table className="min-w-full table-auto">
+            <table className="min-w-full table-auto text-sm">
               <thead className="sticky top-0 z-1000 bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]">
                 <tr>
                   {listViewColumns.map((column) => (
                     <th
                       key={column.dataField}
-                      className="px-4 py-3 text-left text-sm font-bold select-none group"
-                      style={{ width: column.width, minWidth: column.width }}
+                      className="px-4 py-3 text-left text-sm font-bold select-none group whitespace-nowrap"
+                      style={{ width: column.width, minWidth: column.width, maxWidth: column.width }}
                     >
                       {column.displayName}
                     </th>
@@ -181,10 +199,10 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
         </div>
 
         {/* Bảng 2 (Detail View) */}
-        <div className="flex-shrink-0 overflow-x-auto relative">
+        <div className="flex-shrink-0 overflow-x-auto relative border-t border-gray-200">
           {selectedReceipt ? (
             <table className="min-w-full table-auto">
-              <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]">
+              <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121] whitespace-nowrap text-sm" style={{ fontSize: '14px' }}>
                 <tr>
                   {detailViewColumns.map((column) => (
                     <th
@@ -196,7 +214,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200 text-sm" style={{ fontSize: '14px' }}>
                 <tr className="group hover:bg-gray-50">
                   {detailViewColumns.map((column) => (
                     <td
@@ -210,8 +228,8 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
               </tbody>
             </table>
           ) : (
-            <div className="text-center py-12 text-gray-500">
-              <div className="text-4xl mb-4">📋</div>
+            <div className="text-center py-6 text-gray-500">
+              
               <div className="text-lg font-medium mb-2">Chưa chọn phiếu thu</div>
               <div>Vui lòng click vào một dòng trong bảng trên để xem chi tiết</div>
             </div>
