@@ -1,18 +1,9 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
+import ReceiptTwoViewTable from "./ReceiptTwoViewTable";
 import { useNavigate } from "react-router-dom";
-import { TablePage } from "@/components/table/TablePage";
-import * as Icons from "lucide-react";
-import { ReceiptTableToolbar } from "@/components/table/ReceiptTableToolbar";
-import { receiptColumns } from "./receiptConfig";
-import { receiptDeleteConfig, receiptBulkDeleteConfig } from "./receiptFormConfig";
-import ReceiptFormModal from "./ReceiptFormModal";
-import { receiptPrintConfig } from "./receiptPrintConfig";
-import { receiptFormConfig } from "./receiptFormConfig";
-import { exportToExcel } from "@/lib/excelUtils";
-import { receiptImportConfig } from "./receiptImportConfig";
-import InvoiceImportModal from "./InvoiceImportModal";
+
 
 interface Receipt {
   id: string;
@@ -88,129 +79,12 @@ const generateMockData = (count: number): Receipt[] => {
 };
 
 export default function ReceiptManagementPage() {
+  const [data] = useState<Receipt[]>(() => generateMockData(50));
   const navigate = useNavigate();
-  const [data, setData] = useState<Receipt[]>(() => generateMockData(50));
-  const [isLoading, setIsLoading] = useState(false);
-  const [startDate, setStartDate] = useState<string>("2025-07-29");
-  const [endDate, setEndDate] = useState<string>("2025-07-29");
-  const [isInvoiceModalOpen, setInvoiceModalOpen] = useState(false);
-
-  const handleImport = useCallback((_rows: any[], _method: "add" | "update" | "overwrite") => {
-    // Xử lý import Excel nếu cần
-    console.log("Import receipts:", _rows, _method);
-  }, []);
-
-  const handlePrint = useCallback(() => {
-    // Print logic - handled by TablePage with printConfig
-  }, []);
-
-  // Khi nhấn Thêm mới, chuyển hướng sang trang chi tiết phiếu thu
-  const handleAddReceipt = async () => {
-    navigate("/receipt-management/receipt-detail");
-    return { success: true, message: "Chuyển sang trang thêm phiếu thu" };
-  };
-
-  // Khi nhấn Sửa, chuyển hướng sang trang chi tiết phiếu thu với mode edit và truyền dữ liệu phiếu thu
-  const handleEditReceipt = async (formData: Receipt) => {
-    navigate("/receipt-management/receipt-detail", {
-      state: { mode: "edit", detail: formData }
-    });
-    return { success: true, message: "Chuyển sang trang sửa phiếu thu" };
-  };
-
-  const handleDeleteReceipt = useCallback(async (id: string) => {
-    try {
-      setData((prev) => prev.filter((receipt) => receipt.id !== id));
-      return { success: true, message: "Xóa phiếu thu thành công!" };
-    } catch (error) {
-      return { success: false, message: "Có lỗi xảy ra khi xóa phiếu thu!" };
-    }
-  }, []);
-
-  const handleRefresh = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setData(generateMockData(50));
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const handleExport = useCallback(() => {
-    exportToExcel(data, receiptColumns, "danh-sach-phieu-thu.xlsx", "Phiếu thu");
-    alert("Đã xuất dữ liệu ra file Excel thành công!");
-  }, [data]);
-
-  const handleImportXml = () => {
-    setInvoiceModalOpen(true);
-  };
-
-  const handleInvoiceModalSubmit = async (data: any) => {
-    console.log("Dữ liệu nhập XML e-invoice:", data);
-    setInvoiceModalOpen(false);
-  };
 
   return (
-    <>
-      <TablePage
-        title="Quản lý phiếu thu"
-        description="Quản lý danh sách phiếu thu của doanh nghiệp"
-        columns={receiptColumns}
-        data={data}
-        onImport={handleImport}
-        onPrint={handlePrint}
-        onRefresh={handleRefresh}
-        onExport={handleExport}
-        formConfig={receiptFormConfig}
-        printConfig={receiptPrintConfig}
-        excelImportConfig={receiptImportConfig}
-        deleteConfig={receiptDeleteConfig}
-        bulkDeleteConfig={receiptBulkDeleteConfig}
-        onAdd={handleAddReceipt}
-        onEdit={handleEditReceipt}
-        onDelete={handleDeleteReceipt}
-        FormModalComponent={ReceiptFormModal}
-        isInitialLoading={isLoading}
-        companyInfo={{
-          name: "Công ty TNHH ABC Technology",
-          address: "123 Đường ABC, Quận Ba Đình, Hà Nội",
-          taxCode: "0123456789",
-        }}
-        customToolbar={props => (
-          <ReceiptTableToolbar
-            {...props}
-            startDate={startDate}
-            endDate={endDate}
-            onStartDateChange={setStartDate}
-            onEndDateChange={setEndDate}
-            isRefreshing={isLoading}
-            onRefresh={handleRefresh}
-            onExport={handleExport}
-          />
-        )}
-        openAddAsPage={true}
-        customHeaderActions={
-          <div className="relative group">
-            <button
-              onClick={handleImportXml}
-              className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
-              aria-label="Nhập XML e-invoice"
-            >
-              <Icons.FileCode2 size={16} />
-            </button>
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
-              Nhập XML e-invoice
-            </div>
-          </div>
-        }
-      />
-      <InvoiceImportModal
-        isOpen={isInvoiceModalOpen}
-        onClose={() => setInvoiceModalOpen(false)}
-        onSubmit={handleInvoiceModalSubmit}
-      />
-    </>
+    <div className="">
+      <ReceiptTwoViewTable data={data} onAddNew={() => navigate('/ReceiptManagement/ReceiptDetailPage')} />
+    </div>
   );
 }
