@@ -3,7 +3,6 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { receiptColumns } from "./receiptConfig";
 import type { ColumnConfig } from "@/types/table";
-import { DataTable } from "@/components/table/DataTable";
 import { ReceiptTableToolbar } from "@/components/table/ReceiptTableToolbar";
 import { Printer, Upload, Plus } from "lucide-react";
 
@@ -40,8 +39,6 @@ interface Receipt {
   inventory?: string;
 }
 
-
-
 interface ReceiptTwoViewTableProps {
   data: Receipt[];
   onAddNew?: () => void;
@@ -63,7 +60,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
       const headerHeight = 72;    // Tiêu đề + các nút action 
       const toolbarHeight = 56;   // ReceiptTableToolbar
       const detailTableHeight = 300; // Bảng 2 (ước lượng)
-      const padding = 100;         // Padding container
+      const padding = 120;         // Padding container
       const windowH = window.innerHeight;
       
       // Tính maxHeight cho bảng 1
@@ -113,58 +110,17 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
   };
 
   return (
-    <div className="space-y-6">
+    <div className="h-[calc(100vh-100px)] flex flex-col">
       {/* Tiêu đề và các nút action */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between ">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
-          <p className="text-sm text-gray-500 mt-1">Click vào một dòng để xem thông tin chi tiết</p>
-        </div>
-        <div className="flex items-center space-x-2 mt-4 sm:mt-0">
-          {/* In ấn */}
-          <div className="relative group">
-            <button
-              className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-blue-600 hover:text-white transition-all"
-              onClick={() => alert('In ấn!')}
-              aria-label="In ấn"
-            >
-              <Printer size={20} />
-            </button>
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
-              In ấn
-            </div>
-          </div>
-          {/* Nhập Excel */}
-          <div className="relative group">
-            <button
-              className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-blue-600 hover:text-white transition-all"
-              onClick={() => alert('Nhập Excel!')}
-              aria-label="Nhập Excel"
-            >
-              <Upload size={20} />
-            </button>
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
-              Nhập Excel
-            </div>
-          </div>
-          {/* Thêm mới */}
-          <div className="relative group">
-            <button
-              className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-blue-600 hover:text-white transition-all"
-              onClick={onAddNew}
-              aria-label="Thêm mới"
-            >
-              <Plus size={20} />
-            </button>
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
-              Thêm mới
-            </div>
-          </div>
-        </div>
+      <div className="flex-shrink-0 p-4 border-b border-gray-200">
+        <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
+        <p className="text-sm text-gray-500 mt-1">Click vào một dòng để xem thông tin chi tiết</p>
       </div>
-      {/* Gộp 2 bảng vào 1 khối, bỏ tiêu đề phụ, để sát nhau */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="">
+
+      {/* Container cho Toolbar, Bảng 1 và Bảng 2 */}
+      <div className="bg-white rounded-lg shadow flex flex-col flex-1 overflow-hidden">
+        {/* Toolbar */}
+        <div className="flex-shrink-0">
           <ReceiptTableToolbar
             startDate={startDate}
             endDate={endDate}
@@ -180,59 +136,86 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
             onSettings={() => alert("Thiết lập cột!")}
           />
         </div>
-        <div>
-          <div
-            ref={table1WrapperRef}
-            style={{ maxHeight: table1MaxHeight, overflowY: 'auto' }}
-            className="overflow-x-auto"
-          >
-            <div className="relative">
-              <DataTable
-                data={data.map(item => ({ item, depth: 0 }))}
-                columns={listViewColumns}
-                stickyPositions={{}}
-                selectedItems={selectedReceipt ? [selectedReceipt.id] : []}
-                onSelectAll={() => {}}
-                onSelectOne={(_id, _checked) => {}}
-                itemsPerPage={10}
-                isLoading={false}
-                renderCustomCell={(item, column) => {
-                  return (
-                    <div
-                      className="cursor-pointer select-none"
-                      onClick={() => handleRowClick(item)}
-                      title="Xem chi tiết phiếu thu"
+
+        {/* Bảng 1 (List View) */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="overflow-x-auto relative">
+            <table className="min-w-full table-auto">
+              <thead className="sticky top-0 z-1000 bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]">
+                <tr>
+                  {listViewColumns.map((column) => (
+                    <th
+                      key={column.dataField}
+                      className="px-4 py-3 text-left text-sm font-bold select-none group"
+                      style={{ width: column.width, minWidth: column.width }}
                     >
-                      {(item as any)[column.dataField] ?? '-'}
-                    </div>
-                  );
-                }}
-                onEdit={undefined}
-                onDelete={undefined}
-              />
-            </div>
+                      {column.displayName}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {data.map((receipt) => (
+                  <tr
+                    key={receipt.id}
+                    onClick={() => handleRowClick(receipt)}
+                    className={`group hover:bg-gray-50 transition-colors cursor-pointer ${
+                      selectedReceipt?.id === receipt.id ? 'bg-blue-100' : ''
+                    }`}
+                    title="Click để xem chi tiết"
+                  >
+                    {listViewColumns.map((column) => (
+                      <td
+                        key={column.dataField}
+                        className="px-4 py-3 group-hover:bg-gray-50"
+                        style={{ width: column.width, minWidth: column.width }}
+                      >
+                        {formatValue(getFieldValue(receipt, column.dataField), column)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          {data.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              Không có dữ liệu để hiển thị
+        </div>
+
+        {/* Bảng 2 (Detail View) */}
+        <div className="flex-shrink-0 overflow-x-auto relative">
+          {selectedReceipt ? (
+            <table className="min-w-full table-auto">
+              <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]">
+                <tr>
+                  {detailViewColumns.map((column) => (
+                    <th
+                      key={column.dataField}
+                      className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]"
+                    >
+                      {column.displayName}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                <tr className="group hover:bg-gray-50">
+                  {detailViewColumns.map((column) => (
+                    <td
+                      key={column.dataField}
+                      className="px-4 py-3 group-hover:bg-gray-50"
+                    >
+                      {formatValue(getFieldValue(selectedReceipt, column.dataField), column)}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              <div className="text-4xl mb-4">📋</div>
+              <div className="text-lg font-medium mb-2">Chưa chọn phiếu thu</div>
+              <div>Vui lòng click vào một dòng trong bảng trên để xem chi tiết</div>
             </div>
           )}
-          <DataTable
-            data={selectedReceipt ? [{ item: selectedReceipt, depth: 0 }] : []}
-            columns={detailViewColumns}
-            stickyPositions={{}}
-            selectedItems={selectedReceipt ? [selectedReceipt.id] : []}
-            onSelectAll={() => {}}
-            onSelectOne={() => {}}
-            itemsPerPage={1}
-            isLoading={false}
-          />
-          {detailViewColumns.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              Không có trường chi tiết nào để hiển thị
-            </div>
-          )}
-          {/* Ẩn dòng nhắc chọn phiếu thu */}
         </div>
       </div>
     </div>
