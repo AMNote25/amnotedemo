@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { TablePage } from "@/components/table/TablePage";
 import * as Icons from "lucide-react";
 import { ReceiptTableToolbar } from "@/components/table/ReceiptTableToolbar";
@@ -87,6 +88,7 @@ const generateMockData = (count: number): Receipt[] => {
 };
 
 export default function ReceiptManagementPage() {
+  const navigate = useNavigate();
   const [data, setData] = useState<Receipt[]>(() => generateMockData(50));
   const [isLoading, setIsLoading] = useState(false);
   const [startDate, setStartDate] = useState<string>("2025-07-29");
@@ -102,32 +104,18 @@ export default function ReceiptManagementPage() {
     // Print logic - handled by TablePage with printConfig
   }, []);
 
-  const handleAddReceipt = async (formData: Receipt) => {
-    try {
-      const newReceipt = { 
-        ...formData, 
-        id: Date.now().toString(),
-        transactionDate: formData.transactionDate || new Date().toISOString().split('T')[0],
-        modifiedDate: new Date().toISOString().split('T')[0],
-      };
-      setData((prev) => [...prev, newReceipt]);
-      return { success: true, message: "Thêm phiếu thu thành công!" };
-    } catch (error) {
-      return { success: false, message: "Có lỗi xảy ra khi thêm phiếu thu!" };
-    }
+  // Khi nhấn Thêm mới, chuyển hướng sang trang chi tiết phiếu thu
+  const handleAddReceipt = async () => {
+    navigate("/receipt-management/receipt-detail");
+    return { success: true, message: "Chuyển sang trang thêm phiếu thu" };
   };
 
+  // Khi nhấn Sửa, chuyển hướng sang trang chi tiết phiếu thu với mode edit và truyền dữ liệu phiếu thu
   const handleEditReceipt = async (formData: Receipt) => {
-    try {
-      const updatedReceipt = {
-        ...formData,
-        modifiedDate: new Date().toISOString().split('T')[0],
-      };
-      setData((prev) => prev.map((receipt) => (receipt.id === formData.id ? updatedReceipt : receipt)));
-      return { success: true, message: "Cập nhật phiếu thu thành công!" };
-    } catch (error) {
-      return { success: false, message: "Có lỗi xảy ra khi cập nhật phiếu thu!" };
-    }
+    navigate("/receipt-management/receipt-detail", {
+      state: { mode: "edit", detail: formData }
+    });
+    return { success: true, message: "Chuyển sang trang sửa phiếu thu" };
   };
 
   const handleDeleteReceipt = useCallback(async (id: string) => {
@@ -200,9 +188,9 @@ export default function ReceiptManagementPage() {
             isRefreshing={isLoading}
             onRefresh={handleRefresh}
             onExport={handleExport}
-            onSettings={() => {}}
           />
         )}
+        openAddAsPage={true}
         customHeaderActions={
           <div className="relative group">
             <button

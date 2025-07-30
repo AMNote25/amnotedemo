@@ -21,6 +21,7 @@ export interface TablePagePropsWithConfigs<T extends BaseTableItem> extends Tabl
   FormModalComponent?: React.ComponentType<any>
   customToolbar?: (props: any) => React.ReactNode
   customHeaderActions?: React.ReactNode // Cho phép truyền thêm icon/nút action vào header
+  openAddAsPage?: boolean // Nếu true, khi nhấn Thêm mới sẽ gọi onAdd thay vì mở modal
 }
 
 export function TablePage<T extends BaseTableItem>({
@@ -48,6 +49,7 @@ export function TablePage<T extends BaseTableItem>({
   FormModalComponent,
   customToolbar,
   customHeaderActions,
+  openAddAsPage = false,
 }: TablePagePropsWithConfigs<T>) {
   const localStorageKey = `${title.replace(/\s+/g, "")}TableColumnConfigs`
 
@@ -189,22 +191,32 @@ export function TablePage<T extends BaseTableItem>({
 
   // Form handlers
   const handleAddClick = useCallback(() => {
+    if (openAddAsPage && onAdd) {
+      // Truyền object có id rỗng để tránh lỗi type, các page detail sẽ không dùng giá trị này
+      onAdd({ id: "" } as T);
+      return;
+    }
     if (FormModalComponent) {
       setFormMode("add")
       setEditingItem(null)
       setIsFormModalOpen(true)
     }
-  }, [FormModalComponent])
+  }, [FormModalComponent, openAddAsPage, onAdd])
 
   const handleEditClick = useCallback(
     (item: T) => {
+      if (openAddAsPage && onEdit) {
+        // Khi openAddAsPage=true, gọi onEdit để chuyển trang (parent sẽ handle navigate)
+        onEdit(item);
+        return;
+      }
       if (FormModalComponent) {
         setFormMode("edit")
         setEditingItem(item)
         setIsFormModalOpen(true)
       }
     },
-    [FormModalComponent],
+    [FormModalComponent, openAddAsPage, onEdit],
   )
 
   const handleDeleteClick = useCallback(
