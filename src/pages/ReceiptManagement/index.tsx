@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ReceiptTwoViewTable from "./ReceiptTwoViewTable";
+import ReceiptTwoViewPage from "./ReceiptTwoViewPage";
 import { useNavigate } from "react-router-dom";
 
 
@@ -84,7 +84,7 @@ export default function ReceiptManagementPage() {
 
   return (
     <div className="">
-      <ReceiptTwoViewTable data={data} onAddNew={() => navigate('/ReceiptManagement/ReceiptDetailPage')} />
+      <ReceiptTwoViewPage />
     </div>
   );
 }

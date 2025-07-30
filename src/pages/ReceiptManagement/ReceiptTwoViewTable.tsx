@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
@@ -239,3 +240,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
     </div>
   );
 }
+=======
+// This file is deprecated. Use ReceiptTwoViewPage.tsx instead
+export { default } from './ReceiptTwoViewPage'
+>>>>>>> 25fc40174818bce9e2880c8ad4ec4ae145d169b1
