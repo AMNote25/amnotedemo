@@ -88,7 +88,7 @@ export default function Pagination({
         {/* Mobile View */}
         <div className="flex items-center justify-between sm:hidden">
           <div className="flex-1">
-            <p className="text-sm text-gray-700">
+            <p className="text-gray-700">
               <span className="font-medium">{startIndex + 1}</span>
               {' - '}
               <span className="font-medium">{Math.min(endIndex, totalItems)}</span>
@@ -121,7 +121,7 @@ export default function Pagination({
         <div className="hidden sm:flex sm:items-center sm:justify-between">
           
           <div className="flex items-center space-x-4">
-            <p className="text-sm text-gray-700">
+            <p className="text-gray-700">
               <span className="font-medium">{startIndex + 1}</span>
               {' - '}
               <span className="font-medium">{Math.min(endIndex, totalItems)}</span>
@@ -129,7 +129,7 @@ export default function Pagination({
               <span className="font-medium">{totalItems.toLocaleString('vi-VN')}</span>
             </p>
             <div className="flex items-center space-x-2">
-              <label htmlFor="itemsPerPageMobile" className="text-sm text-gray-700">
+              <label htmlFor="itemsPerPageMobile" className="text-gray-700">
                 Hiển thị:
               </label>
               <select
@@ -187,7 +187,7 @@ export default function Pagination({
         <div className="mt-3 sm:hidden">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <label htmlFor="itemsPerPageMobile" className="text-sm text-gray-700">
+              <label htmlFor="itemsPerPageMobile" className="text-gray-700">
                 Hiển thị:
               </label>
               <select

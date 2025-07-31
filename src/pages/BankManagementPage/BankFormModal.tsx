@@ -231,7 +231,7 @@ export default function BankFormModal({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Mã ngân hàng */}
                 <div className="space-y-2">
-                  <label htmlFor="bankCode" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="bankCode" className="block font-medium text-gray-700">
                     Mã ngân hàng <span className="text-red-500 ml-1">*</span>
                   </label>
                   <input
@@ -264,7 +264,7 @@ export default function BankFormModal({
 
                 {/* Tên ngân hàng */}
                 <div className="space-y-2">
-                  <label htmlFor="bankName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="bankName" className="block font-medium text-gray-700">
                     Tên ngân hàng <span className="text-red-500 ml-1">*</span>
                   </label>
                   <select
@@ -304,7 +304,7 @@ export default function BankFormModal({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Số tài khoản */}
                 <div className="space-y-2">
-                  <label htmlFor="accountNumber" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="accountNumber" className="block font-medium text-gray-700">
                     Số tài khoản <span className="text-red-500 ml-1">*</span>
                   </label>
                   <input
@@ -337,7 +337,7 @@ export default function BankFormModal({
 
                 {/* Tên tài khoản */}
                 <div className="space-y-2">
-                  <label htmlFor="accountName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="accountName" className="block font-medium text-gray-700">
                     Tên tài khoản <span className="text-red-500 ml-1">*</span>
                   </label>
                   <input
@@ -366,7 +366,7 @@ export default function BankFormModal({
 
                 {/* Số dư */}
                 <div className="space-y-2">
-                  <label htmlFor="balance" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="balance" className="block font-medium text-gray-700">
                     Số dư (VND)
                   </label>
                   <input
@@ -400,7 +400,7 @@ export default function BankFormModal({
 
                 {/* Trạng thái */}
                 <div className="space-y-2">
-                  <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="status" className="block font-medium text-gray-700">
                     Trạng thái <span className="text-red-500 ml-1">*</span>
                   </label>
                   <select

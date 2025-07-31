@@ -279,7 +279,7 @@ export default function ProfilePage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Thông tin cơ bản</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Tên đầy đủ <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -300,7 +300,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Ngày sinh <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -320,7 +320,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Giới tính
                   </label>
                   <div className="flex space-x-4">
@@ -351,7 +351,7 @@ export default function ProfilePage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Thông tin liên lạc</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Số điện thoại <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
@@ -381,7 +381,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Email <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
@@ -411,7 +411,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Địa chỉ <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
@@ -435,7 +435,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Mã bưu chính <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -478,7 +478,7 @@ export default function ProfilePage() {
 
                     <form onSubmit={handleSecurityVerification} className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Mật khẩu hiện tại
                         </label>
                         <div className="relative">
@@ -626,17 +626,17 @@ export default function ProfilePage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-500 mb-1">Tên đầy đủ</label>
+                <label className="block font-medium text-gray-500 mb-1">Tên đầy đủ</label>
                 <p className="text-gray-900 font-medium">{profile.fullName}</p>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-500 mb-1">Ngày sinh</label>
+                <label className="block font-medium text-gray-500 mb-1">Ngày sinh</label>
                 <p className="text-gray-900">{formatDate(profile.dateOfBirth)}</p>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-500 mb-1">Giới tính</label>
+                <label className="block font-medium text-gray-500 mb-1">Giới tính</label>
                 <p className="text-gray-900">{getGenderText(profile.gender)}</p>
               </div>
             </div>
@@ -660,7 +660,7 @@ export default function ProfilePage() {
                   <Phone size={16} className="text-blue-600" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-500">Số điện thoại</label>
+                  <label className="block font-medium text-gray-500">Số điện thoại</label>
                   <p className="text-gray-900 font-medium">{profile.phone}</p>
                 </div>
               </div>
@@ -670,7 +670,7 @@ export default function ProfilePage() {
                   <Mail size={16} className="text-green-600" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-500">Email</label>
+                  <label className="block font-medium text-gray-500">Email</label>
                   <p className="text-gray-900 font-medium">{profile.email}</p>
                 </div>
               </div>
@@ -680,7 +680,7 @@ export default function ProfilePage() {
                   <MapPin size={16} className="text-purple-600" />
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-500">Địa chỉ</label>
+                  <label className="block font-medium text-gray-500">Địa chỉ</label>
                   <p className="text-gray-900">{profile.address}</p>
                   <p className="text-sm text-gray-600 mt-1">Mã bưu chính: {profile.postalCode}</p>
                 </div>
@@ -701,7 +701,7 @@ export default function ProfilePage() {
                     <p className="text-sm text-gray-600">Cập nhật mật khẩu để bảo mật tài khoản</p>
                   </div>
                 </div>
-                <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+                <button className="text-blue-600 hover:text-blue-700 font-medium">
                   Thay đổi
                 </button>
               </div>
@@ -714,7 +714,7 @@ export default function ProfilePage() {
                     <p className="text-sm text-gray-600">Tăng cường bảo mật với xác thực 2 bước</p>
                   </div>
                 </div>
-                <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+                <button className="text-blue-600 hover:text-blue-700 font-medium">
                   Kích hoạt
                 </button>
               </div>

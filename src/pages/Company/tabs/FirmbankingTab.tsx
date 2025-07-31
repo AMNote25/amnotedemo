@@ -159,7 +159,7 @@ const FirmbankingTab: React.FC = () => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
       <div className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+        <h2 className="text-[13px] font-semibold text-gray-900 mb-6 flex items-center">
           <CreditCard className="w-6 h-6 mr-2 text-blue-600" />
           Cài đặt Firmbanking
         </h2>
@@ -168,7 +168,7 @@ const FirmbankingTab: React.FC = () => {
           {/* Bank Accounts Management */}
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-gray-800">Quản lý tài khoản ngân hàng</h3>
+              <h3 className="text-[13px] font-medium text-gray-800">Quản lý tài khoản ngân hàng</h3>
               <div className="relative group">
                 <button
                   type="button"
@@ -227,7 +227,7 @@ const FirmbankingTab: React.FC = () => {
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block font-medium text-gray-700 mb-1">
                       Tên ngân hàng
                     </label>
                     <input
@@ -245,7 +245,7 @@ const FirmbankingTab: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block font-medium text-gray-700 mb-1">
                       Số tài khoản
                     </label>
                     <input
@@ -263,7 +263,7 @@ const FirmbankingTab: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block font-medium text-gray-700 mb-1">
                       Tên chủ tài khoản
                     </label>
                     <input
@@ -281,7 +281,7 @@ const FirmbankingTab: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block font-medium text-gray-700 mb-1">
                       Chi nhánh
                     </label>
                     <input
@@ -327,7 +327,7 @@ const FirmbankingTab: React.FC = () => {
           {/* OTP Settings */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block font-medium text-gray-700 mb-2">
                 Email nhận OTP
               </label>
               <input
@@ -340,14 +340,14 @@ const FirmbankingTab: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-[13px] font-medium text-gray-700 mb-2">
                 Số điện thoại nhận OTP
               </label>
               <input
                 type="tel"
                 value={formData.otpPhone}
                 onChange={(e) => setFormData(prev => ({ ...prev, otpPhone: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Nhập số điện thoại nhận OTP"
               />
             </div>
@@ -405,7 +405,7 @@ const FirmbankingTab: React.FC = () => {
                 <h4 className="font-medium text-gray-900 mb-3">Thêm câu hỏi bảo mật</h4>
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block font-medium text-gray-700 mb-1">
                       Câu hỏi
                     </label>
                     <select
@@ -423,7 +423,7 @@ const FirmbankingTab: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block font-medium text-gray-700 mb-1">
                       Câu trả lời
                     </label>
                     <input
@@ -463,7 +463,7 @@ const FirmbankingTab: React.FC = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-sm"
+            className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-[13px]"
             >
               <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Lưu

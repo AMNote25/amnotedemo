@@ -132,72 +132,72 @@ const InvoiceTab: React.FC = () => {
           <form onSubmit={handleSaveEmail} className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nhà cung cấp</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value={emailForm.provider} onChange={e => handleEmailChange('provider', e.target.value)} />
+                <label className="block text-[13px] font-medium text-gray-700 mb-1">Nhà cung cấp</label>
+                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value={emailForm.provider} onChange={e => handleEmailChange('provider', e.target.value)} />
               </div>
 <div className="flex gap-2 items-start">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Máy chủ Mail <span className="text-red-500">*</span></label>
-                  <input type="text" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.mailServer ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.mailServer} onChange={e => handleEmailChange('mailServer', e.target.value)} />
-                  {emailErrors.mailServer && <p className="text-xs text-red-600 mt-1">{emailErrors.mailServer}</p>}
+                  <label className="block text-[13px] font-medium text-gray-700 mb-1">Máy chủ Mail <span className="text-red-500">*</span></label>
+                  <input type="text" className={`w-full px-3 py-2 border rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.mailServer ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.mailServer} onChange={e => handleEmailChange('mailServer', e.target.value)} />
+                  {emailErrors.mailServer && <p className="text-[13px] text-red-600 mt-1">{emailErrors.mailServer}</p>}
                 </div>
                 <div className="w-20 sm:w-24">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Cổng <span className="text-red-500">*</span></label>
-                  <input type="text" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.port ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.port} onChange={e => handleEmailChange('port', e.target.value)} />
-                  {emailErrors.port && <p className="text-xs text-red-600 mt-1">{emailErrors.port}</p>}
+                  <label className="block text-[13px] font-medium text-gray-700 mb-1">Cổng <span className="text-red-500">*</span></label>
+                  <input type="text" className={`w-full px-3 py-2 border rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.port ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.port} onChange={e => handleEmailChange('port', e.target.value)} />
+                  {emailErrors.port && <p className="text-[13px] text-red-600 mt-1">{emailErrors.port}</p>}
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Tên người gửi <span className="text-red-500">*</span></label>
-                <input type="text" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.senderName ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.senderName} onChange={e => handleEmailChange('senderName', e.target.value)} />
-                {emailErrors.senderName && <p className="text-xs text-red-600 mt-1">{emailErrors.senderName}</p>}
+                <label className="block text-[13px] font-medium text-gray-700 mb-1">Tên người gửi <span className="text-red-500">*</span></label>
+                <input type="text" className={`w-full px-3 py-2 border rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.senderName ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.senderName} onChange={e => handleEmailChange('senderName', e.target.value)} />
+                {emailErrors.senderName && <p className="text-[13px] text-red-600 mt-1">{emailErrors.senderName}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email gửi <span className="text-red-500">*</span></label>
-                <input type="email" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.senderEmail ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.senderEmail} onChange={e => handleEmailChange('senderEmail', e.target.value)} />
-                {emailErrors.senderEmail && <p className="text-xs text-red-600 mt-1">{emailErrors.senderEmail}</p>}
+                <label className="block text-[13px] font-medium text-gray-700 mb-1">Email gửi <span className="text-red-500">*</span></label>
+                <input type="email" className={`w-full px-3 py-2 border rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.senderEmail ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.senderEmail} onChange={e => handleEmailChange('senderEmail', e.target.value)} />
+                {emailErrors.senderEmail && <p className="text-[13px] text-red-600 mt-1">{emailErrors.senderEmail}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Tên đăng nhập <span className="text-red-500">*</span></label>
-                <input type="text" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.username ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.username} onChange={e => handleEmailChange('username', e.target.value)} />
-                {emailErrors.username && <p className="text-xs text-red-600 mt-1">{emailErrors.username}</p>}
+                <label className="block text-[13px] font-medium text-gray-700 mb-1">Tên đăng nhập <span className="text-red-500">*</span></label>
+                <input type="text" className={`w-full px-3 py-2 border rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.username ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.username} onChange={e => handleEmailChange('username', e.target.value)} />
+                {emailErrors.username && <p className="text-[13px] text-red-600 mt-1">{emailErrors.username}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Mật khẩu <span className="text-red-500">*</span></label>
-                <input type="password" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.password ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.password} onChange={e => handleEmailChange('password', e.target.value)} />
-                {emailErrors.password && <p className="text-xs text-red-600 mt-1">{emailErrors.password}</p>}
+                <label className="block text-[13px] font-medium text-gray-700 mb-1">Mật khẩu <span className="text-red-500">*</span></label>
+                <input type="password" className={`w-full px-3 py-2 border rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${emailErrors.password ? 'border-red-500' : 'border-gray-300'}`} value={emailForm.password} onChange={e => handleEmailChange('password', e.target.value)} />
+                {emailErrors.password && <p className="text-[13px] text-red-600 mt-1">{emailErrors.password}</p>}
               </div>
               <div className="lg:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phương thức bảo mật</label>
+                <label className="block text-[13px] font-medium text-gray-700 mb-1">Phương thức bảo mật</label>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-1">
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <label className="flex items-center gap-1 text-sm">
+                    <label className="flex items-center gap-1">
                       <input type="radio" name="security" value="None" checked={emailForm.security === 'None'} onChange={e => handleEmailChange('security', e.target.value)} className="accent-blue-600" />
                       None
                     </label>
-                    <label className="flex items-center gap-1 text-sm">
+                    <label className="flex items-center gap-1 text-[13px]">
                       <input type="radio" name="security" value="SSL" checked={emailForm.security === 'SSL'} onChange={e => handleEmailChange('security', e.target.value)} className="accent-blue-600" />
                       SSL
                     </label>
-                    <label className="flex items-center gap-1 text-sm">
+                    <label className="flex items-center gap-1 text-[13px]">
                       <input type="radio" name="security" value="TLS" checked={emailForm.security === 'TLS'} onChange={e => handleEmailChange('security', e.target.value)} className="accent-blue-600" />
                       TLS
                     </label>
                   </div>
-                  <button type="button" onClick={handleTestEmail} className="w-full sm:w-auto px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">Kiểm tra kết nối</button>
+                  <button type="button" onClick={handleTestEmail} className="w-full sm:w-auto px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium">Kiểm tra kết nối</button>
                 </div>
               </div>
               <div className="lg:col-span-2">
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2">
-                  <label className="flex items-center gap-2 text-sm">
+                  <label className="flex items-center gap-2">
                     <input type="radio" name="useAmnote" value="amnote" checked={emailForm.useAmnote === 'amnote'} onChange={e => handleEmailChange('useAmnote', e.target.value)} className="accent-blue-600" />
                     Sử dụng email AMnote
                   </label>
-                  <label className="flex items-center gap-2 text-sm">
+                  <label className="flex items-center gap-2">
                     <input type="radio" name="useAmnote" value="amnote2" checked={emailForm.useAmnote === 'amnote2'} onChange={e => handleEmailChange('useAmnote', e.target.value)} className="accent-blue-600" />
                     Sử dụng gmail AMnote
                   </label>
-                  <label className="flex items-center gap-2 text-sm">
+                  <label className="flex items-center gap-2">
                     <input type="radio" name="useAmnote" value="other" checked={emailForm.useAmnote === 'other'} onChange={e => handleEmailChange('useAmnote', e.target.value)} className="accent-blue-600" />
                     Khác
                   </label>
@@ -205,7 +205,7 @@ const InvoiceTab: React.FC = () => {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row justify-end gap-3 mt-4 sm:mt-6">
-              <button type="submit" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-sm">
+              <button type="submit" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                 <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Lưu
               </button>
@@ -216,23 +216,23 @@ const InvoiceTab: React.FC = () => {
           <form onSubmit={handleSaveSms} className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Api Key <span className="text-red-500">*</span></label>
-                <input type="text" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${smsErrors.apiKey ? 'border-red-500' : 'border-gray-300'}`} value={smsForm.apiKey} onChange={e => handleSmsChange('apiKey', e.target.value)} />
+                <label className="block font-medium text-gray-700 mb-1">Api Key <span className="text-red-500">*</span></label>
+                <input type="text" className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${smsErrors.apiKey ? 'border-red-500' : 'border-gray-300'}`} value={smsForm.apiKey} onChange={e => handleSmsChange('apiKey', e.target.value)} />
                 {smsErrors.apiKey && <p className="text-xs text-red-600 mt-1">{smsErrors.apiKey}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Secret Key <span className="text-red-500">*</span></label>
-                <input type="text" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${smsErrors.secretKey ? 'border-red-500' : 'border-gray-300'}`} value={smsForm.secretKey} onChange={e => handleSmsChange('secretKey', e.target.value)} />
+                <label className="block font-medium text-gray-700 mb-1">Secret Key <span className="text-red-500">*</span></label>
+                <input type="text" className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${smsErrors.secretKey ? 'border-red-500' : 'border-gray-300'}`} value={smsForm.secretKey} onChange={e => handleSmsChange('secretKey', e.target.value)} />
                 {smsErrors.secretKey && <p className="text-xs text-red-600 mt-1">{smsErrors.secretKey}</p>}
               </div>
               <div className="lg:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Brand Name <span className="text-red-500">*</span></label>
-                <input type="text" className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${smsErrors.brandName ? 'border-red-500' : 'border-gray-300'}`} value={smsForm.brandName} onChange={e => handleSmsChange('brandName', e.target.value)} />
+                <label className="block font-medium text-gray-700 mb-1">Brand Name <span className="text-red-500">*</span></label>
+                <input type="text" className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${smsErrors.brandName ? 'border-red-500' : 'border-gray-300'}`} value={smsForm.brandName} onChange={e => handleSmsChange('brandName', e.target.value)} />
                 {smsErrors.brandName && <p className="text-xs text-red-600 mt-1">{smsErrors.brandName}</p>}
               </div>
             </div>
             <div className="flex flex-col sm:flex-row justify-end gap-3 mt-4 sm:mt-6">
-              <button type="submit" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-sm">
+              <button type="submit" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                 <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Lưu
               </button>
@@ -246,7 +246,7 @@ const InvoiceTab: React.FC = () => {
               <FileText className="w-24 h-12 sm:w-32 sm:h-16 text-blue-400" />
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-3 mt-4 sm:mt-6 w-full sm:w-auto">
-              <button type="submit" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-sm">
+              <button type="submit" className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                 <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Lưu
               </button>

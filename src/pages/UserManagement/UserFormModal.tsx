@@ -10,8 +10,9 @@ interface UserFormModalProps {
   initialData?: any
   existingData?: any[]
   mode: "add" | "edit"
-}
-
+}                      <label htmlFor="userId" className="block font-medium text-gray-700">
+                        Mã người dùng <span className="text-red-500 ml-1">*</span>
+                      </label>
 // Menu permissions tree structure
 const menuPermissions = [
   {
@@ -360,7 +361,7 @@ export default function UserFormModal({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Đối tượng tập hợp chi phí */}
                     <div className="space-y-2">
-                      <label htmlFor="costCenterCode" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="costCenterCode" className="block font-medium text-gray-700">
                         Đối tượng tập hợp chi phí <span className="text-red-500 ml-1">*</span>
                       </label>
                       <select
@@ -393,7 +394,7 @@ export default function UserFormModal({
 
                     {/* ID người dùng */}
                     <div className="space-y-2">
-                      <label htmlFor="userId" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="userId" className="block font-medium text-gray-700">
                         ID của người sử dụng <span className="text-red-500 ml-1">*</span>
                       </label>
                       <input
@@ -422,7 +423,7 @@ export default function UserFormModal({
 
                     {/* Mật khẩu */}
                     <div className="space-y-2">
-                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="password" className="block font-medium text-gray-700">
                         Mật khẩu <span className="text-red-500 ml-1">*</span>
                       </label>
                       <div className="relative">
@@ -468,7 +469,7 @@ export default function UserFormModal({
 
                     {/* Mật khẩu 2 */}
                     <div className="space-y-2">
-                      <label htmlFor="password2" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="password2" className="block font-medium text-gray-700">
                         Mật khẩu 2
                       </label>
                       <div className="relative">
@@ -507,7 +508,7 @@ export default function UserFormModal({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Tên */}
                     <div className="space-y-2">
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="name" className="block font-medium text-gray-700">
                         Tên <span className="text-red-500 ml-1">*</span>
                       </label>
                       <input
@@ -536,7 +537,7 @@ export default function UserFormModal({
 
                     {/* Số điện thoại */}
                     <div className="space-y-2">
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="phone" className="block font-medium text-gray-700">
                         Số điện thoại
                       </label>
                       <input
@@ -552,7 +553,7 @@ export default function UserFormModal({
 
                     {/* Cho phép */}
                     <div className="space-y-2 md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block font-medium text-gray-700">
                         Cho phép <span className="text-red-500 ml-1">*</span>
                       </label>
                       <div className="flex space-x-6">
@@ -607,7 +608,7 @@ export default function UserFormModal({
 
                     {/* Ghi chú */}
                     <div className="space-y-2 md:col-span-2">
-                      <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="notes" className="block font-medium text-gray-700">
                         Ghi chú
                       </label>
                       <textarea

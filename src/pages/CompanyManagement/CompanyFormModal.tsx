@@ -264,7 +264,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Company Type */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Loại công ty <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -283,7 +283,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Company Name */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Tên công ty <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -300,7 +300,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Tax Code */}
                   <div className="lg:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Mã số thuế <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -318,7 +318,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Address */}
                   <div className="lg:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Địa chỉ <span className="text-red-500">*</span>
                     </label>
                     <textarea
@@ -335,7 +335,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Province */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Tỉnh/Thành phố <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -355,7 +355,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Tax Office Code */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Mã cơ quan thuế <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -372,7 +372,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Accounting Company */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Công ty kế toán phụ trách <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -389,7 +389,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Accounting Period */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Kỳ kế toán <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -418,7 +418,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Director Name */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Tên giám đốc
                     </label>
                     <input
@@ -432,7 +432,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Business Registration Number */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Số đăng ký kinh doanh
                     </label>
                     <input
@@ -446,7 +446,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Business Form */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Hình thức kinh doanh
                     </label>
                     <select
@@ -467,7 +467,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Business Type */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Loại hình kinh doanh
                     </label>
                     <select
@@ -484,7 +484,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Số điện thoại</label>
+                    <label className="block font-medium text-gray-700 mb-2">Số điện thoại</label>
                     <input
                       type="tel"
                       value={formData.phone || ''}
@@ -496,7 +496,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Email */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <label className="block font-medium text-gray-700 mb-2">Email</label>
                     <input
                       type="email"
                       value={formData.email || ''}
@@ -508,7 +508,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Fax */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Fax
                     </label>
                     <input
@@ -522,7 +522,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Operation Start Date */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Ngày bắt đầu hoạt động
                     </label>
                     <input
@@ -535,7 +535,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Position Vietnamese */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Chức vụ (Tiếng Việt)
                     </label>
                     <input
@@ -549,7 +549,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Position English */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Chức vụ (Tiếng Anh)
                     </label>
                     <input
@@ -563,7 +563,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Position Korean */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Chức vụ (Tiếng Hàn)
                     </label>
                     <input
@@ -577,7 +577,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                   {/* Position Chinese */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Chức vụ (Tiếng Trung)
                     </label>
                     <input
@@ -608,7 +608,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                     <h3 className="text-lg font-medium text-gray-800 mb-4">Dữ liệu báo cáo thuế</h3>
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block font-medium text-gray-700 mb-2">
                           Quyết định/thông tư <span className="text-red-500">*</span>
                         </label>
                         <select
@@ -640,7 +640,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Pricing Method */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block font-medium text-gray-700 mb-2">
                         Phương pháp tính giá <span className="text-red-500">*</span>
                       </label>
                       <select
@@ -671,7 +671,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                     {/* Tax Method */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block font-medium text-gray-700 mb-2">
                         Phương pháp tính thuế <span className="text-red-500">*</span>
                       </label>
                       <select
@@ -702,7 +702,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                     {/* Closing Method - radio */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block font-medium text-gray-700 mb-2">
                         Phương pháp khóa sổ <span className="text-red-500">*</span>
                       </label>
                       <div className={getRadioContainerClassName('settings.accounting.lockMethod')}>
@@ -754,7 +754,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
                     {/* Decimal Places - input number thay vì select */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block font-medium text-gray-700 mb-2">
                         Số thập phân <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -802,7 +802,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                         })}
                         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                       />
-                      <label htmlFor="allowNegativeInventory" className="ml-2 text-sm text-gray-700">
+                      <label htmlFor="allowNegativeInventory" className="ml-2 text-gray-700">
                         Cho phép xuất âm tồn kho
                       </label>
                     </div>
@@ -899,7 +899,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                     <div className="p-6 space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block font-medium text-gray-700 mb-1">
                             Tên ngân hàng
                           </label>
                           <input
@@ -911,7 +911,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block font-medium text-gray-700 mb-1">
                             Số tài khoản
                           </label>
                           <input
@@ -925,7 +925,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block font-medium text-gray-700 mb-1">
                             Tên chủ tài khoản
                           </label>
                           <input
@@ -937,7 +937,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block font-medium text-gray-700 mb-1">
                             Chi nhánh
                           </label>
                           <input
@@ -998,7 +998,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
               {/* OTP Settings */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block font-medium text-gray-700 mb-2">
                     Email nhận OTP
                   </label>
                   <input
@@ -1011,7 +1011,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block font-medium text-gray-700 mb-2">
                     Số điện thoại nhận OTP
                   </label>
                   <input
@@ -1088,7 +1088,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       </div>
                       <div className="p-6 space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block font-medium text-gray-700 mb-1">
                             Câu hỏi
                           </label>
                           <select
@@ -1108,7 +1108,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block font-medium text-gray-700 mb-1">
                             Câu trả lời
                           </label>
                           <input
@@ -1165,7 +1165,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <label className="w-40 text-gray-700 text-sm font-medium">Giám đốc</label>
+                      <label className="w-40 text-gray-700 font-medium">Giám đốc</label>
                       <input
                         type="text"
                         value={formData.directorName || ''}
@@ -1177,7 +1177,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <label className="w-40 text-gray-700 text-sm font-medium">Kế toán trưởng</label>
+                      <label className="w-40 text-gray-700 font-medium">Kế toán trưởng</label>
                       <input
                         type="text"
                         value={formData.chiefAccountant || ''}
@@ -1189,7 +1189,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <label className="w-40 text-gray-700 text-sm font-medium">Thủ quỹ</label>
+                      <label className="w-40 text-gray-700 font-medium">Thủ quỹ</label>
                       <input
                         type="text"
                         value={formData.treasurer || ''}
@@ -1201,7 +1201,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <label className="w-40 text-gray-700 text-sm font-medium">Thủ kho</label>
+                      <label className="w-40 text-gray-700 font-medium">Thủ kho</label>
                       <input
                         type="text"
                         value={formData.warehouseKeeper || ''}
@@ -1213,7 +1213,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <label className="w-40 text-gray-700 text-sm font-medium">Người lập biểu</label>
+                      <label className="w-40 text-gray-700 font-medium">Người lập biểu</label>
                       <input
                         type="text"
                         value={formData.reportMaker || ''}
@@ -1225,7 +1225,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <label className="w-40 text-gray-700 text-sm font-medium">Người kiểm tra</label>
+                      <label className="w-40 text-gray-700 font-medium">Người kiểm tra</label>
                       <input
                         type="text"
                         value={formData.inspector || ''}
@@ -1348,7 +1348,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
 
               {/* 2 checkbox tuỳ chọn */}
               <div className="flex flex-col gap-3 mt-4">
-                <label className="inline-flex items-center text-sm text-gray-700 cursor-pointer">
+                <label className="inline-flex items-center text-gray-700 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={formData.printAllReports ?? true}
@@ -1357,7 +1357,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                   />
                   In trên tất cả báo cáo
                 </label>
-                <label className="inline-flex items-center text-sm text-gray-700 cursor-pointer">
+                <label className="inline-flex items-center text-gray-700 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={formData.autoFillMaker ?? true}
@@ -1408,7 +1408,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <div className="space-y-4 sm:space-y-6">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Nhà cung cấp</label>
+                      <label className="block font-medium text-gray-700 mb-1">Nhà cung cấp</label>
                       <input 
                         type="text" 
                         value={formData.emailProvider || ''}
@@ -1419,7 +1419,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                     </div>
                     <div className="flex gap-2 items-end">
                       <div className="flex-1">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Máy chủ Mail <span className="text-red-500">*</span></label>
+                        <label className="block font-medium text-gray-700 mb-1">Máy chủ Mail <span className="text-red-500">*</span></label>
                         <input 
                           type="text" 
                           value={formData.emailServer || ''}
@@ -1429,7 +1429,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                         />
                       </div>
                       <div className="w-20 sm:w-24">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Cổng <span className="text-red-500">*</span></label>
+                        <label className="block font-medium text-gray-700 mb-1">Cổng <span className="text-red-500">*</span></label>
                         <input 
                           type="text" 
                           value={formData.emailPort || '587'}
@@ -1439,7 +1439,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Tên người gửi <span className="text-red-500">*</span></label>
+                      <label className="block font-medium text-gray-700 mb-1">Tên người gửi <span className="text-red-500">*</span></label>
                       <input 
                         type="text" 
                         value={formData.emailSenderName || ''}
@@ -1449,7 +1449,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email gửi <span className="text-red-500">*</span></label>
+                      <label className="block font-medium text-gray-700 mb-1">Email gửi <span className="text-red-500">*</span></label>
                       <input 
                         type="email" 
                         value={formData.emailSender || ''}
@@ -1459,7 +1459,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Tên đăng nhập <span className="text-red-500">*</span></label>
+                      <label className="block font-medium text-gray-700 mb-1">Tên đăng nhập <span className="text-red-500">*</span></label>
                       <input 
                         type="text" 
                         value={formData.emailUsername || ''}
@@ -1469,7 +1469,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Mật khẩu <span className="text-red-500">*</span></label>
+                      <label className="block font-medium text-gray-700 mb-1">Mật khẩu <span className="text-red-500">*</span></label>
                       <input 
                         type="password" 
                         value={formData.emailPassword || ''}
@@ -1479,10 +1479,10 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div className="lg:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Phương thức bảo mật</label>
+                      <label className="block font-medium text-gray-700 mb-1">Phương thức bảo mật</label>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-1">
                         <div className="flex items-center gap-3 sm:gap-4">
-                          <label className="flex items-center gap-1 text-sm">
+                          <label className="flex items-center gap-1">
                             <input 
                               type="radio" 
                               name="security" 
@@ -1493,7 +1493,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                             />
                             None
                           </label>
-                          <label className="flex items-center gap-1 text-sm">
+                          <label className="flex items-center gap-1">
                             <input 
                               type="radio" 
                               name="security" 
@@ -1504,7 +1504,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                             />
                             SSL
                           </label>
-                          <label className="flex items-center gap-1 text-sm">
+                          <label className="flex items-center gap-1">
                             <input 
                               type="radio" 
                               name="security" 
@@ -1516,12 +1516,12 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                             TLS
                           </label>
                         </div>
-                        <button type="button" className="w-full sm:w-auto px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">Kiểm tra kết nối</button>
+                        <button type="button" className="w-full sm:w-auto px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium">Kiểm tra kết nối</button>
                       </div>
                     </div>
                     <div className="lg:col-span-2">
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2">
-                        <label className="flex items-center gap-2 text-sm">
+                        <label className="flex items-center gap-2">
                           <input 
                             type="radio" 
                             name="useAmnote" 
@@ -1532,7 +1532,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           />
                           Sử dụng email AMnote
                         </label>
-                        <label className="flex items-center gap-2 text-sm">
+                        <label className="flex items-center gap-2">
                           <input 
                             type="radio" 
                             name="useAmnote" 
@@ -1543,7 +1543,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           />
                           Sử dụng gmail AMnote
                         </label>
-                        <label className="flex items-center gap-2 text-sm">
+                        <label className="flex items-center gap-2">
                           <input 
                             type="radio" 
                             name="useAmnote" 
@@ -1565,7 +1565,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <div className="space-y-4 sm:space-y-6">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Api Key <span className="text-red-500">*</span></label>
+                      <label className="block font-medium text-gray-700 mb-1">Api Key <span className="text-red-500">*</span></label>
                       <input 
                         type="text" 
                         value={formData.smsApiKey || ''}
@@ -1575,7 +1575,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Secret Key <span className="text-red-500">*</span></label>
+                      <label className="block font-medium text-gray-700 mb-1">Secret Key <span className="text-red-500">*</span></label>
                       <input 
                         type="text" 
                         value={formData.smsSecretKey || ''}
@@ -1585,7 +1585,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div className="lg:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Brand Name <span className="text-red-500">*</span></label>
+                      <label className="block font-medium text-gray-700 mb-1">Brand Name <span className="text-red-500">*</span></label>
                       <input 
                         type="text" 
                         value={formData.smsBrandName || ''}
@@ -1595,7 +1595,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div className="lg:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Mẫu tin nhắn</label>
+                      <label className="block font-medium text-gray-700 mb-1">Mẫu tin nhắn</label>
                       <textarea 
                         rows={3}
                         value={formData.smsTemplate || 'Quy khach da nhan hoa don dien tu tu {COMPANY_NAME}. Ma so hoa don: {INVOICE_NUMBER}. Tong tien: {TOTAL_AMOUNT}. Cam on!'}
@@ -1616,7 +1616,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                 <div className="space-y-4 sm:space-y-6">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Nhà cung cấp chữ ký số</label>
+                      <label className="block font-medium text-gray-700 mb-1">Nhà cung cấp chữ ký số</label>
                       <select 
                         value={formData.digitalSignatureProvider || ''}
                         onChange={e => setFormData({ ...formData, digitalSignatureProvider: e.target.value })}
@@ -1630,7 +1630,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">File chứng thư số (.p12)</label>
+                      <label className="block font-medium text-gray-700 mb-1">File chứng thư số (.p12)</label>
                       <input 
                         type="file" 
                         accept=".p12,.pfx"
@@ -1644,7 +1644,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Mật khẩu chứng thư số <span className="text-red-500">*</span></label>
+                      <label className="block font-medium text-gray-700 mb-1">Mật khẩu chứng thư số <span className="text-red-500">*</span></label>
                       <input 
                         type="password" 
                         value={formData.certificatePassword || ''}
@@ -1654,7 +1654,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Ngày hết hạn</label>
+                      <label className="block font-medium text-gray-700 mb-1">Ngày hết hạn</label>
                       <input 
                         type="date" 
                         value={formData.certificateExpiry || ''}
@@ -1671,7 +1671,7 @@ export default function CompanyFormModal({ isOpen, onClose, onSubmit, initialDat
                           onChange={e => setFormData({ ...formData, autoDigitalSign: e.target.checked })}
                           className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                         />
-                        <label htmlFor="autoSign" className="text-sm text-gray-700">
+                        <label htmlFor="autoSign" className="text-gray-700">
                           Tự động ký số khi xuất hóa đơn
                         </label>
                       </div>

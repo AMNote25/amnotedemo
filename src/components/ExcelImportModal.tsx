@@ -667,7 +667,7 @@ export default function ExcelImportModal({ isOpen, onClose, onImport, existingDa
                 {/* File Selection */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Chọn tệp Excel <span className="text-red-500">*</span>
                     </label>
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-400 transition-colors">
@@ -719,7 +719,7 @@ export default function ExcelImportModal({ isOpen, onClose, onImport, existingDa
                 {/* Configuration */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Sheet chứa dữ liệu <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -738,7 +738,7 @@ export default function ExcelImportModal({ isOpen, onClose, onImport, existingDa
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block font-medium text-gray-700 mb-2">
                       Dòng tiêu đề
                       <div className="text-xs text-gray-500 mt-1">Nhập số dòng chứa tiêu đề cột (ví dụ: 1)</div>
                     </label>
@@ -753,7 +753,7 @@ export default function ExcelImportModal({ isOpen, onClose, onImport, existingDa
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">Phương pháp nhập dữ liệu</label>
+                    <label className="block font-medium text-gray-700 mb-3">Phương pháp nhập dữ liệu</label>
                     <div className="space-y-3">
                       <label className="flex items-start">
                         <input

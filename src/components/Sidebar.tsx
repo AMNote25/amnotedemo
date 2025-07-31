@@ -328,7 +328,9 @@ function SidebarMenuNode({
         <button
           onClick={() => onMenuSelect(node.id)}
           className={[
-            'relative z-10 w-full flex items-center justify-between px-3 py-2.5 text-left rounded-lg transition-all duration-200',
+            'relative z-10 w-full flex items-center justify-between px-3',
+            level > 0 ? 'py-1.5' : 'py-2.5',
+            'text-left rounded-lg transition-all duration-200',
             level === 0 && isActive && !isSearching
               ? 'bg-red-600 text-white font-bold'
               : isActive && !isSearching

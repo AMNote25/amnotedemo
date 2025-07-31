@@ -238,7 +238,7 @@ export default function CostCenterFormModal({
           <div className="space-y-6 p-6 flex-1 min-h-0 overflow-y-auto">
             {/* Mã đối tượng */}
             <div className="space-y-2">
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="code" className="block font-medium text-gray-700">
                 Mã đối tượng <span className="text-red-500 ml-1">*</span>
               </label>
               <input
@@ -271,7 +271,7 @@ export default function CostCenterFormModal({
 
             {/* Tên tiếng Việt */}
             <div className="space-y-2">
-              <label htmlFor="nameVi" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="nameVi" className="block font-medium text-gray-700">
                 Tên tiếng Việt <span className="text-red-500 ml-1">*</span>
               </label>
               <input
@@ -300,7 +300,7 @@ export default function CostCenterFormModal({
 
             {/* Tên tiếng Anh */}
             <div className="space-y-2">
-              <label htmlFor="nameEn" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="nameEn" className="block font-medium text-gray-700">
                 Tên tiếng Anh
               </label>
               <input
@@ -329,7 +329,7 @@ export default function CostCenterFormModal({
 
             {/* Tên tiếng Hàn */}
             <div className="space-y-2">
-              <label htmlFor="nameKo" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="nameKo" className="block font-medium text-gray-700">
                 Tên tiếng Hàn
               </label>
               <input
@@ -358,7 +358,7 @@ export default function CostCenterFormModal({
 
             {/* Đối tượng gốc */}
             <div className="space-y-2">
-              <label htmlFor="parentObject" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="parentObject" className="block font-medium text-gray-700">
                 Đối tượng gốc
               </label>
               <select
@@ -395,7 +395,7 @@ export default function CostCenterFormModal({
 
             {/* Ghi chú */}
             <div className="space-y-2">
-              <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="notes" className="block font-medium text-gray-700">
                 Ghi chú
               </label>
               <textarea

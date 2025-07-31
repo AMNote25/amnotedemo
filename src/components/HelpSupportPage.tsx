@@ -374,7 +374,7 @@ export default function HelpSupportPage() {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">Bài viết phổ biến</h2>
-          <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+          <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center">
             Xem tất cả
             <ChevronRight size={16} className="ml-1" />
           </button>
@@ -461,7 +461,7 @@ export default function HelpSupportPage() {
             <h3 className="text-lg font-semibold text-gray-900">Video hướng dẫn</h3>
           </div>
           <p className="text-gray-600 mb-4">Học cách sử dụng phần mềm qua video chi tiết</p>
-          <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+          <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center">
             Xem video
             <ExternalLink size={14} className="ml-1" />
           </button>
@@ -475,7 +475,7 @@ export default function HelpSupportPage() {
             <h3 className="text-lg font-semibold text-gray-900">Tài liệu tải về</h3>
           </div>
           <p className="text-gray-600 mb-4">Biểu mẫu, hướng dẫn PDF và tài liệu tham khảo</p>
-          <button className="text-green-600 hover:text-green-700 font-medium text-sm flex items-center">
+          <button className="text-green-600 hover:text-green-700 font-medium flex items-center">
             Tải xuống
             <Download size={14} className="ml-1" />
           </button>
@@ -489,7 +489,7 @@ export default function HelpSupportPage() {
             <h3 className="text-lg font-semibold text-gray-900">Cộng đồng</h3>
           </div>
           <p className="text-gray-600 mb-4">Tham gia thảo luận với cộng đồng người dùng</p>
-          <button className="text-purple-600 hover:text-purple-700 font-medium text-sm flex items-center">
+          <button className="text-purple-600 hover:text-purple-700 font-medium flex items-center">
             Tham gia
             <ExternalLink size={14} className="ml-1" />
           </button>
@@ -603,7 +603,7 @@ export default function HelpSupportPage() {
             <form onSubmit={handleTicketSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Tiêu đề <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -617,7 +617,7 @@ export default function HelpSupportPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Danh mục <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -636,7 +636,7 @@ export default function HelpSupportPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Độ ưu tiên
                   </label>
                   <select
@@ -651,7 +651,7 @@ export default function HelpSupportPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block font-medium text-gray-700 mb-1">
                     Email liên hệ <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -666,7 +666,7 @@ export default function HelpSupportPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block font-medium text-gray-700 mb-1">
                   Số điện thoại
                 </label>
                 <input
@@ -679,7 +679,7 @@ export default function HelpSupportPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block font-medium text-gray-700 mb-1">
                   Mô tả chi tiết <span className="text-red-500">*</span>
                 </label>
                 <textarea

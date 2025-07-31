@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { TableSettings } from "@/components/table/TableSettings";
 import { useNavigate } from "react-router-dom";
-import { X, Save, Plus, ArrowLeft, Filter } from "lucide-react";
+import { X, Save, Plus, ArrowLeft, Filter, Banknote, Receipt } from "lucide-react";
 
 // Các trường chi tiết chứng từ mẫu, có thể chỉnh lại theo detail design
 const detailFields = [
@@ -43,7 +43,39 @@ export default function ReceiptDetailPage() {
   const [columns, setColumns] = useState<ColumnConfig[]>(defaultColumns);
   const [showSettings, setShowSettings] = useState<boolean>(false);
   // Sticky positions (nếu có ghim cột)
-  const stickyPositions = {};
+  // Tính toán vị trí left cho các cột pinned
+  const stickyPositions = (() => {
+    const visibleColumns = columns.filter(col => col.visible);
+    const pinnedColumns = visibleColumns.filter(col => col.pinned);
+    const positions: { [key: string]: number } = {};
+    let currentLeft = 0;
+    pinnedColumns.forEach(col => {
+      positions[col.id] = currentLeft;
+      currentLeft += col.width;
+    });
+    return positions;
+  })();
+
+  // Hàm lấy style sticky cho header cột
+  const getHeaderColumnStyle = (col: ColumnConfig) => {
+    if (!col.pinned) return {};
+    return {
+      position: "sticky" as const,
+      left: stickyPositions[col.id],
+      zIndex: 11,
+      background: "#f5f5f5",
+    };
+  };
+  // Hàm lấy style sticky cho cell
+  const getCellColumnStyle = (col: ColumnConfig) => {
+    if (!col.pinned) return {};
+    return {
+      position: "sticky" as const,
+      left: stickyPositions[col.id],
+      zIndex: 10,
+      background: "white",
+    };
+  };
 
   // Hàm cập nhật cột (visible, width, pinned, displayName...)
   const handleColumnChange = (columnId: string, field: keyof ColumnConfig, value: any) => {
@@ -76,8 +108,8 @@ export default function ReceiptDetailPage() {
     navigate("/receipt-management");
   };
 
-  return (
-    <div className="w-full mx-auto  text-sm">
+return (
+    <div className="w-full mx-auto text-[13px]">
       {/* Nút quay lại */}
       <div className="mb-4">
         <button
@@ -92,10 +124,10 @@ export default function ReceiptDetailPage() {
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         <h2 className="text-lg font-semibold mb-4">Chi tiết chứng từ</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-3">
-          {detailFields.map((field) => (
-            <div key={field.id} className="flex items-center">
+          {detailFields.filter(field => field.id !== "displayColumns").map((field) => (
+            <div key={field.id} className="flex flex-col md:flex-row md:items-center">
               <label
-                className="w-40 min-w-[120px] text-right pr-3 font-medium text-gray-700 text-sm truncate whitespace-nowrap overflow-hidden relative group cursor-pointer"
+                className="mb-1 md:mb-0 w-full md:w-40 md:min-w-[120px] md:text-right md:pr-3 font-medium text-gray-700 text-[13px] relative group cursor-pointer"
               >
                 {field.label}{field.required && <span className="text-red-500 ml-1">*</span>}
                 {/* Tooltip */}
@@ -104,26 +136,34 @@ export default function ReceiptDetailPage() {
                 </span>
               </label>
               <input
-                type="text"
+                type={field.id === "date" ? "date" : "text"}
                 value={form[field.id] || ""}
                 onChange={e => handleChange(field.id, e.target.value)}
-                className="flex-1 border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-sm"
+                className="w-full md:flex-1 border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
               />
             </div>
           ))}
         </div>
         <div className="flex justify-end mt-4 gap-2">
           <button
-            onClick={() => setForm({})}
-            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
-            title="Hủy"
+            type="button"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-green-600 hover:border-green-600 hover:text-white transition-colors text-[13px]"
+            // TODO: Thêm logic thu tiền khách hàng
           >
-            <X className="w-5 h-5" />
-            <span className="hidden sm:inline">Hủy</span>
+            <Banknote className="w-5 h-5" />
+            <span className="hidden sm:inline">Thu tiền khách hàng</span>
+          </button>
+          <button
+            type="button"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-yellow-600 hover:border-yellow-600 hover:text-white transition-colors text-[13px]"
+            // TODO: Thêm logic thanh toán chứng từ
+          >
+            <Receipt className="w-5 h-5" />
+            <span className="hidden sm:inline">Thanh toán chứng từ</span>
           </button>
           <button
             onClick={handleAddDetail}
-            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
             title={editingIndex !== null ? "Cập nhật dòng" : "Thêm dòng"}
           >
             <Plus className="w-5 h-5" />
@@ -161,42 +201,42 @@ export default function ReceiptDetailPage() {
           )}
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-200 text-sm">
-            <thead className="bg-gray-100">
+          <table className="min-w-full border border-gray-200">
+            <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[13px]">
               <tr>
                 {columns.filter(c => c.visible).map(col => (
                   <th
                     key={col.id}
-                    className="px-3 py-2 border-b text-xs font-semibold text-gray-700 text-left"
-                    style={{ width: `${col.width}px`, minWidth: `${col.width}px` }}
+                    className="px-3 py-2 font-semibold text-[#212121] border-b border-[#e0e0e0] text-left text-[13px]"
+                    style={{ width: `${col.width}px`, minWidth: `${col.width}px`, ...getHeaderColumnStyle(col) }}
                   >
                     {col.displayName}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-[13px]">
               {details.length === 0 && (
                 <tr>
                   {columns.filter(c => c.visible).map(col => (
-                    <td
-                      key={col.id}
-                      className="px-3 py-2 border border-gray-300 text-sm bg-white"
-                      style={{ width: `${col.width}px`, minWidth: `${col.width}px` }}
-                    >
-                      <input
-                        type="text"
-                        placeholder={`Nhập ${col.displayName}`}
-                        onChange={e => {
-                          const newRow = columns.reduce<Record<string, string>>((acc, c) => {
-                            acc[c.id] = c.id === col.id ? e.target.value : "";
-                            return acc;
-                          }, {});
-                          setDetails([newRow]);
-                        }}
-                        className="w-full border-none focus:outline-none"
-                      />
-                    </td>
+                  <td
+                    key={col.id}
+                    className="px-3 py-2 border border-gray-300 bg-white text-[13px]"
+                    style={{ width: `${col.width}px`, minWidth: `${col.width}px`, ...getCellColumnStyle(col) }}
+                  >
+                    <input
+                      type="text"
+                      placeholder={`Nhập ${col.displayName}`}
+                      onChange={e => {
+                        const newRow = columns.reduce<Record<string, string>>((acc, c) => {
+                          acc[c.id] = c.id === col.id ? e.target.value : "";
+                          return acc;
+                        }, {});
+                        setDetails([newRow]);
+                      }}
+                      className="w-full border-none focus:outline-none text-[13px]"
+                    />
+                  </td>
                   ))}
                 </tr>
               )}
@@ -205,8 +245,8 @@ export default function ReceiptDetailPage() {
                   {columns.filter(c => c.visible).map(col => (
                     <td
                       key={col.id}
-                      className="px-3 py-2 border border-gray-300 text-sm bg-white"
-                      style={{ width: `${col.width}px`, minWidth: `${col.width}px` }}
+                      className="px-3 py-2 border border-gray-300 bg-white text-[13px]"
+                      style={{ width: `${col.width}px`, minWidth: `${col.width}px`, ...getCellColumnStyle(col) }}
                     >
                       <input
                         type="text"
@@ -216,7 +256,7 @@ export default function ReceiptDetailPage() {
                           updatedDetails[idx][col.id] = e.target.value;
                           setDetails(updatedDetails);
                         }}
-                        className="w-full border-none focus:outline-none"
+                        className="w-full border-none focus:outline-none text-[13px]"
                       />
                     </td>
                   ))}
@@ -228,10 +268,11 @@ export default function ReceiptDetailPage() {
         <div className="flex justify-end mt-6">
           <button
             onClick={handleSave}
-            className="flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] text-[13px] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
+            title="Lưu phiếu thu"
           >
-            <Save className="w-5 h-5" />
-            Lưu phiếu thu
+            <Save className="w-4 h-4" />
+            <span className="hidden sm:inline">Lưu phiếu thu</span>
           </button>
         </div>
       </div>

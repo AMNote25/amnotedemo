@@ -42,13 +42,48 @@ interface Receipt {
 interface ReceiptTwoViewTableProps {
   data: Receipt[];
   onAddNew?: () => void;
+  onRefreshData?: () => Promise<void> | void;
 }
 
-export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTableProps) {
+export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: ReceiptTwoViewTableProps) {
   const [selectedReceipt, setSelectedReceipt] = useState<Receipt | null>(null);
+  // State lưu các id dòng được chọn
+  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  // Lọc dữ liệu theo searchTerm và khoảng ngày giao dịch
+  const filteredData = useMemo(() => {
+    let result = data;
+    // Lọc theo ngày giao dịch nếu có
+    if (startDate || endDate) {
+      result = result.filter(r => {
+        if (!r.transactionDate) return false;
+        const date = r.transactionDate.slice(0, 10); // yyyy-mm-dd
+        if (startDate && endDate) {
+          return date >= startDate && date <= endDate;
+        } else if (startDate) {
+          return date >= startDate;
+        } else if (endDate) {
+          return date <= endDate;
+        }
+        return true;
+      });
+    }
+    // Lọc theo searchTerm
+    if (searchTerm.trim()) {
+      const lower = searchTerm.toLowerCase();
+      result = result.filter(r =>
+        (r.receiptNo && r.receiptNo.toLowerCase().includes(lower)) ||
+        (r.customerName && r.customerName.toLowerCase().includes(lower)) ||
+        (r.customerCode && r.customerCode.toLowerCase().includes(lower)) ||
+        (r.description1 && r.description1.toLowerCase().includes(lower)) ||
+        (r.description2 && r.description2.toLowerCase().includes(lower))
+      );
+    }
+    return result;
+  }, [data, searchTerm, startDate, endDate]);
 
   // Scroll cho bảng 1: tính toán chiều cao động
   const table1WrapperRef = useRef<HTMLDivElement>(null);
@@ -60,7 +95,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
       const headerHeight = 72;    // Tiêu đề + các nút action 
       const toolbarHeight = 56;   // ReceiptTableToolbar
       const detailTableHeight = 300; // Bảng 2 (ước lượng)
-      const padding = 120;         // Padding container
+      const padding = 10;         // Padding container
       const windowH = window.innerHeight;
       
       // Tính maxHeight cho bảng 1
@@ -109,13 +144,23 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
     setSelectedReceipt(receipt);
   };
 
+  // Xử lý chọn tất cả
+  const isAllChecked = filteredData.length > 0 && selectedRowIds.length === filteredData.length;
+  const isIndeterminate = selectedRowIds.length > 0 && selectedRowIds.length < filteredData.length;
+  const handleCheckAll = (checked: boolean) => {
+    if (checked) setSelectedRowIds(filteredData.map(r => r.id));
+    else setSelectedRowIds([]);
+  };
+  const handleCheckRow = (id: string, checked: boolean) => {
+    setSelectedRowIds(prev => checked ? [...prev, id] : prev.filter(i => i !== id));
+  };
+
   return (
-    <div className="h-[calc(100vh-100px)] flex flex-col">
+    <div className="flex flex-col md:h-[calc(100vh-100px)]">
       {/* Tiêu đề và các nút action */}
       <div className="flex-shrink-0 pb-4 border-b border-gray-200 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
-          <p className="text-sm text-gray-500 mt-1">Click vào một dòng để xem thông tin chi tiết</p>
         </div>
         <div className="mt-4 flex space-x-2">
           <button className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" title="In ấn">
@@ -147,8 +192,13 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
             isRefreshing={isRefreshing}
             onRefresh={async () => {
               setIsRefreshing(true);
-              setTimeout(() => setIsRefreshing(false), 800);
+              if (onRefreshData) {
+                await onRefreshData();
+              }
+              setIsRefreshing(false);
             }}
+            searchTerm={searchTerm}
+            onSearch={setSearchTerm}
             onExport={() => alert("Xuất excel!")}
             onPrint={() => alert("In ấn!")}
             onSettings={() => alert("Thiết lập cột!")}
@@ -156,11 +206,21 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
         </div>
 
         {/* Bảng 1 (List View) */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="overflow-x-auto relative">
+        <div className="flex-shrink-0 h-[200px] md:h-[300px]">
+          <div className="relative h-full overflow-y-auto">
             <table className="min-w-full table-auto text-sm">
-              <thead className="sticky top-0 z-1000 bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]">
+              <thead className="sticky top-0 z-1000 bg-[#f5f5f5] border-b border-[#e0e0e0] text-[#212121]">
                 <tr>
+                  <th className="px-2 py-3 text-center w-8">
+                    <input
+                      type="checkbox"
+                      className="accent-blue-600 w-4 h-4"
+                      checked={isAllChecked}
+                      ref={el => { if (el) el.indeterminate = isIndeterminate; }}
+                      onChange={e => handleCheckAll(e.target.checked)}
+                      title="Chọn tất cả"
+                    />
+                  </th>
                   {listViewColumns.map((column) => (
                     <th
                       key={column.dataField}
@@ -173,7 +233,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {data.map((receipt) => (
+                {filteredData.map((receipt) => (
                   <tr
                     key={receipt.id}
                     onClick={() => handleRowClick(receipt)}
@@ -182,10 +242,19 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
                     }`}
                     title="Click để xem chi tiết"
                   >
+                    <td className="px-2 py-3 text-center w-8" onClick={e => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        className="accent-blue-600 w-4 h-4"
+                        checked={selectedRowIds.includes(receipt.id)}
+                        onChange={e => handleCheckRow(receipt.id, e.target.checked)}
+                        title="Chọn dòng này"
+                      />
+                    </td>
                     {listViewColumns.map((column) => (
                       <td
                         key={column.dataField}
-                        className="px-4 py-3 group-hover:bg-gray-50"
+                        className="px-4 py-3 group-hover:bg-gray-50 truncate whitespace-nowrap"
                         style={{ width: column.width, minWidth: column.width }}
                       >
                         {formatValue(getFieldValue(receipt, column.dataField), column)}
@@ -199,41 +268,52 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
         </div>
 
         {/* Bảng 2 (Detail View) */}
-        <div className="flex-shrink-0 overflow-x-auto relative border-t border-gray-200">
-          {selectedReceipt ? (
-            <table className="min-w-full table-auto">
-              <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121] whitespace-nowrap text-sm" style={{ fontSize: '14px' }}>
-                <tr>
-                  {detailViewColumns.map((column) => (
-                    <th
-                      key={column.dataField}
-                      className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]"
-                    >
-                      {column.displayName}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 text-sm" style={{ fontSize: '14px' }}>
-                <tr className="group hover:bg-gray-50">
-                  {detailViewColumns.map((column) => (
-                    <td
-                      key={column.dataField}
-                      className="px-4 py-3 group-hover:bg-gray-50"
-                    >
-                      {formatValue(getFieldValue(selectedReceipt, column.dataField), column)}
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
-          ) : (
-            <div className="text-center py-6 text-gray-500">
-              
-              <div className="text-lg font-medium mb-2">Chưa chọn phiếu thu</div>
-              <div>Vui lòng click vào một dòng trong bảng trên để xem chi tiết</div>
-            </div>
-          )}
+        <div className="h-auto md:flex-1 overflow-auto border-t border-gray-200">
+          <table className="min-w-full table-auto">
+            <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121] whitespace-nowrap text-sm" style={{ fontSize: '13px' }}>
+              <tr>
+                {detailViewColumns.map((column) => (
+                  <th
+                    key={column.dataField}
+                    className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]"
+                  >
+                    {column.displayName}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 text-sm whitespace-nowrap border-b border-[#e0e0e0]">
+              {selectedReceipt ? (
+                // Luôn render 4 dòng giống nhau, đều là dữ liệu của selectedReceipt
+                [0,1,2,3].map((rowIdx) => (
+                  <tr key={rowIdx} className="group hover:bg-gray-50">
+                    {detailViewColumns.map((column) => (
+                      <td
+                        key={column.dataField}
+                        className="px-4 py-3 group-hover:bg-gray-50"
+                      >
+                        {formatValue(getFieldValue(selectedReceipt, column.dataField), column)}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                // Nếu chưa chọn thì render 4 dòng trống
+                [0,1,2,3].map((rowIdx) => (
+                  <tr key={rowIdx} className="group hover:bg-gray-50">
+                    {detailViewColumns.map((column) => (
+                      <td
+                        key={column.dataField}
+                        className="px-4 py-3 group-hover:bg-gray-50"
+                      >
+                        {/* Để trống */}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -303,7 +303,7 @@ export default function CustomerFormModal({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Tên tiếng Việt */}
                   <div className="space-y-2">
-                    <label htmlFor="nameVi" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="nameVi" className="block font-medium text-gray-700">
                       Tên khách hàng (Tiếng Việt) <span className="text-red-500 ml-1">*</span>
                     </label>
                     <input
@@ -331,7 +331,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Loại khách hàng */}
                   <div className="space-y-2">
-                    <label htmlFor="customerType" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="customerType" className="block font-medium text-gray-700">
                       Loại khách hàng <span className="text-red-500 ml-1">*</span>
                     </label>
                     <input
@@ -359,7 +359,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Mã danh mục */}
                   <div className="space-y-2">
-                    <label htmlFor="categoryCode" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="categoryCode" className="block font-medium text-gray-700">
                       Mã danh mục <span className="text-red-500 ml-1">*</span>
                     </label>
                     <input
@@ -387,7 +387,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Tên tiếng Anh */}
                   <div className="space-y-2">
-                    <label htmlFor="nameEn" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="nameEn" className="block font-medium text-gray-700">
                       Tên khách hàng (Tiếng Anh)
                     </label>
                     <input
@@ -405,7 +405,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Tên tiếng Hàn */}
                   <div className="space-y-2">
-                    <label htmlFor="nameKo" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="nameKo" className="block font-medium text-gray-700">
                       Tên khách hàng (Tiếng Hàn)
                     </label>
                     <input
@@ -423,7 +423,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Tên người mua */}
                   <div className="space-y-2">
-                    <label htmlFor="buyerName" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="buyerName" className="block font-medium text-gray-700">
                       Tên người mua
                     </label>
                     <input
@@ -439,7 +439,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Mã ngân hàng */}
                   <div className="space-y-2">
-                    <label htmlFor="bankCD" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="bankCD" className="block font-medium text-gray-700">
                       Mã ngân hàng
                     </label>
                     <input
@@ -464,7 +464,7 @@ export default function CustomerFormModal({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Mã số thuế */}
                   <div className="space-y-2">
-                    <label htmlFor="taxCode" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="taxCode" className="block font-medium text-gray-700">
                       Mã số thuế <span className="text-red-500 ml-1">*</span>
                     </label>
                     <input
@@ -492,7 +492,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Email */}
                   <div className="space-y-2">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="email" className="block font-medium text-gray-700">
                       Email
                     </label>
                     <input
@@ -510,7 +510,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Số điện thoại */}
                   <div className="space-y-2">
-                    <label htmlFor="tel" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="tel" className="block font-medium text-gray-700">
                       Số điện thoại
                     </label>
                     <input
@@ -538,7 +538,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Fax */}
                   <div className="space-y-2">
-                    <label htmlFor="fax" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="fax" className="block font-medium text-gray-700">
                       Fax
                     </label>
                     <input
@@ -563,7 +563,7 @@ export default function CustomerFormModal({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Loại hình kinh doanh */}
                   <div className="space-y-2">
-                    <label htmlFor="businessType" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="businessType" className="block font-medium text-gray-700">
                       Loại hình kinh doanh
                     </label>
                     <input
@@ -579,7 +579,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Hình thức kinh doanh */}
                   <div className="space-y-2">
-                    <label htmlFor="kindBusiness" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="kindBusiness" className="block font-medium text-gray-700">
                       Hình thức kinh doanh
                     </label>
                     <input
@@ -595,7 +595,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Chủ sở hữu */}
                   <div className="space-y-2">
-                    <label htmlFor="ownerName" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="ownerName" className="block font-medium text-gray-700">
                       Chủ sở hữu
                     </label>
                     <input
@@ -620,7 +620,7 @@ export default function CustomerFormModal({
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   {/* Địa chỉ */}
                   <div className="space-y-2 md:col-span-2">
-                    <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="address" className="block font-medium text-gray-700">
                       Địa chỉ <span className="text-red-500 ml-1">*</span>
                     </label>
                     <input
@@ -648,7 +648,7 @@ export default function CustomerFormModal({
                   </div>
                   {/* Zip code */}
                   <div className="space-y-2">
-                    <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="zipCode" className="block font-medium text-gray-700">
                       Zip code
                     </label>
                     <input
@@ -665,7 +665,7 @@ export default function CustomerFormModal({
                 </div>
                 {/* Ghi chú - chỉ hiển thị ở tab cuối cùng */}
                 <div className="space-y-2 mt-6">
-                  <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="notes" className="block font-medium text-gray-700">
                     Ghi chú
                   </label>
                   <textarea

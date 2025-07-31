@@ -124,12 +124,12 @@ const SignatureTab: React.FC = () => {
               {signers.map((s, idx) => (
                 <div key={s.key} className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <label className="w-40 text-gray-700 text-sm font-medium">{s.label}</label>
+                    <label className="w-40 text-gray-700 text-[13px] font-medium">{s.label}</label>
                     <input
                       type="text"
                       value={s.name}
                       onChange={e => handleNameChange(idx, e.target.value)}
-                      className={`flex-1 px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                      className={`flex-1 px-3 py-2 border rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
                         errors[`signer_${idx}`] ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder={`Nhập tên ${s.label.toLowerCase()}`}
@@ -145,7 +145,7 @@ const SignatureTab: React.FC = () => {
 
           {/* Bảng chữ ký và dấu */}
           <div className="bg-white border border-gray-200 rounded-lg overflow-x-auto">
-            <table className="min-w-full text-sm">
+            <table className="min-w-full text-[13px]">
               <thead>
                 <tr className="bg-gray-50">
                   <th className="px-4 py-2 border-b text-left font-semibold">Chức vụ</th>
@@ -175,7 +175,7 @@ const SignatureTab: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => fileInputRefs.current[idx]?.click()}
-                          className="inline-flex items-center px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200"
+                          className="inline-flex items-center px-3 py-1 text-[13px] bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200"
                         >
                           <Upload className="w-4 h-4 mr-1" />
                           {s.signaturePreview ? 'Thay đổi' : 'Upload'}
@@ -215,7 +215,7 @@ const SignatureTab: React.FC = () => {
 
           {/* 2 checkbox tuỳ chọn */}
           <div className="flex flex-col gap-3 mt-4">
-            <label className="inline-flex items-center text-sm text-gray-700 cursor-pointer">
+            <label className="inline-flex items-center text-gray-700 cursor-pointer">
               <input
                 type="checkbox"
                 checked={printAllReports}
@@ -224,7 +224,7 @@ const SignatureTab: React.FC = () => {
               />
               In trên tất cả báo cáo
             </label>
-            <label className="inline-flex items-center text-sm text-gray-700 cursor-pointer">
+            <label className="inline-flex items-center text-gray-700 cursor-pointer">
               <input
                 type="checkbox"
                 checked={autoFillMaker}

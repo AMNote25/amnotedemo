@@ -358,7 +358,7 @@ export default function CompanyManagement() {
                     </h4>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Mã công ty <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -372,7 +372,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Tên công ty <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -386,7 +386,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Loại hình công ty <span className="text-red-500">*</span>
                         </label>
                         <select
@@ -403,7 +403,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Số tài khoản <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -417,7 +417,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Mã số thuế <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -431,7 +431,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Tỉnh/Thành phố <span className="text-red-500">*</span>
                         </label>
                         <select
@@ -448,7 +448,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div className="lg:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Địa chỉ <span className="text-red-500">*</span>
                         </label>
                         <textarea
@@ -462,7 +462,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div className="lg:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Phương thức tính kho <span className="text-red-500">*</span>
                         </label>
                         <select
@@ -492,7 +492,7 @@ export default function CompanyManagement() {
                     </h4>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Tên giám đốc
                         </label>
                         <input
@@ -506,7 +506,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Ngành nghề kinh doanh
                         </label>
                         <input
@@ -520,7 +520,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Điều kiện kinh doanh
                         </label>
                         <input
@@ -534,7 +534,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Loại hình kinh doanh
                         </label>
                         <select
@@ -551,7 +551,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Số điện thoại
                         </label>
                         <input
@@ -565,7 +565,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Số fax
                         </label>
                         <input
@@ -579,7 +579,7 @@ export default function CompanyManagement() {
                       </div>
 
                       <div className="lg:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block font-medium text-gray-700 mb-1">
                           Ngày thành lập
                         </label>
                         <input

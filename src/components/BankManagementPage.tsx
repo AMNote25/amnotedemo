@@ -977,7 +977,7 @@ const BankManagementPage: React.FC = () => {
                       {/* Tên hiển thị và Độ rộng cột trên cùng 1 dòng */}
                       <div className="grid grid-cols-5 gap-3">
                         <div className="col-span-3">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Tên cột hiển thị</label>
+                          <label className="block font-medium text-gray-700 mb-1">Tên cột hiển thị</label>
                           <input
                             type="text"
                             value={column.displayName}
@@ -988,7 +988,7 @@ const BankManagementPage: React.FC = () => {
                         </div>
 
                         <div className="col-span-2">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Width</label>
+                          <label className="block font-medium text-gray-700 mb-1">Width</label>
                           <input
                             type="number"
                             value={column.width}
@@ -1012,7 +1012,7 @@ const BankManagementPage: React.FC = () => {
                           className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                           disabled={!column.visible}
                         />
-                        <label className="text-sm text-gray-700">Ghim cột bên trái</label>
+                        <label className="text-gray-700">Ghim cột bên trái</label>
                       </div>
 
                       {/* Hiển thị vị trí sticky nếu được ghim */}
@@ -1179,7 +1179,7 @@ const BankManagementPage: React.FC = () => {
               {/* Tên ngân hàng & Mã ngân hàng */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block font-medium text-gray-700 mb-2">
                     Tên ngân hàng <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -1192,7 +1192,7 @@ const BankManagementPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block font-medium text-gray-700 mb-2">
                     Mã ngân hàng <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -1214,7 +1214,7 @@ const BankManagementPage: React.FC = () => {
               {/* Tỉnh & Chi nhánh */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block font-medium text-gray-700 mb-2">
                     Tỉnh <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -1232,7 +1232,7 @@ const BankManagementPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block font-medium text-gray-700 mb-2">
                     Chi nhánh <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -1254,7 +1254,7 @@ const BankManagementPage: React.FC = () => {
               {/* Số tài khoản & Tên tài khoản */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Số tài khoản</label>
+                  <label className="block font-medium text-gray-700 mb-2">Số tài khoản</label>
                   <input
                     type="text"
                     value={formData.accountNumber}
@@ -1264,7 +1264,7 @@ const BankManagementPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tên tài khoản ngân hàng</label>
+                  <label className="block font-medium text-gray-700 mb-2">Tên tài khoản ngân hàng</label>
                   <input
                     type="text"
                     value={formData.accountName}
@@ -1278,7 +1278,7 @@ const BankManagementPage: React.FC = () => {
               {/* Loại tiền & Ghi chú */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Loại tiền</label>
+                  <label className="block font-medium text-gray-700 mb-2">Loại tiền</label>
                   <select
                     value={formData.currencyType}
                     onChange={(e) => setFormData((d) => ({ ...d, currencyType: e.target.value }))}
@@ -1293,7 +1293,7 @@ const BankManagementPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Ghi chú</label>
+                  <label className="block font-medium text-gray-700 mb-2">Ghi chú</label>
                   <textarea
                     value={formData.notes}
                     onChange={(e) => setFormData((d) => ({ ...d, notes: e.target.value }))}

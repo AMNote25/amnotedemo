@@ -326,10 +326,10 @@ export default function Header({ onToggleSidebar, onLogout, onMenuSelect, curren
                   {notifications.length > 0 && (
                     <div className="px-4 py-3 border-t border-gray-100">
                       <div className="flex items-center justify-between">
-                        <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                        <button className="text-blue-600 hover:text-blue-700 font-medium">
                           Đánh dấu tất cả đã đọc
                         </button>
-                        <button className="text-sm text-gray-600 hover:text-gray-700">
+                        <button className="text-gray-600 hover:text-gray-700">
                           Xem tất cả
                         </button>
                       </div>

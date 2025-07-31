@@ -129,7 +129,7 @@ const CompanyInfoTab: React.FC = () => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
       <div className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+        <h2 className="text-[13px] font-semibold text-gray-900 mb-6 flex items-center">
           <Building2 className="w-6 h-6 mr-2 text-blue-600" />
           Thông tin công ty
         </h2>
@@ -137,7 +137,7 @@ const CompanyInfoTab: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Required Fields Section */}
           <div className="bg-blue-50 border border-blue-300 rounded-lg p-4">
-            <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
+            <h3 className="text-[13px] font-medium text-gray-800 mb-4 flex items-center">
               <AlertCircle className="w-5 h-5 mr-2 text-red-600" />
               Thông tin bắt buộc
             </h3>
@@ -145,7 +145,7 @@ const CompanyInfoTab: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Company Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Loại công ty <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -160,13 +160,13 @@ const CompanyInfoTab: React.FC = () => {
                   <option value="individual">Cá nhân</option>
                 </select>
                 {errors.companyType && (
-                  <p className="mt-1 text-sm text-red-600">{errors.companyType}</p>
+                  <p className="mt-1 text-[13px] text-red-600">{errors.companyType}</p>
                 )}
               </div>
 
               {/* Company Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Tên công ty <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -179,13 +179,13 @@ const CompanyInfoTab: React.FC = () => {
                   placeholder="Nhập tên công ty"
                 />
                 {errors.companyName && (
-                  <p className="mt-1 text-sm text-red-600">{errors.companyName}</p>
+                  <p className="mt-1 text-[13px] text-red-600">{errors.companyName}</p>
                 )}
               </div>
 
               {/* Tax Code */}
               <div className="lg:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Mã số thuế <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -198,13 +198,13 @@ const CompanyInfoTab: React.FC = () => {
                   placeholder="Nhập mã số thuế"
                 />
                 {errors.taxCode && (
-                  <p className="mt-1 text-sm text-red-600">{errors.taxCode}</p>
+                  <p className="mt-1 text-[13px] text-red-600">{errors.taxCode}</p>
                 )}
               </div>
 
               {/* Address */}
               <div className="lg:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Địa chỉ <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -217,13 +217,13 @@ const CompanyInfoTab: React.FC = () => {
                   placeholder="Nhập địa chỉ công ty"
                 />
                 {errors.address && (
-                  <p className="mt-1 text-sm text-red-600">{errors.address}</p>
+                  <p className="mt-1 text-[13px] text-red-600">{errors.address}</p>
                 )}
               </div>
 
               {/* Province */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Tỉnh/Thành phố <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -241,13 +241,13 @@ const CompanyInfoTab: React.FC = () => {
                   ))}
                 </select>
                 {errors.province && (
-                  <p className="mt-1 text-sm text-red-600">{errors.province}</p>
+                  <p className="mt-1 text-[13px] text-red-600">{errors.province}</p>
                 )}
               </div>
 
               {/* Tax Office Code */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Mã cơ quan thuế <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -260,13 +260,13 @@ const CompanyInfoTab: React.FC = () => {
                   placeholder="Nhập mã cơ quan thuế"
                 />
                 {errors.taxOfficeCode && (
-                  <p className="mt-1 text-sm text-red-600">{errors.taxOfficeCode}</p>
+                  <p className="mt-1 text-[13px] text-red-600">{errors.taxOfficeCode}</p>
                 )}
               </div>
 
               {/* Accounting Company */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Công ty kế toán phụ trách <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -279,13 +279,13 @@ const CompanyInfoTab: React.FC = () => {
                   placeholder="Nhập tên công ty kế toán"
                 />
                 {errors.accountingCompany && (
-                  <p className="mt-1 text-sm text-red-600">{errors.accountingCompany}</p>
+                  <p className="mt-1 text-[13px] text-red-600">{errors.accountingCompany}</p>
                 )}
               </div>
 
               {/* Accounting Period */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Kỳ kế toán <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -303,7 +303,7 @@ const CompanyInfoTab: React.FC = () => {
                   <option value="2028">Năm 2028</option>
                 </select>
                 {errors.accountingPeriod && (
-                  <p className="mt-1 text-sm text-red-600">{errors.accountingPeriod}</p>
+                  <p className="mt-1 text-[13px] text-red-600">{errors.accountingPeriod}</p>
                 )}
               </div>
             </div>
@@ -311,12 +311,12 @@ const CompanyInfoTab: React.FC = () => {
 
           {/* Optional Fields Section */}
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <h3 className="text-lg font-medium text-gray-800 mb-4">Thông tin bổ sung</h3>
+            <h3 className="text-[13px] font-medium text-gray-800 mb-4">Thông tin bổ sung</h3>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Director Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Tên giám đốc
                 </label>
                 <input
@@ -330,7 +330,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Business Registration Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Số đăng ký kinh doanh
                 </label>
                 <input
@@ -344,7 +344,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Business Form */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Hình thức kinh doanh
                 </label>
                 <select
@@ -363,7 +363,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Business Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Loại hình kinh doanh
                 </label>
                 <select
@@ -382,7 +382,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Phone */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Số điện thoại
                 </label>
                 <input
@@ -401,7 +401,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Email
                 </label>
                 <input
@@ -420,7 +420,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Fax */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Fax
                 </label>
                 <input
@@ -434,7 +434,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Operation Start Date */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Ngày bắt đầu hoạt động
                 </label>
                 <input
@@ -447,7 +447,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Position Vietnamese */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Chức vụ (Tiếng Việt)
                 </label>
                 <input
@@ -461,7 +461,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Position English */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Chức vụ (Tiếng Anh)
                 </label>
                 <input
@@ -475,7 +475,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Position Korean */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Chức vụ (Tiếng Hàn)
                 </label>
                 <input
@@ -489,7 +489,7 @@ const CompanyInfoTab: React.FC = () => {
 
               {/* Position Chinese */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Chức vụ (Tiếng Trung)
                 </label>
                 <input

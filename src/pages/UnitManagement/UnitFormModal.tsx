@@ -181,7 +181,7 @@ export default function UnitFormModal({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Mã đơn vị tính */}
                 <div className="space-y-2">
-                  <label htmlFor="UNIT_CD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="UNIT_CD" className="block font-medium text-gray-700">
                     Mã đơn vị tính <span className="text-red-500 ml-1">*</span>
                   </label>
                   <input
@@ -210,7 +210,7 @@ export default function UnitFormModal({
 
                 {/* Tên đơn vị tính */}
                 <div className="space-y-2">
-                  <label htmlFor="UNIT_NM" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="UNIT_NM" className="block font-medium text-gray-700">
                     Tên đơn vị tính <span className="text-red-500 ml-1">*</span>
                   </label>
                   <input
@@ -245,7 +245,7 @@ export default function UnitFormModal({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Trạng thái xóa */}
                 <div className="space-y-2">
-                  <label htmlFor="ISDEL" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="ISDEL" className="block font-medium text-gray-700">
                     Trạng thái
                   </label>
                   <div className="flex items-center space-x-4">
@@ -276,7 +276,7 @@ export default function UnitFormModal({
 
                 {/* User ID */}
                 <div className="space-y-2">
-                  <label htmlFor="USERID" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="USERID" className="block font-medium text-gray-700">
                     User ID
                   </label>
                   <input

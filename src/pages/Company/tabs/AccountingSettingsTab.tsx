@@ -68,7 +68,7 @@ const AccountingSettingsTab: React.FC = () => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
       <div className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+            <h2 className="text-[13px] font-semibold text-gray-900 mb-6 flex items-center">
           <Settings2 className="w-6 h-6 mr-2 text-blue-600" />
           Thiết lập dữ liệu kế toán
         </h2>
@@ -76,16 +76,16 @@ const AccountingSettingsTab: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Quyết định/Thông tư */}
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <h3 className="text-lg font-medium text-gray-800 mb-4">Dữ liệu báo cáo thuế</h3>
+                <h3 className="text-[13px] font-medium text-gray-800 mb-4">Dữ liệu báo cáo thuế</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-[13px] font-medium text-gray-700 mb-2">
                   Quyết định/thông tư <span className="text-red-500">*</span>
                 </label>
                 <select
                   value={formData.cDecision}
                   onChange={e => handleInputChange('cDecision', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">Chọn quyết định/thông tư</option>
                   <option value="c200">Quyết định 48/2006/QĐ-BTC (C200)</option>
@@ -99,7 +99,7 @@ const AccountingSettingsTab: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Pricing Method */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-[13px] font-medium text-gray-700 mb-2">
                 Phương pháp tính giá <span className="text-red-500">*</span>
               </label>
               <select
@@ -123,7 +123,7 @@ const AccountingSettingsTab: React.FC = () => {
 
             {/* Tax Method */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-[13px] font-medium text-gray-700 mb-2">
                 Phương pháp tính thuế <span className="text-red-500">*</span>
               </label>
               <select
@@ -147,7 +147,7 @@ const AccountingSettingsTab: React.FC = () => {
 
             {/* Closing Method - radio */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-[13px] font-medium text-gray-700 mb-2">
                 Phương pháp khóa sổ <span className="text-red-500">*</span>
               </label>
               <div className="flex gap-6 border border-gray-300 rounded px-3 py-2">
@@ -181,7 +181,7 @@ const AccountingSettingsTab: React.FC = () => {
 
             {/* Decimal Places */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-[13px] font-medium text-gray-700 mb-2">
                 Số thập phân <span className="text-red-500">*</span>
               </label>
               <input
@@ -203,7 +203,7 @@ const AccountingSettingsTab: React.FC = () => {
 
           {/* Additional Settings */}
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <h3 className="text-lg font-medium text-gray-800 mb-4">Cài đặt bổ sung</h3>
+                <h3 className="text-[13px] font-medium text-gray-800 mb-4">Cài đặt bổ sung</h3>
             
             <div className="flex items-center">
               <input
@@ -213,7 +213,7 @@ const AccountingSettingsTab: React.FC = () => {
                 onChange={(e) => handleInputChange('allowNegativeInventory', e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="allowNegativeInventory" className="ml-2 text-sm text-gray-700">
+              <label htmlFor="allowNegativeInventory" className="ml-2 text-[13px] text-gray-700">
                 Cho phép xuất âm tồn kho
               </label>
             </div>
@@ -223,7 +223,7 @@ const AccountingSettingsTab: React.FC = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-sm"
+                  className="inline-flex items-center justify-center px-4 sm:px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-[13px]"
             >
               <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Lưu

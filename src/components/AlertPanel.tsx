@@ -95,7 +95,7 @@ export default function AlertPanel() {
         ))}
       </div>
       <div className="mt-4 text-center">
-        <button className="text-sm text-red-600 hover:text-red-700 font-medium">
+        <button className="text-red-600 hover:text-red-700 font-medium">
           Xem tất cả cảnh báo
         </button>
       </div>

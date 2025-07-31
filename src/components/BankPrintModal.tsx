@@ -811,7 +811,7 @@ export default function BankPrintModal({ isOpen, onClose, data, companyInfo }: P
           <div className="p-6 space-y-6">
             {/* Language Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Chọn ngôn ngữ in</label>
+              <label className="block font-medium text-gray-700 mb-3">Chọn ngôn ngữ in</label>
               <div className="grid grid-cols-1 gap-3">
                 {languages.map((language) => (
                   <button
@@ -844,7 +844,7 @@ export default function BankPrintModal({ isOpen, onClose, data, companyInfo }: P
 
             {/* Print Options */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Thông tin báo cáo</label>
+              <label className="block font-medium text-gray-700 mb-3">Thông tin báo cáo</label>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-3">

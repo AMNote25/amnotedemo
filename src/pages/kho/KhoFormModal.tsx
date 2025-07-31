@@ -223,7 +223,7 @@ export default function KhoFormModal({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Mã sản phẩm */}
                 <div className="space-y-2">
-                  <label htmlFor="PRODUCT_CD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="PRODUCT_CD" className="block font-medium text-gray-700">
                     Mã sản phẩm <span className="text-red-500 ml-1">*</span>
                   </label>
                   <input
@@ -252,7 +252,7 @@ export default function KhoFormModal({
 
                 {/* Mã bộ phận */}
                 <div className="space-y-2">
-                  <label htmlFor="DivisionCD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="DivisionCD" className="block font-medium text-gray-700">
                     Mã bộ phận
                   </label>
                   <input
@@ -268,7 +268,7 @@ export default function KhoFormModal({
 
                 {/* Mã loại sản phẩm */}
                 <div className="space-y-2">
-                  <label htmlFor="PRODUCTKIND_CD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="PRODUCTKIND_CD" className="block font-medium text-gray-700">
                     Mã loại sản phẩm
                   </label>
                   <input
@@ -284,7 +284,7 @@ export default function KhoFormModal({
 
                 {/* Mã phòng ban */}
                 <div className="space-y-2">
-                  <label htmlFor="DepartmentCD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="DepartmentCD" className="block font-medium text-gray-700">
                     Mã phòng ban
                   </label>
                   <input
@@ -306,7 +306,7 @@ export default function KhoFormModal({
               <div className="grid grid-cols-1 gap-4">
                 {/* Tên sản phẩm (VI) */}
                 <div className="space-y-2">
-                  <label htmlFor="PRODUCT_NM" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="PRODUCT_NM" className="block font-medium text-gray-700">
                     Tên sản phẩm (VI) <span className="text-red-500 ml-1">*</span>
                   </label>
                   <input
@@ -335,7 +335,7 @@ export default function KhoFormModal({
 
                 {/* Tên sản phẩm (EN) */}
                 <div className="space-y-2">
-                  <label htmlFor="PRODUCT_NM_ENG" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="PRODUCT_NM_ENG" className="block font-medium text-gray-700">
                     Tên sản phẩm (EN)
                   </label>
                   <input
@@ -351,7 +351,7 @@ export default function KhoFormModal({
 
                 {/* Tên sản phẩm (KO) */}
                 <div className="space-y-2">
-                  <label htmlFor="PRODUCT_NM_KOR" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="PRODUCT_NM_KOR" className="block font-medium text-gray-700">
                     Tên sản phẩm (KO)
                   </label>
                   <input
@@ -372,7 +372,7 @@ export default function KhoFormModal({
               <h4 className="text-lg font-medium text-amber-900 mb-4">Đơn vị tính</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="InboundUnitCD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="InboundUnitCD" className="block font-medium text-gray-700">
                     Đơn vị nhập kho
                   </label>
                   <input
@@ -387,7 +387,7 @@ export default function KhoFormModal({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="OutboundUnitCD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="OutboundUnitCD" className="block font-medium text-gray-700">
                     Đơn vị xuất kho
                   </label>
                   <input
@@ -402,7 +402,7 @@ export default function KhoFormModal({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="materialInputUnitCD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="materialInputUnitCD" className="block font-medium text-gray-700">
                     Đơn vị nhập NVL
                   </label>
                   <input
@@ -417,7 +417,7 @@ export default function KhoFormModal({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="StockUnitCD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="StockUnitCD" className="block font-medium text-gray-700">
                     Đơn vị tồn kho
                   </label>
                   <input
@@ -438,7 +438,7 @@ export default function KhoFormModal({
               <h4 className="text-lg font-medium text-purple-900 mb-4">Số lượng và giá cả</h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="InboundQuantity" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="InboundQuantity" className="block font-medium text-gray-700">
                     Số lượng nhập kho
                   </label>
                   <input
@@ -453,7 +453,7 @@ export default function KhoFormModal({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="OutboundQuantity" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="OutboundQuantity" className="block font-medium text-gray-700">
                     Số lượng xuất kho
                   </label>
                   <input
@@ -468,7 +468,7 @@ export default function KhoFormModal({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="UnitPrice" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="UnitPrice" className="block font-medium text-gray-700">
                     Đơn giá
                   </label>
                   <input
@@ -489,7 +489,7 @@ export default function KhoFormModal({
               <h4 className="text-lg font-medium text-gray-900 mb-4">Thông tin bổ sung</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="StoreCD" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="StoreCD" className="block font-medium text-gray-700">
                     Mã kho lưu trữ
                   </label>
                   <input
@@ -504,7 +504,7 @@ export default function KhoFormModal({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="Origin" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="Origin" className="block font-medium text-gray-700">
                     Xuất xứ
                   </label>
                   <input
@@ -519,7 +519,7 @@ export default function KhoFormModal({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="rgUseNotUse" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="rgUseNotUse" className="block font-medium text-gray-700">
                     Sử dụng/Không sử dụng
                   </label>
                   <select
@@ -535,7 +535,7 @@ export default function KhoFormModal({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="HaveChildBOM" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="HaveChildBOM" className="block font-medium text-gray-700">
                     Có BOM con
                   </label>
                   <input
@@ -553,7 +553,7 @@ export default function KhoFormModal({
 
             {/* Ghi chú */}
             <div className="space-y-2">
-              <label htmlFor="txtSummary" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="txtSummary" className="block font-medium text-gray-700">
                 Ghi chú
               </label>
               <textarea

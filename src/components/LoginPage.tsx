@@ -102,7 +102,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
 
                   <form onSubmit={handleForgotPassword} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block font-medium text-gray-700 mb-2">
                         Email đăng ký
                       </label>
                       <input
@@ -224,7 +224,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Company Tax Code */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Mã số thuế công ty
                 </label>
                 <div className="relative">
@@ -242,7 +242,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
 
               {/* User ID */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   ID người dùng
                 </label>
                 <div className="relative">
@@ -259,7 +259,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
 
               {/* Password */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block font-medium text-gray-700 mb-2">
                   Mật khẩu
                 </label>
                 <div className="relative">

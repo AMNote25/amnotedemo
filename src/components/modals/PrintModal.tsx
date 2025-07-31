@@ -692,7 +692,7 @@ export default function PrintModal({ isOpen, onClose, data, config, companyInfo 
           <div className="p-6 space-y-6 flex-1 min-h-0 overflow-y-auto">
             {/* Language Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Chọn ngôn ngữ in</label>
+              <label className="block font-medium text-gray-700 mb-3">Chọn ngôn ngữ in</label>
               <div className="grid grid-cols-1 gap-3">
                 <div className="flex flex-col sm:flex-row gap-3 w-full">
                   {languages.map((language) => (
@@ -727,7 +727,7 @@ export default function PrintModal({ isOpen, onClose, data, config, companyInfo 
 
             {/* Print Options */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Thông tin báo cáo</label>
+              <label className="block font-medium text-gray-700 mb-3">Thông tin báo cáo</label>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-3">

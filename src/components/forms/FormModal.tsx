@@ -229,7 +229,7 @@ export default function FormModal({
 
       return (
         <div key={field.id} className="space-y-2">
-          <label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+          <label htmlFor={field.id} className="block font-medium text-gray-700">
             {field.label}
             {field.required && <span className="text-red-500 ml-1">*</span>}
           </label>

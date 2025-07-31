@@ -187,7 +187,7 @@ export default function MaterialGroupFormModal({
               <div className="grid grid-cols-1 gap-4">
                 {/* Tên nhóm vật tư */}
                 <div className="space-y-2">
-                  <label htmlFor="PRODUCTKIND_NM" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="PRODUCTKIND_NM" className="block font-medium text-gray-700">
                     Tên nhóm vật tư <span className="text-red-500 ml-1">*</span>
                   </label>
                   <input
@@ -216,7 +216,7 @@ export default function MaterialGroupFormModal({
 
                 {/* Tên nhóm vật tư (ENG) */}
                 <div className="space-y-2">
-                  <label htmlFor="PRODUCTKIND_NM_ENG" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="PRODUCTKIND_NM_ENG" className="block font-medium text-gray-700">
                     Tên nhóm vật tư (ENG)
                   </label>
                   <input
@@ -232,7 +232,7 @@ export default function MaterialGroupFormModal({
 
                 {/* Tên nhóm vật tư (KOR) */}
                 <div className="space-y-2">
-                  <label htmlFor="PRODUCTKIND_NM_KOR" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="PRODUCTKIND_NM_KOR" className="block font-medium text-gray-700">
                     Tên nhóm vật tư (KOR)
                   </label>
                   <input
@@ -254,7 +254,7 @@ export default function MaterialGroupFormModal({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Số lượng */}
                 <div className="space-y-2">
-                  <label htmlFor="COUNT" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="COUNT" className="block font-medium text-gray-700">
                     Số lượng
                   </label>
                   <input
@@ -284,7 +284,7 @@ export default function MaterialGroupFormModal({
 
                 {/* Ghi chú */}
                 <div className="space-y-2">
-                  <label htmlFor="REMARK" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="REMARK" className="block font-medium text-gray-700">
                     Ghi chú
                   </label>
                   <textarea
