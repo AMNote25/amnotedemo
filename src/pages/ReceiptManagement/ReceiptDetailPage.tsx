@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { TableSettings } from "@/components/table/TableSettings";
 import { useNavigate } from "react-router-dom";
-import { X, Save, Plus, ArrowLeft } from "lucide-react";
+import { X, Save, Plus, ArrowLeft, Filter } from "lucide-react";
 
 // Các trường chi tiết chứng từ mẫu, có thể chỉnh lại theo detail design
 const detailFields = [
@@ -18,17 +19,19 @@ const detailFields = [
   { id: "paymentDeadline", label: "Hạn thanh toán", required: true },
 ];
 
-const tableFields = [
-  { id: "customerName", label: "Tên khách hàng" },
-  { id: "customerCode", label: "Mã khách hàng" },
-  { id: "country", label: "Quốc gia" },
-  { id: "bankName", label: "Tên ngân hàng" },
-  { id: "managementCode", label: "Mã số quản lý" },
-  { id: "costObject", label: "Đối tượng tập hợp chi phí" },
-  { id: "noteCode", label: "Mã ghi chú" },
-  { id: "exchangeRate", label: "Tỷ giá giao dịch" },
-  { id: "contractNumber", label: "Số hợp đồng" },
-  { id: "costObject2", label: "Đối tượng tập hợp chi phí 2" },
+// Định nghĩa lại ColumnConfigLocal để tương thích TableSettings
+import type { ColumnConfig } from "@/types/table";
+const defaultColumns: ColumnConfig[] = [
+  { id: "customerName", dataField: "customerName", displayName: "Tên khách hàng", width: 150, visible: true, pinned: false, originalOrder: 0 },
+  { id: "customerCode", dataField: "customerCode", displayName: "Mã khách hàng", width: 120, visible: true, pinned: false, originalOrder: 1 },
+  { id: "country", dataField: "country", displayName: "Quốc gia", width: 100, visible: true, pinned: false, originalOrder: 2 },
+  { id: "bankName", dataField: "bankName", displayName: "Tên ngân hàng", width: 150, visible: true, pinned: false, originalOrder: 3 },
+  { id: "managementCode", dataField: "managementCode", displayName: "Mã số quản lý", width: 130, visible: true, pinned: false, originalOrder: 4 },
+  { id: "costObject", dataField: "costObject", displayName: "Đối tượng tập hợp chi phí", width: 180, visible: true, pinned: false, originalOrder: 5 },
+  { id: "noteCode", dataField: "noteCode", displayName: "Mã ghi chú", width: 120, visible: true, pinned: false, originalOrder: 6 },
+  { id: "exchangeRate", dataField: "exchangeRate", displayName: "Tỷ giá giao dịch", width: 120, visible: true, pinned: false, originalOrder: 7 },
+  { id: "contractNumber", dataField: "contractNumber", displayName: "Số hợp đồng", width: 140, visible: true, pinned: false, originalOrder: 8 },
+  { id: "costObject2", dataField: "costObject2", displayName: "Đối tượng tập hợp chi phí 2", width: 180, visible: true, pinned: false, originalOrder: 9 },
 ];
 
 export default function ReceiptDetailPage() {
@@ -36,6 +39,20 @@ export default function ReceiptDetailPage() {
   const [form, setForm] = useState<any>({});
   const [details, setDetails] = useState<any[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  // Cấu hình cột động
+  const [columns, setColumns] = useState<ColumnConfig[]>(defaultColumns);
+  const [showSettings, setShowSettings] = useState<boolean>(false);
+  // Sticky positions (nếu có ghim cột)
+  const stickyPositions = {};
+
+  // Hàm cập nhật cột (visible, width, pinned, displayName...)
+  const handleColumnChange = (columnId: string, field: keyof ColumnConfig, value: any) => {
+    setColumns(cols => cols.map(col =>
+      col.id === columnId ? { ...col, [field]: value } : col
+    ));
+  };
+  // Đặt lại về mặc định
+  const handleResetColumns = () => setColumns(defaultColumns);
 
   const handleChange = (id: string, value: any) => {
     setForm((prev: any) => ({ ...prev, [id]: value }));
@@ -60,7 +77,7 @@ export default function ReceiptDetailPage() {
   };
 
   return (
-    <div className="w-full mx-auto p-6 text-sm">
+    <div className="w-full mx-auto  text-sm">
       {/* Nút quay lại */}
       <div className="mb-4">
         <button
@@ -111,14 +128,43 @@ export default function ReceiptDetailPage() {
 
       {/* Bảng danh sách chi tiết */}
       <div className="bg-white rounded-xl shadow p-6">
-        <h2 className="text-lg font-semibold mb-4">Danh sách chi tiết chứng từ</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Danh sách chi tiết chứng từ</h2>
+          {/* Nút mở popup cài đặt cột dạng slide phải */}
+          <button
+            onClick={() => setShowSettings(true)}
+            className="p-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors relative group"
+            title="Cài đặt cột"
+            aria-label="Cài đặt cột"
+            type="button"
+          >
+            <Filter size={20} />
+            {/* Tooltip */}
+            <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-50 px-2 py-1 rounded bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition-all">
+              Cài đặt cột
+            </span>
+          </button>
+          {showSettings && (
+            <TableSettings
+              columns={columns}
+              onColumnChange={handleColumnChange}
+              onClose={() => setShowSettings(false)}
+              onReset={handleResetColumns}
+              stickyPositions={stickyPositions}
+            />
+          )}
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full border border-gray-200 text-sm">
             <thead className="bg-gray-100">
               <tr>
-                {tableFields.map((field) => (
-                  <th key={field.id} className="px-3 py-2 border-b text-xs font-semibold text-gray-700 text-left">
-                    {field.label}
+                {columns.filter(c => c.visible).map(col => (
+                  <th
+                    key={col.id}
+                    className="px-3 py-2 border-b text-xs font-semibold text-gray-700 text-left"
+                    style={{ width: `${col.width}px`, minWidth: `${col.width}px` }}
+                  >
+                    {col.displayName}
                   </th>
                 ))}
               </tr>
@@ -126,14 +172,18 @@ export default function ReceiptDetailPage() {
             <tbody>
               {details.length === 0 && (
                 <tr>
-                  {tableFields.map((field) => (
-                    <td key={field.id} className="px-3 py-2 border border-gray-300 text-sm bg-white">
+                  {columns.filter(c => c.visible).map(col => (
+                    <td
+                      key={col.id}
+                      className="px-3 py-2 border border-gray-300 text-sm bg-white"
+                      style={{ width: `${col.width}px`, minWidth: `${col.width}px` }}
+                    >
                       <input
                         type="text"
-                        placeholder={`Nhập ${field.label}`}
-                        onChange={(e) => {
-                          const newRow = tableFields.reduce<Record<string, string>>((acc, f) => {
-                            acc[f.id] = f.id === field.id ? e.target.value : "";
+                        placeholder={`Nhập ${col.displayName}`}
+                        onChange={e => {
+                          const newRow = columns.reduce<Record<string, string>>((acc, c) => {
+                            acc[c.id] = c.id === col.id ? e.target.value : "";
                             return acc;
                           }, {});
                           setDetails([newRow]);
@@ -146,14 +196,18 @@ export default function ReceiptDetailPage() {
               )}
               {details.map((row, idx) => (
                 <tr key={idx} className="hover:bg-blue-50">
-                  {tableFields.map((field) => (
-                    <td key={field.id} className="px-3 py-2 border border-gray-300 text-sm bg-white">
+                  {columns.filter(c => c.visible).map(col => (
+                    <td
+                      key={col.id}
+                      className="px-3 py-2 border border-gray-300 text-sm bg-white"
+                      style={{ width: `${col.width}px`, minWidth: `${col.width}px` }}
+                    >
                       <input
                         type="text"
-                        value={row[field.id] || ""}
-                        onChange={(e) => {
+                        value={row[col.id] || ""}
+                        onChange={e => {
                           const updatedDetails = [...details];
-                          updatedDetails[idx][field.id] = e.target.value;
+                          updatedDetails[idx][col.id] = e.target.value;
                           setDetails(updatedDetails);
                         }}
                         className="w-full border-none focus:outline-none"

@@ -112,7 +112,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
   return (
     <div className="h-[calc(100vh-100px)] flex flex-col">
       {/* Tiêu đề và các nút action */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-200 flex justify-between items-center">
+      <div className="flex-shrink-0 pb-4 border-b border-gray-200 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
           <p className="text-sm text-gray-500 mt-1">Click vào một dòng để xem thông tin chi tiết</p>
@@ -178,7 +178,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew }: ReceiptTwoViewTa
                     key={receipt.id}
                     onClick={() => handleRowClick(receipt)}
                     className={`group hover:bg-gray-50 transition-colors cursor-pointer ${
-                      selectedReceipt?.id === receipt.id ? 'bg-blue-100' : ''
+                      selectedReceipt?.id === receipt.id ? 'bg-gray-100' : ''
                     }`}
                     title="Click để xem chi tiết"
                   >
