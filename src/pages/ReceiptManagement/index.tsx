@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import ReceiptTwoViewPage from "./ReceiptTwoViewPage";
 import { useNavigate } from "react-router-dom";
+import ReceiptTwoViewTable from "./ReceiptTwoViewTable";
 
 
 interface Receipt {
@@ -84,7 +84,7 @@ export default function ReceiptManagementPage() {
 
   return (
     <div className="">
-      <ReceiptTwoViewPage />
+      <ReceiptTwoViewTable data={data} />
     </div>
   );
 }
