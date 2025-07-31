@@ -162,7 +162,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
         </div>
-        <div className="mt-4 flex space-x-2">
+        <div className="m-2 flex space-x-2">
           <button className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" title="In ấn">
             <Printer className="w-5 h-5" />
           </button>
@@ -206,7 +206,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
         </div>
 
         {/* Bảng 1 (List View) */}
-        <div className="flex-shrink-0 h-[200px] md:h-[300px]">
+        <div className="flex-shrink-0" style={{height: '33vh'}}>
           <div className="relative h-full overflow-y-auto">
             <table className="min-w-full table-auto text-sm">
               <thead className="sticky top-0 z-1000 bg-[#f5f5f5] border-b border-[#e0e0e0] text-[#212121]">
@@ -270,12 +270,12 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
         {/* Bảng 2 (Detail View) */}
         <div className="h-auto md:flex-1 overflow-auto border-t border-gray-200">
           <table className="min-w-full table-auto">
-            <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121] whitespace-nowrap text-sm" style={{ fontSize: '13px' }}>
+            <thead className="bg-[#f5f5f5] border-t border-b border-l border-gray-300 text-[#212121] whitespace-nowrap text-sm" >
               <tr>
                 {detailViewColumns.map((column) => (
                   <th
                     key={column.dataField}
-                    className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]"
+                    className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t  border-b border-[#e0e0e0] text-[#212121]"
                   >
                     {column.displayName}
                   </th>
@@ -304,7 +304,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
                     {detailViewColumns.map((column) => (
                       <td
                         key={column.dataField}
-                        className="px-4 py-3 group-hover:bg-gray-50"
+                        className="px-4 py-3 group-hover:bg-gray-50 h-[44px]"
                       >
                         {/* Để trống */}
                       </td>

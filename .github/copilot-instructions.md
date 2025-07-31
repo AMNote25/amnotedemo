@@ -1,35 +1,94 @@
-# Amnote Accounting Software - Custom Instructions
+# 📌 Amnote Accounting Software – Custom Copilot Instructions
 
-- **Luôn tuân thủ file detail design**: Mọi code, giao diện và logic phải bám sát mô tả chi tiết đã được duyệt trong tài liệu detail design.
+## 🎯 Nguyên tắc chung
+- ✅ **Luôn tuân thủ tài liệu Detail Design**: Mọi code, giao diện, logic nghiệp vụ **phải bám sát 100% mô tả trong tài liệu thiết kế chi tiết** đã được duyệt.
+- ✅ **Tất cả phản hồi, code ví dụ, ghi chú phải bằng tiếng Việt** để đồng bộ với đội dự án.
+- ✅ **Không được viết code phá vỡ UI/UX gốc**:  
+  - Không tự ý đổi layout, bỏ qua các logic đặc thù.  
+  - Không dùng code tắt/shortcut làm mất cấu trúc hoặc giảm tính chuẩn hóa của dự án.  
 
-- **Luôn phản hồi bằng tiếng Việt**: Copilot chỉ trả lời và sinh mã ví dụ bằng tiếng Việt để tối ưu cho đội dự án.
+---
 
-- **Tránh code làm sai hoặc phá vỡ design**: Không sinh mã thay đổi cấu trúc UI/UX so với thiết kế gốc, không sử dụng mã tắt, code nhanh làm mất bố cục hoặc logic đặc thù của giao diện.
-Các input khi hover là border màu xanh dương, khi lỗi là border màu đỏ
+## 🖥️ Cấu trúc trang & chức năng bắt buộc
+Mỗi module/trang phải có đầy đủ:
+- ➕ **Thêm mới (Create)**  
+- ✏️ **Sửa (Update)**  
+- ❌ **Xóa (Delete)**  
+- 🖨️ **In ấn (Print)**  
+- ⬆️⬇️ **Nhập/Xuất Excel (Import/Export)**  
+- 🔄 **Reload, filter, cài đặt cột** theo trải nghiệm đã chuẩn hóa từ các trang dữ liệu khác.
 
-- **Cấu trúc trang chuẩn hóa**: Mỗi module/trang bắt buộc có đủ chức năng:
-  - Thêm mới (Create)
-  - Sửa (Update)
-  - Xóa (Delete)
-  - In ấn (Print)
-  - Nhập, xuất Excel (Import/Export)
-  - Khác nhau ở link API và các trường dữ liệu, layout giữ nguyên mẫu.
+📌 **Khi tạo trang mới:**  
+- **Copy cấu trúc từ trang mẫu** → chỉnh API, fields và logic theo detail design.  
+- **Không dựng UI từ đầu** để tránh lệch chuẩn.
 
-- **Sao chép trang mới**: Khi tạo trang mới, chỉ cần copy các file cấu trúc cũ; điều chỉnh link API, fields và logic nghiệp vụ dựa trên detail design, không dựng từ đầu.
+---
 
-- **Sử dụng Tailwind CSS**: Mọi thành phần giao diện mới đều phải áp dụng Tailwind CSS. Không sử dụng CSS hoặc thư viện ngoài khác cho phần giao diện.
+## 🎨 Quy định UI/UX
+### 🔹 Input:
+- Font: `Noto Sans`, size `13px`.
+- Hover: `border-blue-500`.
+- Lỗi: `border-red-500`.
 
-- **Luôn đảm bảo phát triển các màn hình nhập excel, xác thực dữ liệu và giao diện thân thiện với người dùng. Xuất excel phải đồng bộ tiêu chuẩn.**
+### 🔹 Button:
+- Style mặc định:  
+  - Nền: trắng  
+  - Border: `#ccc`  
+  - Màu chữ: `#666`  
+  - Hover: `bg-blue-600`, `border-blue-600`, chữ trắng  
+- Font: `Noto Sans`, size `13px`.
 
-- **Các thao tác liên quan tới quản lý dữ liệu (reload, filter, cài đặt cột...) phải đồng bộ trải nghiệm, sao chép logic từ các trang dữ liệu đã tồn tại.**
-- ** Hãy hỏi lại tôi các câu làm rõ đến khi bạn không chắc chắn về 95% có thể hoàn thành tốt nhiệm vụ.**
-- ** Một người thuộc 0,1% trong lĩnh vực này sẽ nghĩ thế nào về code của bạn? Hãy tự hỏi bản thân câu này trước khi gửi code.**
-- ** Hãy trình bày theo cách khiến tôi có thể hiểu được logic của bạn. Nếu bạn không thể giải thích rõ ràng, hãy xem lại code của mình.**
-- ** Style button chung là: Nền trắng, border #ccc, màu chữ #666,  hover:bg-blue-600 và border cùng màu bg chữ trắng. **
-- ** Font chữ chung là Noto Sans, size 13px. Các tiêu đề lớn hơn có thể dùng Noto Sans Bold.**
-- ** Font chữ cho các input là Noto Sans, size 13px. Các tiêu đề lớn hơn có thể dùng Inter Bold.**
-- ** Font chữ header là Noto Sans, size 16px. Các tiêu đề lớn hơn có thể dùng Noto Sans Bold.**
-- ** Màu sắc của header của table là bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[#212121]
-- ** Font size của table header là 13px, font weight là 600.**
-- ** Màu sắc của các ô trong table là bg-white, border-b border-[#e0e0e0] text-[#212121].**
-- ** Font size của các ô trong table là 13px, font weight là 400.**
+### 🔹 Header:
+- Font: `Noto Sans`, size `16px` (hoặc `Noto Sans Bold` cho tiêu đề lớn).
+
+### 🔹 Table:
+- Header:  
+  - BG: `#f5f5f5`  
+  - Border: `#e0e0e0`  
+  - Text: `#212121`  
+  - Font size: `13px`, weight `600`.
+- Cell:  
+  - BG: `white`  
+  - Border bottom: `#e0e0e0`  
+  - Text: `#212121`  
+  - Font size: `13px`, weight `400`.
+
+---
+
+## 🛠️ Code & Dev Rules
+- **Sử dụng Tailwind CSS** cho tất cả giao diện. **Không dùng CSS thuần hoặc thư viện ngoài.**
+- API endpoint **phải lấy từ file config chung**. Không hard-code trong component.
+- Code phải **có comment giải thích logic** nếu phức tạp.
+- Trước khi commit:
+  - 🧪 Viết test case cho CRUD + Import/Export.
+  - ✅ Tự kiểm tra: *"Một người thuộc 0.1% giỏi nhất ngành sẽ nghĩ gì về code này?"*
+- Tất cả các chức năng Excel (nhập/xuất) **phải đồng bộ tiêu chuẩn và có xác thực dữ liệu thân thiện với người dùng.**
+
+---
+
+## 🌐 Responsive
+- Bắt buộc hỗ trợ **desktop + tablet** theo layout chuẩn dự án.  
+- Ưu tiên **grid + flex Tailwind** để đảm bảo thích ứng.  
+
+---
+
+## 🔄 Quy trình Git & Review
+- **Branching theo Git Flow:**  
+  - `feature/*` → `develop` → `release/*` → `main`.  
+- **Không commit trực tiếp vào main**.  
+- Mọi merge phải qua **ít nhất 1 lần code review**.
+
+---
+
+## ✅ Checklist trước khi bàn giao module
+- [ ] Bám sát detail design 100%.  
+- [ ] UI/UX theo đúng guideline (font, màu sắc, hover, lỗi).  
+- [ ] Có đủ CRUD + Print + Import/Export.  
+- [ ] API dùng config chung.  
+- [ ] Test case CRUD + Excel đầy đủ.  
+- [ ] Responsive đúng chuẩn.  
+- [ ] Code qua review trước merge.  
+
+---
+
+📌 **Note:** Nếu có bất kỳ điểm nào chưa rõ > 5%, **phải hỏi lại trước khi code**. Luôn đảm bảo có thể giải thích logic một cách rõ ràng. Nếu không giải thích được, **xem lại code trước khi gửi.**

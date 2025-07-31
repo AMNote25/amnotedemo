@@ -9,8 +9,6 @@ const detailFields = [
   { id: "date", label: "Tại ngày", required: true },
   { id: "categoryName", label: "Tên danh mục", required: true },
   { id: "reference", label: "Tham chiếu", required: false },
-  { id: "status", label: "Tình trạng tự động chèn vào", required: false },
-  { id: "recipient", label: "Người nhận tiền/người nộp tiền", required: true },
   { id: "fullName", label: "Họ và tên", required: true },
   { id: "email", label: "Email", required: false },
   { id: "displayColumns", label: "Cột hiển thị", required: false },
@@ -123,11 +121,11 @@ return (
       {/* Form nhập chi tiết chứng từ */}
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         <h2 className="text-lg font-semibold mb-4">Chi tiết chứng từ</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-3">
+        <div className="grid grid-cols-1 2xl:grid-cols-3 md:grid-cols-2 gap-x-8 gap-y-3">
           {detailFields.filter(field => field.id !== "displayColumns").map((field) => (
             <div key={field.id} className="flex flex-col md:flex-row md:items-center">
               <label
-                className="mb-1 md:mb-0 w-full md:w-40 md:min-w-[120px] md:text-right md:pr-3 font-medium text-gray-700 text-[13px] relative group cursor-pointer"
+                className="mb-1 md:mb-0 w-full md:w-40 md:min-w-[120px] md:text-left md:pr-3 font-medium text-gray-700 text-[13px] relative group cursor-pointer"
               >
                 {field.label}{field.required && <span className="text-red-500 ml-1">*</span>}
                 {/* Tooltip */}
@@ -147,7 +145,7 @@ return (
         <div className="flex justify-end mt-4 gap-2">
           <button
             type="button"
-            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-green-600 hover:border-green-600 hover:text-white transition-colors text-[13px]"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
             // TODO: Thêm logic thu tiền khách hàng
           >
             <Banknote className="w-5 h-5" />
@@ -155,7 +153,7 @@ return (
           </button>
           <button
             type="button"
-            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-yellow-600 hover:border-yellow-600 hover:text-white transition-colors text-[13px]"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
             // TODO: Thêm logic thanh toán chứng từ
           >
             <Receipt className="w-5 h-5" />
@@ -202,12 +200,12 @@ return (
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full border border-gray-200">
-            <thead className="bg-[#f5f5f5] border-t border-b border-[#e0e0e0] text-[13px]">
+            <thead className="bg-[#f5f5f5] border-t border-b border-gray-300 text-[13px]">
               <tr>
                 {columns.filter(c => c.visible).map(col => (
                   <th
                     key={col.id}
-                    className="px-3 py-2 font-semibold text-[#212121] border-b border-[#e0e0e0] text-left text-[13px]"
+                    className="px-3 py-2 font-semibold text-[#212121] border-b border-l border-gray-300 text-left text-[13px]"
                     style={{ width: `${col.width}px`, minWidth: `${col.width}px`, ...getHeaderColumnStyle(col) }}
                   >
                     {col.displayName}

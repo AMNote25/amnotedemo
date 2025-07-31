@@ -1,3 +1,8 @@
+@media (min-width: 1536px) and (max-width: 1400px) {
+  .max-2xl\:max-w-\[1400px\]\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 /* Đảm bảo toàn bộ button, input, select, optgroup, textarea dùng font-size 13px */
 button, input, select, optgroup, textarea, label {
   font-size: 13px !important;
@@ -15,6 +20,7 @@ html, body {
 }
 body {
   font-size: 13px !important;
+  line-height: 1.4;
 }
 
 /* Đảm bảo toàn bộ bảng dùng font-size 13px */
