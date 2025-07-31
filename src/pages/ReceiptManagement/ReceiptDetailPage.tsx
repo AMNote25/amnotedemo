@@ -91,17 +91,23 @@ export default function ReceiptDetailPage() {
       {/* Form nhập chi tiết chứng từ */}
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         <h2 className="text-lg font-semibold mb-4">Chi tiết chứng từ</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-3">
           {detailFields.map((field) => (
-            <div key={field.id} className="flex flex-col">
-              <label className="font-medium text-gray-700 mb-1 text-sm">
+            <div key={field.id} className="flex items-center">
+              <label
+                className="w-40 min-w-[120px] text-right pr-3 font-medium text-gray-700 text-sm truncate whitespace-nowrap overflow-hidden relative group cursor-pointer"
+              >
                 {field.label}{field.required && <span className="text-red-500 ml-1">*</span>}
+                {/* Tooltip */}
+                <span className="absolute left-1/2 top-full z-50 mt-1 px-2 py-1 rounded bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition-all -translate-x-1/2">
+                  {field.label}
+                </span>
               </label>
               <input
                 type="text"
                 value={form[field.id] || ""}
                 onChange={e => handleChange(field.id, e.target.value)}
-                className="border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-sm"
+                className="flex-1 border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-sm"
               />
             </div>
           ))}
