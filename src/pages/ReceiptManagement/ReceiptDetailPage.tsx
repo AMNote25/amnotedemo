@@ -320,77 +320,149 @@ export default function ReceiptDetailPage() {
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         {/* Form nhập chi tiết chứng từ */}
         <h2 className="text-lg font-semibold mb-4">Chi tiết chứng từ</h2>
-        <div className="grid grid-cols-1 2xl:grid-cols-3 md:grid-cols-2 gap-x-8 gap-y-3">
-          {detailFields.filter(field => field.id !== "displayColumns" && !field.multilingual).map((field) => (
-            <div key={field.id} className="flex flex-col md:flex-row md:items-center">
-              <label
-                className="mb-1 md:mb-0 w-full md:w-40 md:min-w-[120px] md:text-left md:pr-3 font-medium text-gray-700 text-[13px] relative group cursor-pointer"
-              >
-                {field.label}{field.required && <span className="text-red-500 ml-1">*</span>}
-                {/* Tooltip */}
-                <span className="absolute left-1/2 top-full z-50 mt-1 px-2 py-1 rounded bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition-all -translate-x-1/2">
-                  {field.label}
-                </span>
+        <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 gap-6">
+          {/* Cột 1: 40% (4/10) */}
+          <div className="col-span-1 max-xl:col-span-2 sm:col-span-1 space-y-3">
+            {/* Họ và tên */}
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                Họ và tên <span className="text-red-500 ml-1">*</span>
               </label>
               <input
-                type={field.id === "date" || field.id === "paymentDeadline" ? "date" : "text"}
-                value={form[field.id] || ""}
-                onChange={e => handleChange(field.id, e.target.value)}
-                className="w-full md:flex-1 border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
-                placeholder={field.label}
+                type="text"
+                value={form.fullName || ""}
+                onChange={e => handleChange("fullName", e.target.value)}
+                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+                placeholder="Họ và tên"
               />
             </div>
-          ))}
-        </div>
-        
-        {/* Trường đa ngôn ngữ - hiển thị dưới cùng */}
-        {detailFields.filter(field => field.multilingual).map((field) => (
-          <div key={field.id} className="mt-6">
-            {/* Heading cho Mô tả 1 */}
-            <div className="font-bold text-[13px] text-gray-800 mb-2">{field.label}</div>
-            <div className="flex flex-col md:flex-row md:gap-x-8 gap-y-3">
-              {/* Tiếng Việt */}
-              <div className="flex flex-col md:flex-row md:items-center flex-1">
-                <label className="mb-1 md:mb-0 w-full md:w-40 md:min-w-[120px] md:text-left md:pr-3 font-medium text-gray-700 text-[13px]">
-                  Tiếng Việt{field.required && <span className="text-red-500 ml-1">*</span>}
+            {/* Email */}
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                Email
+              </label>
+              <input
+                type="text"
+                value={form.email || ""}
+                onChange={e => handleChange("email", e.target.value)}
+                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+                placeholder="Email"
+              />
+            </div>
+            {/* Tên danh mục */}
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                Tên danh mục <span className="text-red-500 ml-1">*</span>
+              </label>
+              <input
+                type="text"
+                value={form.categoryName || ""}
+                onChange={e => handleChange("categoryName", e.target.value)}
+                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+                placeholder="Tên danh mục"
+              />
+            </div>
+          </div>
+
+          {/* Cột 2: 40% (4/10) */}
+          <div className="col-span-1 max-xl:col-span-2 sm:col-span-1 space-y-3">
+            {/* Tham chiếu */}
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                Tham chiếu
+              </label>
+              <input
+                type="text"
+                value={form.reference || ""}
+                onChange={e => handleChange("reference", e.target.value)}
+                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+                placeholder="Tham chiếu"
+              />
+            </div>
+            {/* Ghi chú */}
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                Ghi chú
+              </label>
+              <input
+                type="text"
+                value={form.note || ""}
+                onChange={e => handleChange("note", e.target.value)}
+                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+                placeholder="Ghi chú"
+              />
+            </div>
+            {/* Mô tả 1 */}
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                Mô tả 1
+              </label>
+              <input
+                type="text"
+                value={form.description1 || ""}
+                onChange={e => handleChange("description1", e.target.value)}
+                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+                placeholder="Mô tả 1"
+              />
+            </div>
+          </div>
+
+          {/* Cột 3: 20% (2/10) */}
+          <div className="col-span-1 max-xl:col-span-2 sm:col-span-1 space-y-3">
+            {/* Số chứng từ */}
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                Số chứng từ <span className="text-red-500 ml-1">*</span>
+              </label>
+              <input
+                type="text"
+                value={form.soChungTu || ""}
+                onChange={e => handleChange("soChungTu", e.target.value)}
+                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+                placeholder="Số chứng từ"
+              />
+            </div>
+            {/* Tại ngày */}
+            <div className="flex flex-col">
+              <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                Tại ngày <span className="text-red-500 ml-1">*</span>
+              </label>
+              <input
+                type="date"
+                value={form.date || ""}
+                onChange={e => handleChange("date", e.target.value)}
+                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+              />
+            </div>
+            {/* Số ngày nợ (70%) và Hạn thanh toán (30%) cùng 1 dòng */}
+            <div className="flex gap-2">
+              <div className="flex flex-col flex-1" style={{flexBasis: "70%"}}>
+                <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                  Số ngày nợ
                 </label>
                 <input
                   type="text"
-                  value={multilingualFields[field.id]?.vi || ""}
-                  onChange={e => handleMultilingualChange(field.id, 'vi', e.target.value)}
-                  className="w-full md:flex-1 border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
-                  placeholder="Nhập mô tả bằng tiếng Việt"
+                  value={form.debtDate || ""}
+                  onChange={e => handleChange("debtDate", e.target.value)}
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
+                  placeholder="Số ngày nợ"
                 />
               </div>
-              {/* English */}
-              <div className="flex flex-col md:flex-row md:items-center flex-1">
-                <label className="mb-1 md:mb-0 w-full md:w-40 md:min-w-[120px] md:text-left md:pr-3 font-medium text-gray-700 text-[13px]">
-                  English
+              <div className="flex flex-col flex-1" style={{flexBasis: "30%"}}>
+                <label className="mb-1 font-medium text-gray-700 text-[13px]">
+                  Hạn thanh toán <span className="text-red-500 ml-1">*</span>
                 </label>
                 <input
-                  type="text"
-                  value={multilingualFields[field.id]?.en || ""}
-                  onChange={e => handleMultilingualChange(field.id, 'en', e.target.value)}
-                  className="w-full md:flex-1 border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
-                  placeholder="Enter description in English"
-                />
-              </div>
-              {/* 한국어 */}
-              <div className="flex flex-col md:flex-row md:items-center flex-1">
-                <label className="mb-1 md:mb-0 w-full md:w-40 md:min-w-[120px] md:text-left md:pr-3 font-medium text-gray-700 text-[13px]">
-                  한국어
-                </label>
-                <input
-                  type="text"
-                  value={multilingualFields[field.id]?.ko || ""}
-                  onChange={e => handleMultilingualChange(field.id, 'ko', e.target.value)}
-                  className="w-full md:flex-1 border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
-                  placeholder="한국어로 설명을 입력하세요"
+                  type="date"
+                  value={form.paymentDeadline || ""}
+                  onChange={e => handleChange("paymentDeadline", e.target.value)}
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
                 />
               </div>
             </div>
           </div>
-        ))}
+        </div>
+        
         <div className="flex justify-end mt-4 gap-2">
           <button
             type="button"
