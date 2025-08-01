@@ -3,14 +3,16 @@ import { useState, useRef, useEffect } from "react";
 import { TableSettings } from "@/components/table/TableSettings";
 import { useNavigate } from "react-router-dom";
 import { Save, Plus, ArrowLeft, Filter, Banknote, Receipt } from "lucide-react";
+import { TableToolbar } from "@/components/table/TableToolbar";
+import Pagination from "@/components/table/Pagination";
 
 // Các trường chi tiết chứng từ mẫu, có thể chỉnh lại theo detail design
 const detailFields = [
+  { id: "fullName", label: "Họ và tên", required: true },
   { id: "soChungTu", label: "Số chứng từ", required: true },
   { id: "date", label: "Tại ngày", required: true },
   { id: "categoryName", label: "Tên danh mục", required: true },
   { id: "reference", label: "Tham chiếu", required: false },
-  { id: "fullName", label: "Họ và tên", required: true },
   { id: "email", label: "Email", required: false },
   { id: "displayColumns", label: "Cột hiển thị", required: false },
   { id: "note", label: "Ghi chú", required: false },
@@ -22,20 +24,20 @@ const detailFields = [
 // Định nghĩa lại ColumnConfigLocal để tương thích TableSettings
 import type { ColumnConfig } from "@/types/table";
 const defaultColumns: ColumnConfig[] = [
-  { id: "soChungTu", dataField: "soChungTu", displayName: "Số chứng từ", width: 120, visible: true, pinned: false, originalOrder: 0 },
-  { id: "ngayGiaoDich", dataField: "ngayGiaoDich", displayName: "Ngày giao dịch", width: 120, visible: true, pinned: false, originalOrder: 1 },
-  { id: "soHoaDon", dataField: "soHoaDon", displayName: "Số hóa đơn", width: 120, visible: true, pinned: false, originalOrder: 2 },
-  { id: "ngayHoaDon", dataField: "ngayHoaDon", displayName: "Ngày hóa đơn", width: 120, visible: true, pinned: false, originalOrder: 3 },
-  { id: "moTa", dataField: "moTa", displayName: "Mô tả", width: 200, visible: true, pinned: false, originalOrder: 4 },
-  { id: "hanThanhToan", dataField: "hanThanhToan", displayName: "Hạn thanh toán", width: 130, visible: true, pinned: false, originalOrder: 5 },
-  { id: "soTien", dataField: "soTien", displayName: "Số tiền", width: 120, visible: true, pinned: false, originalOrder: 6 },
-  { id: "soTienConLai", dataField: "soTienConLai", displayName: "Số tiền còn lại", width: 130, visible: true, pinned: false, originalOrder: 7 },
-  { id: "soTienTra", dataField: "soTienTra", displayName: "Số tiền trả", width: 120, visible: true, pinned: false, originalOrder: 8 },
-  { id: "customerName", dataField: "customerName", displayName: "Tên khách hàng", width: 150, visible: true, pinned: false, originalOrder: 9 },
-  { id: "customerCode", dataField: "customerCode", displayName: "Mã khách hàng", width: 120, visible: true, pinned: false, originalOrder: 10 },
-  { id: "country", dataField: "country", displayName: "Quốc gia", width: 100, visible: true, pinned: false, originalOrder: 11 },
-  { id: "bankName", dataField: "bankName", displayName: "Tên ngân hàng", width: 150, visible: true, pinned: false, originalOrder: 12 },
-  { id: "managementCode", dataField: "managementCode", displayName: "Mã số quản lý", width: 130, visible: true, pinned: false, originalOrder: 13 },
+  { id: "customerName", dataField: "customerName", displayName: "Tên khách hàng", width: 150, visible: true, pinned: false, originalOrder: 0 },
+  { id: "customerCode", dataField: "customerCode", displayName: "Mã khách hàng", width: 120, visible: true, pinned: false, originalOrder: 1 },
+  { id: "country", dataField: "country", displayName: "Quốc gia", width: 100, visible: true, pinned: false, originalOrder: 2 },
+  { id: "bankName", dataField: "bankName", displayName: "Tên ngân hàng", width: 150, visible: true, pinned: false, originalOrder: 3 },
+  { id: "managementCode", dataField: "managementCode", displayName: "Mã số quản lý", width: 130, visible: true, pinned: false, originalOrder: 4 },
+  { id: "soChungTu", dataField: "soChungTu", displayName: "Số chứng từ", width: 120, visible: true, pinned: false, originalOrder: 5 },
+  { id: "ngayGiaoDich", dataField: "ngayGiaoDich", displayName: "Ngày giao dịch", width: 120, visible: true, pinned: false, originalOrder: 6 },
+  { id: "soHoaDon", dataField: "soHoaDon", displayName: "Số hóa đơn", width: 120, visible: true, pinned: false, originalOrder: 7 },
+  { id: "ngayHoaDon", dataField: "ngayHoaDon", displayName: "Ngày hóa đơn", width: 120, visible: true, pinned: false, originalOrder: 8 },
+  { id: "moTa", dataField: "moTa", displayName: "Mô tả", width: 200, visible: true, pinned: false, originalOrder: 9 },
+  { id: "hanThanhToan", dataField: "hanThanhToan", displayName: "Hạn thanh toán", width: 130, visible: true, pinned: false, originalOrder: 10 },
+  { id: "soTien", dataField: "soTien", displayName: "Số tiền", width: 120, visible: true, pinned: false, originalOrder: 11 },
+  { id: "soTienConLai", dataField: "soTienConLai", displayName: "Số tiền còn lại", width: 130, visible: true, pinned: false, originalOrder: 12 },
+  { id: "soTienTra", dataField: "soTienTra", displayName: "Số tiền trả", width: 120, visible: true, pinned: false, originalOrder: 13 },
   { id: "costObject", dataField: "costObject", displayName: "Đối tượng tập hợp chi phí", width: 180, visible: true, pinned: false, originalOrder: 14 },
   { id: "noteCode", dataField: "noteCode", displayName: "Mã ghi chú", width: 120, visible: true, pinned: false, originalOrder: 15 },
   { id: "exchangeRate", dataField: "exchangeRate", displayName: "Tỷ giá giao dịch", width: 120, visible: true, pinned: false, originalOrder: 16 },
@@ -44,6 +46,39 @@ const defaultColumns: ColumnConfig[] = [
 ];
 
 export default function ReceiptDetailPage() {
+  // Danh sách khách hàng mẫu (khai báo đầu function để các state và logic phía dưới dùng được)
+  const [customerList] = useState([
+    { id: 1, customerName: "Công ty TNHH ABC", customerCode: "KH001", country: "Việt Nam", bankName: "Vietcombank", managementCode: "VCB001" },
+    { id: 2, customerName: "Công ty CP XYZ", customerCode: "KH002", country: "Hàn Quốc", bankName: "Shinhan Bank", managementCode: "SHB002" },
+    { id: 3, customerName: "Tập đoàn DEF", customerCode: "KH003", country: "Nhật Bản", bankName: "MUFG Bank", managementCode: "MUFG003" },
+    { id: 4, customerName: "Doanh nghiệp GHI", customerCode: "KH004", country: "Thái Lan", bankName: "Bangkok Bank", managementCode: "BBL004" },
+    { id: 5, customerName: "Công ty JKL Co., Ltd", customerCode: "KH005", country: "Singapore", bankName: "DBS Bank", managementCode: "DBS005" }
+  ]);
+  // State cho popup khách hàng
+
+  // State cho search và phân trang popup khách hàng
+  const [customerSearchTerm, setCustomerSearchTerm] = useState("");
+  const [customerPage, setCustomerPage] = useState(1);
+  const [customerItemsPerPage, setCustomerItemsPerPage] = useState(10);
+
+  // Lọc danh sách khách hàng theo search
+  const filteredCustomerList = customerList.filter((c: any) => {
+    const term = customerSearchTerm.trim().toLowerCase();
+    if (!term) return true;
+    return (
+      c.customerName.toLowerCase().includes(term) ||
+      c.customerCode.toLowerCase().includes(term) ||
+      c.country.toLowerCase().includes(term) ||
+      c.bankName.toLowerCase().includes(term) ||
+      c.managementCode.toLowerCase().includes(term)
+    );
+  });
+
+  // Phân trang
+  const customerTotalPages = Math.max(1, Math.ceil(filteredCustomerList.length / customerItemsPerPage));
+  const customerStartIndex = (customerPage - 1) * customerItemsPerPage;
+  const customerEndIndex = customerStartIndex + customerItemsPerPage;
+  const pagedCustomerList = filteredCustomerList.slice(customerStartIndex, customerEndIndex);
   // Hàm lưu phiếu thu và chi tiết
   const handleSave = () => {
     // TODO: Gọi API lưu phiếu thu và chi tiết
@@ -64,13 +99,6 @@ export default function ReceiptDetailPage() {
   // State cho popup khách hàng
   const [showCustomerPopup, setShowCustomerPopup] = useState(false);
   const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(null);
-  const [customerList] = useState([
-    { id: 1, customerName: "Công ty TNHH ABC", customerCode: "KH001", country: "Việt Nam", bankName: "Vietcombank", managementCode: "VCB001" },
-    { id: 2, customerName: "Công ty CP XYZ", customerCode: "KH002", country: "Hàn Quốc", bankName: "Shinhan Bank", managementCode: "SHB002" },
-    { id: 3, customerName: "Tập đoàn DEF", customerCode: "KH003", country: "Nhật Bản", bankName: "MUFG Bank", managementCode: "MUFG003" },
-    { id: 4, customerName: "Doanh nghiệp GHI", customerCode: "KH004", country: "Thái Lan", bankName: "Bangkok Bank", managementCode: "BBL004" },
-    { id: 5, customerName: "Công ty JKL Co., Ltd", customerCode: "KH005", country: "Singapore", bankName: "DBS Bank", managementCode: "DBS005" }
-  ]);
   // State cho popup thanh toán chứng từ
   const [showPaymentPopup, setShowPaymentPopup] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('VND');
@@ -81,12 +109,20 @@ export default function ReceiptDetailPage() {
   const [customerDebts, setCustomerDebts] = useState<any[]>([]);
   const [hideDebt, setHideDebt] = useState(false);
   const [selectedDebtIds, setSelectedDebtIds] = useState<number[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<string>("");
   
   // Dữ liệu mẫu chứng từ công nợ
+  // Lấy ngày hôm nay dạng yyyy-mm-dd
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+
   const debtList = [
-    { id: 1, customerId: 1, soChungTu: "CT001", ngayGiaoDich: "2024-01-15", soHoaDon: "HD001", ngayHoaDon: "2024-01-15", moTa: "Thanh toán hàng hóa", hanThanhToan: "2024-02-15", soTien: 50000000, soTienConLai: 30000000, soTienTra: 0 },
-    { id: 2, customerId: 1, soChungTu: "CT002", ngayGiaoDich: "2024-01-20", soHoaDon: "HD002", ngayHoaDon: "2024-01-20", moTa: "Dịch vụ tư vấn", hanThanhToan: "2024-02-20", soTien: 25000000, soTienConLai: 25000000, soTienTra: 0 },
-    { id: 3, customerId: 2, soChungTu: "CT003", ngayGiaoDich: "2024-01-25", soHoaDon: "HD003", ngayHoaDon: "2024-01-25", moTa: "Xuất khẩu sản phẩm", hanThanhToan: "2024-02-25", soTien: 75000000, soTienConLai: 75000000, soTienTra: 0 },
+    { id: 1, customerId: 1, soChungTu: "CT001", ngayGiaoDich: todayStr, soHoaDon: "HD001", ngayHoaDon: todayStr, moTa: "Thanh toán hàng hóa", hanThanhToan: todayStr, soTien: 50000000, soTienConLai: 30000000, soTienTra: 0 },
+    { id: 2, customerId: 1, soChungTu: "CT002", ngayGiaoDich: todayStr, soHoaDon: "HD002", ngayHoaDon: todayStr, moTa: "Dịch vụ tư vấn", hanThanhToan: todayStr, soTien: 25000000, soTienConLai: 25000000, soTienTra: 0 },
+    { id: 3, customerId: 2, soChungTu: "CT003", ngayGiaoDich: todayStr, soHoaDon: "HD003", ngayHoaDon: todayStr, moTa: "Xuất khẩu sản phẩm", hanThanhToan: todayStr, soTien: 75000000, soTienConLai: 75000000, soTienTra: 0 },
   ];
   
   const exchangeRates = {
@@ -140,7 +176,7 @@ export default function ReceiptDetailPage() {
   const handleResetColumns = () => setColumns(defaultColumns);
 
   const handleChange = (id: string, value: any) => {
-    setForm((prev: any) => ({ ...prev, [id]: value }));
+    setForm((prev: Record<string, any>) => ({ ...prev, [id]: value }));
   };
 
   // Hàm xử lý thay đổi cho trường đa ngôn ngữ
@@ -170,7 +206,7 @@ export default function ReceiptDetailPage() {
       setDetails(updatedDetails);
     }
     // Điền luôn Họ và tên trên form nhập chi tiết
-    setForm(prev => ({ ...prev, fullName: customer.customerName }));
+    setForm((prev: Record<string, any>) => ({ ...prev, fullName: customer.customerName }));
     setShowCustomerPopup(false);
     setSelectedRowIndex(null);
   };
@@ -237,7 +273,36 @@ export default function ReceiptDetailPage() {
     setForm({});
   };
 
-  // ...existing code...
+  // State lưu lỗi từng trường ở popup thanh toán chứng từ
+  const [searchErrors, setSearchErrors] = useState<{ [key: string]: string }>({});
+
+  // Hàm tìm kiếm popup Thanh toán chứng từ
+  const handleSearch = () => {
+    const errors: { [key: string]: string } = {};
+    if (!selectedCustomer) errors.selectedCustomer = "Vui lòng chọn khách hàng";
+    if (!selectedCurrency) errors.selectedCurrency = "Vui lòng chọn loại tiền";
+    if (!startDate) errors.startDate = "Vui lòng nhập từ ngày";
+    if (!endDate) errors.endDate = "Vui lòng nhập đến ngày";
+    setSearchErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
+    // Tìm khách hàng theo selectedCustomer
+    const customer = customerList.find(c => String(c.id) === String(selectedCustomer));
+    setSelectedPaymentCustomer(customer || null);
+
+    // Lọc chứng từ công nợ theo khách hàng
+    if (customer) {
+      let customerDebtList = debtList.filter(debt => debt.customerId === customer.id);
+      // Lọc theo ngày giao dịch
+      customerDebtList = customerDebtList.filter(debt => debt.ngayGiaoDich >= startDate && debt.ngayGiaoDich <= endDate);
+      // Có thể bổ sung lọc theo loại tiền nếu cần
+      setCustomerDebts(customerDebtList);
+    } else {
+      setCustomerDebts([]);
+    }
+    // Reset các chứng từ đã chọn khi tìm kiếm mới
+    setSelectedDebtIds([]);
+  };
 
   return (
     <div className="w-full mx-auto text-[13px]">
@@ -532,7 +597,7 @@ export default function ReceiptDetailPage() {
         {/* Popup chọn khách hàng */}
         {showCustomerPopup && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-lg w-11/12 max-w-4xl max-h-[80vh] overflow-hidden">
+            <div className="bg-white rounded-xl shadow-lg w-11/12 max-w-4xl max-h-[80vh] overflow-hidden flex flex-col">
               <div className="p-6 border-b border-gray-200">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold">Chọn khách hàng</h3>
@@ -544,7 +609,19 @@ export default function ReceiptDetailPage() {
                   </button>
                 </div>
               </div>
-              <div className="p-6 overflow-y-auto max-h-[60vh]">
+              {/* Search toolbar */}
+              <div className="">
+                {/* Sử dụng TableToolbar cho search */}
+                <TableToolbar
+                  searchTerm={customerSearchTerm}
+                  onSearch={setCustomerSearchTerm}
+                  isRefreshing={false}
+                  onRefresh={async () => {}}
+                  onSettings={() => {}}
+                  selectedCount={0}
+                />
+              </div>
+              <div className="p-6 pt-0 overflow-y-auto max-h-[40vh]">
                 <div className="overflow-x-auto">
                   <table className="min-w-full border border-gray-200">
                     <thead className="bg-[#f5f5f5]">
@@ -558,7 +635,7 @@ export default function ReceiptDetailPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {customerList.map((customer) => (
+                      {pagedCustomerList.map((customer: any) => (
                         <tr key={customer.id} className="hover:bg-blue-50">
                           <td className="px-3 py-2 text-[13px] border-b border-gray-300">{customer.customerName}</td>
                           <td className="px-3 py-2 text-[13px] border-b border-gray-300">{customer.customerCode}</td>
@@ -578,6 +655,19 @@ export default function ReceiptDetailPage() {
                     </tbody>
                   </table>
                 </div>
+              </div>
+              {/* Pagination dưới bảng */}
+              <div className="">
+                <Pagination
+                  currentPage={customerPage}
+                  totalPages={customerTotalPages}
+                  totalItems={filteredCustomerList.length}
+                  itemsPerPage={customerItemsPerPage}
+                  onPageChange={setCustomerPage}
+                  onItemsPerPageChange={setCustomerItemsPerPage}
+                  startIndex={customerStartIndex}
+                  endIndex={customerEndIndex}
+                />
               </div>
             </div>
           </div>
@@ -602,102 +692,171 @@ export default function ReceiptDetailPage() {
               <div className="p-6 overflow-y-auto max-h-[80vh]">
                 {/* Phần trên - Bộ lọc */}
                 <div className="bg-gray-50 p-4 rounded-lg mb-6">
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    {/* Chọn loại tiền */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Khách hàng */}
                     <div>
-                      <label className="block text-[13px] font-medium text-gray-700 mb-1">Loại tiền</label>
+                      <label className="block text-[13px] font-medium text-gray-700 mb-1">Khách hàng <span className="text-red-500">*</span></label>
                       <select
-                        value={selectedCurrency}
-                        onChange={e => setSelectedCurrency(e.target.value)}
-                        className="w-full border rounded-md px-3 py-2 text-[13px] focus:outline-none focus:border-blue-500"
+                        value={selectedCustomer}
+                        onChange={e => {
+                          setSelectedCustomer(e.target.value);
+                          setSearchErrors(prev => ({ ...prev, selectedCustomer: "" }));
+                        }}
+                        className={`w-full border rounded-md px-3 py-2 text-[13px] focus:outline-none focus:border-blue-500 ${searchErrors.selectedCustomer ? "border-red-500 bg-red-50" : "border-gray-300"}`}
                       >
-                        <option value="VND">VND</option>
-                        <option value="USD">USD</option>
-                        <option value="BOTH">Cả hai</option>
+                        <option value="">Tìm kiếm khách hàng...</option>
+                        {customerList.map(customer => (
+                          <option key={customer.id} value={customer.id}>{customer.customerName}</option>
+                        ))}
                       </select>
+                      {searchErrors.selectedCustomer && (
+                        <div className="text-red-500 text-xs mt-1">{searchErrors.selectedCustomer}</div>
+                      )}
                     </div>
-                    
-                    {/* Chọn loại tiền khác */}
-                    <div>
-                      <label className="block text-[13px] font-medium text-gray-700 mb-1">Tiền tệ khác</label>
-                      <select
-                        value={selectedOtherCurrency}
-                        onChange={e => setSelectedOtherCurrency(e.target.value)}
-                        className="w-full border rounded-md px-3 py-2 text-[13px] focus:outline-none focus:border-blue-500"
-                      >
-                        <option value="">Chọn tiền tệ</option>
-                        <option value="KRW">Won Hàn Quốc (KRW)</option>
-                        <option value="SGD">Dollar Singapore (SGD)</option>
-                        <option value="CNY">Nhân dân tệ (CNY)</option>
-                        <option value="THB">Baht Thái Lan (THB)</option>
-                      </select>
+
+                    {/* Loại tiền */}
+                    <div className="flex flex-col">
+                      <label className="mb-2 font-semibold text-gray-700 text-[13px]">Loại tiền <span className="text-red-500">*</span></label>
+                      <div className="flex items-center gap-6 flex-wrap">
+                        {/* Checkbox VND */}
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="currency"
+                            value="VND"
+                            checked={selectedCurrency === "VND"}
+                            onChange={() => {
+                              setSelectedCurrency("VND");
+                              setSearchErrors(prev => ({ ...prev, selectedCurrency: "" }));
+                            }}
+                            className={`w-4 h-4 accent-blue-600 ${searchErrors.selectedCurrency ? "border-red-500" : ""}`}
+                          />
+                          <span className="text-[13px]">VND</span>
+                        </label>
+                        {/* Checkbox USD hoặc ngoại tệ */}
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="currency"
+                            value="USD"
+                            checked={selectedCurrency === "USD" || ["KRW","SGD","CNY","THB"].includes(selectedCurrency)}
+                            onChange={() => {
+                              setSelectedCurrency("USD");
+                              setSelectedOtherCurrency("");
+                              setSearchErrors(prev => ({ ...prev, selectedCurrency: "" }));
+                            }}
+                            className={`w-4 h-4 accent-blue-600 ${searchErrors.selectedCurrency ? "border-red-500" : ""}`}
+                          />
+                          <span className="text-[13px]">{["KRW","SGD","CNY","THB"].includes(selectedCurrency) ? selectedCurrency : "USD"}</span>
+                          {(selectedCurrency === "USD" || ["KRW","SGD","CNY","THB"].includes(selectedCurrency)) && (
+                            <select
+                              value={selectedOtherCurrency}
+                              onChange={e => {
+                                const val = e.target.value;
+                                setSelectedOtherCurrency(val);
+                                if (val) {
+                                  setSelectedCurrency(val); // Đổi selectedCurrency thành loại ngoại tệ đã chọn
+                                } else {
+                                  setSelectedCurrency("USD"); // Nếu chọn lại rỗng thì về USD
+                                }
+                              }}
+                              className="ml-2 border border-gray-300 rounded px-2 py-1 text-[13px] bg-white w-[120px] focus:outline-none focus:border-blue-500"
+                            >
+                              <option value="">Chọn loại ngoại tệ</option>
+                              <option value="KRW">KRW 🇰🇷</option>
+                              <option value="SGD">SGD 🇸🇬</option>
+                              <option value="CNY">CNY 🇨🇳</option>
+                              <option value="THB">THB 🇹🇭</option>
+                            </select>
+                          )}
+                        </label>
+                        {/* Checkbox Cả hai */}
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="currency"
+                            value="BOTH"
+                            checked={selectedCurrency === "BOTH"}
+                            onChange={() => {
+                              setSelectedCurrency("BOTH");
+                              setSearchErrors(prev => ({ ...prev, selectedCurrency: "" }));
+                              setSelectedOtherCurrency("");
+                            }}
+                            className={`w-4 h-4 accent-blue-600 ${searchErrors.selectedCurrency ? "border-red-500" : ""}`}
+                          />
+                          <span className="text-[13px]">
+                            {selectedCurrency === "BOTH" && selectedOtherCurrency
+                              ? `Cả hai (VND & ${selectedOtherCurrency})`
+                              : "Cả hai (VND & USD)"}
+                          </span>
+                          {selectedCurrency === "BOTH" && (
+                            <select
+                              value={selectedOtherCurrency}
+                              onChange={e => setSelectedOtherCurrency(e.target.value)}
+                              className="ml-2 border border-gray-300 rounded px-2 py-1 text-[13px] bg-white w-[120px] focus:outline-none focus:border-blue-500"
+                            >
+                              <option value="">Chọn loại ngoại tệ</option>
+                              <option value="KRW">KRW 🇰🇷</option>
+                              <option value="SGD">SGD 🇸🇬</option>
+                              <option value="CNY">CNY 🇨🇳</option>
+                              <option value="THB">THB 🇹🇭</option>
+                            </select>
+                          )}
+                        </label>
+                      </div>
+                      {searchErrors.selectedCurrency && (
+                        <div className="text-red-500 text-xs mt-1">{searchErrors.selectedCurrency}</div>
+                      )}
                     </div>
-                    
-                    {/* Ngày bắt đầu */}
+
+                    {/* Ngày giao dịch */}
                     <div>
-                      <label className="block text-[13px] font-medium text-gray-700 mb-1">Từ ngày</label>
+                      <label className="block text-[13px] font-medium text-gray-700 mb-1">Từ ngày <span className="text-red-500">*</span></label>
                       <input
                         type="date"
                         value={startDate}
-                        onChange={e => setStartDate(e.target.value)}
-                        className="w-full border rounded-md px-3 py-2 text-[13px] focus:outline-none focus:border-blue-500"
+                        onChange={e => {
+                          setStartDate(e.target.value);
+                          setSearchErrors(prev => ({ ...prev, startDate: "" }));
+                        }}
+                        className={`w-full border rounded-md px-3 py-2 text-[13px] focus:outline-none focus:border-blue-500 ${searchErrors.startDate ? "border-red-500 bg-red-50" : "border-gray-300"}`}
                       />
+                      {searchErrors.startDate && (
+                        <div className="text-red-500 text-xs mt-1">{searchErrors.startDate}</div>
+                      )}
                     </div>
-                    
-                    {/* Ngày kết thúc */}
                     <div>
-                      <label className="block text-[13px] font-medium text-gray-700 mb-1">Đến ngày</label>
+                      <label className="block text-[13px] font-medium text-gray-700 mb-1">Đến ngày <span className="text-red-500">*</span></label>
                       <input
                         type="date"
                         value={endDate}
-                        onChange={e => setEndDate(e.target.value)}
-                        className="w-full border rounded-md px-3 py-2 text-[13px] focus:outline-none focus:border-blue-500"
+                        onChange={e => {
+                          setEndDate(e.target.value);
+                          setSearchErrors(prev => ({ ...prev, endDate: "" }));
+                        }}
+                        className={`w-full border rounded-md px-3 py-2 text-[13px] focus:outline-none focus:border-blue-500 ${searchErrors.endDate ? "border-red-500 bg-red-50" : "border-gray-300"}`}
                       />
+                      {searchErrors.endDate && (
+                        <div className="text-red-500 text-xs mt-1">{searchErrors.endDate}</div>
+                      )}
                     </div>
+                  </div>
+
+                  {/* Button tìm kiếm chuẩn hóa UI/UX */}
+                  <div className="flex justify-end mt-4">
+                    <button
+                      onClick={handleSearch}
+                      className="flex items-center gap-2 px-5 py-2 rounded-lg border border-blue-600 bg-blue-600 text-white text-[13px] font-[Noto Sans] font-semibold shadow hover:bg-blue-700 hover:border-blue-700 transition-colors"
+                      type="button"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" /></svg>
+                      <span>Tìm kiếm</span>
+                    </button>
                   </div>
                 </div>
 
                 {/* Phần dưới - Chọn khách hàng */}
-                <div className="mb-6">
-                  <h4 className="text-[14px] font-semibold mb-3">Chọn khách hàng</h4>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full border border-gray-200">
-                      <thead className="bg-[#f5f5f5]">
-                        <tr>
-                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Chọn</th>
-                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Tên khách hàng</th>
-                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Mã khách hàng</th>
-                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Quốc gia</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {customerList.map((customer) => (
-                          <tr
-                            key={customer.id}
-                            className={`hover:bg-blue-50 cursor-pointer ${
-                              selectedPaymentCustomer?.id === customer.id ? 'bg-blue-100' : ''
-                            }`}
-                            onClick={() => handleSelectPaymentCustomer(customer)}
-                          >
-                            <td className="px-3 py-2 text-[13px] border-b border-gray-300">
-                              <input
-                                type="radio"
-                                checked={selectedPaymentCustomer?.id === customer.id}
-                                onChange={() => handleSelectPaymentCustomer(customer)}
-                                className="w-4 h-4"
-                              />
-                            </td>
-                            <td className="px-3 py-2 text-[13px] border-b border-gray-300">{customer.customerName}</td>
-                            <td className="px-3 py-2 text-[13px] border-b border-gray-300">{customer.customerCode}</td>
-                            <td className="px-3 py-2 text-[13px] border-b border-gray-300">{customer.country}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Danh sách chứng từ công nợ */}
+                {/* Đã bỏ table chọn khách hàng, chỉ hiển thị sau khi tìm kiếm và có khách hàng được chọn */}
                 {selectedPaymentCustomer && customerDebts.length > 0 && (
                   <div className="mb-6">
                     <h4 className="text-[14px] font-semibold mb-3">
@@ -707,7 +866,20 @@ export default function ReceiptDetailPage() {
                       <table className="min-w-full border border-gray-200">
                         <thead className="bg-[#f5f5f5]">
                           <tr>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Chọn</th>
+                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">
+                              <input
+                                type="checkbox"
+                                checked={customerDebts.length > 0 && selectedDebtIds.length === customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).length}
+                                onChange={e => {
+                                  if (e.target.checked) {
+                                    setSelectedDebtIds(customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).map(debt => debt.id));
+                                  } else {
+                                    setSelectedDebtIds([]);
+                                  }
+                                }}
+                                className="w-4 h-4"
+                              />
+                            </th>
                             <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số chứng từ</th>
                             <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Ngày giao dịch</th>
                             <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số hóa đơn</th>
@@ -720,41 +892,48 @@ export default function ReceiptDetailPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          {customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).map((debt) => (
-                            <tr key={debt.id} className="hover:bg-blue-50">
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">
-                                <input
-                                  type="checkbox"
-                                  checked={selectedDebtIds.includes(debt.id)}
-                                  onChange={() => handleSelectDebt(debt.id)}
-                                  className="w-4 h-4"
-                                />
-                              </td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soChungTu}</td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.ngayGiaoDich}</td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soHoaDon}</td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.ngayHoaDon}</td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.moTa}</td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.hanThanhToan}</td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soTien.toLocaleString()}</td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soTienConLai.toLocaleString()}</td>
-                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">
-                                <input
-                                  type="number"
-                                  value={debt.soTienTra}
-                                  onChange={(e) => {
-                                    const updatedDebts = customerDebts.map(d =>
-                                      d.id === debt.id ? { ...d, soTienTra: Number(e.target.value) } : d
-                                    );
-                                    setCustomerDebts(updatedDebts);
-                                  }}
-                                  className="w-full border rounded px-2 py-1 text-[13px]"
-                                  min="0"
-                                  max={debt.soTienConLai}
-                                />
-                              </td>
+                          {/* Ẩn dữ liệu chứng từ công nợ cho đến khi search */}
+                          {(!startDate && !endDate && !selectedCustomer && !selectedCurrency) ? (
+                            <tr>
+                              <td colSpan={10} className="text-center text-gray-400 py-6">Vui lòng nhập thông tin tìm kiếm để hiển thị chứng từ công nợ.</td>
                             </tr>
-                          ))}
+                          ) : (
+                            customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).map((debt) => (
+                              <tr key={debt.id} className="hover:bg-blue-50">
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedDebtIds.includes(debt.id)}
+                                    onChange={() => handleSelectDebt(debt.id)}
+                                    className="w-4 h-4"
+                                  />
+                                </td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soChungTu}</td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.ngayGiaoDich}</td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soHoaDon}</td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.ngayHoaDon}</td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.moTa}</td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.hanThanhToan}</td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soTien.toLocaleString()}</td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soTienConLai.toLocaleString()}</td>
+                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">
+                                  <input
+                                    type="number"
+                                    value={debt.soTienTra}
+                                    onChange={(e) => {
+                                      const updatedDebts = customerDebts.map(d =>
+                                        d.id === debt.id ? { ...d, soTienTra: Number(e.target.value) } : d
+                                      );
+                                      setCustomerDebts(updatedDebts);
+                                    }}
+                                    className="w-full border rounded px-2 py-1 text-[13px]"
+                                    min="0"
+                                    max={debt.soTienConLai}
+                                  />
+                                </td>
+                              </tr>
+                            ))
+                          )}
                         </tbody>
                       </table>
                     </div>
@@ -766,31 +945,22 @@ export default function ReceiptDetailPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setHideDebt(!hideDebt)}
-                      className={`px-4 py-2 rounded text-[13px] border transition-colors ${
-                        hideDebt
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
-                      }`}
+                      className={`px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:bg-blue-600 hover:border-blue-600 hover:text-white ${hideDebt ? 'bg-blue-600 border-blue-600 text-white' : ''}`}
                     >
                       {hideDebt ? 'Hiện tất cả' : 'Ẩn công nợ'}
                     </button>
                   </div>
-                  
                   <div className="flex gap-2">
                     <button
                       onClick={() => setShowPaymentPopup(false)}
-                      className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-[13px]"
+                      className="px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:bg-blue-600 hover:border-blue-600 hover:text-white"
                     >
                       Hủy
                     </button>
                     <button
                       onClick={handlePayment}
                       disabled={selectedDebtIds.length === 0}
-                      className={`px-4 py-2 rounded text-[13px] ${
-                        selectedDebtIds.length > 0
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      }`}
+                      className={`px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:bg-blue-600 hover:border-blue-600 hover:text-white ${selectedDebtIds.length > 0 ? '' : 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300 hover:bg-gray-300 hover:border-gray-300 hover:text-gray-500'}`}
                     >
                       Thanh toán
                     </button>
