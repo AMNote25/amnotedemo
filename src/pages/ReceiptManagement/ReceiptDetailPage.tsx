@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { TableSettings } from "@/components/table/TableSettings";
 import { useNavigate } from "react-router-dom";
-import { Save, Plus, ArrowLeft, Filter, Banknote, Receipt } from "lucide-react";
+import { Save, Plus, ArrowLeft, Filter, Banknote, Receipt, X } from "lucide-react";
 import { TableToolbar } from "@/components/table/TableToolbar";
 import Pagination from "@/components/table/Pagination";
 
@@ -312,7 +312,7 @@ export default function ReceiptDetailPage() {
           onClick={() => navigate(-1)}
           className="inline-flex items-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-4 h-4" />
           Quay lại danh sách
         </button>
       </div>
@@ -418,6 +418,11 @@ export default function ReceiptDetailPage() {
                 type="text"
                 value={form.soChungTu || ""}
                 onChange={e => handleChange("soChungTu", e.target.value)}
+                onBlur={() => {
+                  if (!form.soChungTu) {
+                    handleChange("soChungTu", `AUTO-${Date.now()}`);
+                  }
+                }}
                 className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 border-gray-300 transition-colors text-[13px]"
                 placeholder="Số chứng từ"
               />
@@ -469,7 +474,7 @@ export default function ReceiptDetailPage() {
             className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
             // TODO: Thêm logic thu tiền khách hàng
           >
-            <Banknote className="w-5 h-5" />
+            <Banknote className="w-4 h-4" />
             <span className="hidden sm:inline">Thu tiền khách hàng</span>
           </button>
           <button
@@ -477,7 +482,7 @@ export default function ReceiptDetailPage() {
             className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
             onClick={handleOpenPaymentPopup}
           >
-            <Receipt className="w-5 h-5" />
+            <Receipt className="w-4 h-4" />
             <span className="hidden sm:inline">Thanh toán chứng từ</span>
           </button>
           <button
@@ -485,7 +490,7 @@ export default function ReceiptDetailPage() {
             className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
             title={editingIndex !== null ? "Cập nhật dòng" : "Thêm dòng"}
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">{editingIndex !== null ? "Cập nhật" : "Thêm"}</span>
           </button>
         </div>
@@ -677,7 +682,7 @@ export default function ReceiptDetailPage() {
                     onClick={() => setShowCustomerPopup(false)}
                     className="text-gray-500 hover:text-gray-700 text-xl font-bold"
                   >
-                    ×
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -756,7 +761,7 @@ export default function ReceiptDetailPage() {
                     onClick={() => setShowPaymentPopup(false)}
                     className="text-gray-500 hover:text-gray-700 text-xl font-bold"
                   >
-                    ×
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </div>

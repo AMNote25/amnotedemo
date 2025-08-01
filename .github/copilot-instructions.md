@@ -54,6 +54,7 @@ Mỗi module/trang phải có đầy đủ:
   - Font size: `13px`, weight `400`.
 
 ---
+Icon: Sử dụng thư viện: lucide-react cho toàn bộ icon. Style icon: Thêm class w-4 h-4 cho tất cả các icon để đảm bảo kích thước đồng nhất, tránh icon quá to hoặc quá nhỏ. Không sử dụng icon ngoài hoặc SVG tự tạo.
 
 ## 🛠️ Code & Dev Rules
 - **Sử dụng Tailwind CSS** cho tất cả giao diện. **Không dùng CSS thuần hoặc thư viện ngoài.**
