@@ -356,23 +356,22 @@ function SidebarMenuNode({
               )}</>
             </span>
           </div>
-          {hasChildren && !isSearching && (
-            <span
-              className={`transition-transform duration-200 cursor-pointer ${isExpanded ? 'rotate-180' : ''}`}
-              onClick={handleToggle}
-            >
-              <ChevronDown size={14} className={level === 0 && isActive && !isSearching ? 'text-white' : 'text-gray-400 hover:text-red-400'} />
-            </span>
-          )}
-          {hasChildren && isSearching && (
-            <span
-              className={`transition-transform duration-200 cursor-pointer ${isExpanded ? 'rotate-180' : ''}`}
-              onClick={handleToggle}
-            >
-              <ChevronDown size={14} className="text-gray-400 hover:text-red-400" />
-            </span>
-          )}
         </button>
+        {hasChildren && (
+          <button
+            onClick={handleToggle}
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded transition-all duration-200 z-20 ${
+              level === 0 && isActive && !isSearching 
+                ? 'text-white hover:bg-white hover:bg-opacity-20' 
+                : 'text-gray-400 hover:text-red-400 hover:bg-gray-100'
+            }`}
+          >
+            <ChevronDown 
+              size={14} 
+              className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+            />
+          </button>
+        )}
       </div>
       {hasChildren && isExpanded && (
         <div className="relative">
