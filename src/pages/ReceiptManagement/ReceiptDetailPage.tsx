@@ -856,89 +856,88 @@ export default function ReceiptDetailPage() {
                 </div>
 
                 {/* Phần dưới - Chọn khách hàng */}
-                {/* Đã bỏ table chọn khách hàng, chỉ hiển thị sau khi tìm kiếm và có khách hàng được chọn */}
-                {selectedPaymentCustomer && customerDebts.length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="text-[14px] font-semibold mb-3">
-                      Chứng từ công nợ của {selectedPaymentCustomer.customerName}
-                    </h4>
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full border border-gray-200">
-                        <thead className="bg-[#f5f5f5]">
+                {/* Luôn hiển thị bảng chứng từ công nợ của ... */}
+                <div className="mb-6">
+                  <h4 className="text-[14px] font-semibold mb-3">
+                    Chứng từ công nợ của {selectedPaymentCustomer ? selectedPaymentCustomer.customerName : "..."}
+                  </h4>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full border border-gray-200">
+                      <thead className="bg-[#f5f5f5]">
+                        <tr>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">
+                            <input
+                              type="checkbox"
+                              checked={customerDebts.length > 0 && selectedDebtIds.length === customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).length}
+                              onChange={e => {
+                                if (e.target.checked) {
+                                  setSelectedDebtIds(customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).map(debt => debt.id));
+                                } else {
+                                  setSelectedDebtIds([]);
+                                }
+                              }}
+                              className="w-4 h-4"
+                              disabled={customerDebts.length === 0}
+                            />
+                          </th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số chứng từ</th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Ngày giao dịch</th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số hóa đơn</th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Ngày hóa đơn</th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Mô tả</th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Hạn thanh toán</th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số tiền</th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số tiền còn lại</th>
+                          <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số tiền trả</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Nếu chưa có khách hàng hoặc chưa search, luôn show 1 dòng trống */}
+                        {(selectedPaymentCustomer === null || customerDebts.length === 0) ? (
                           <tr>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">
-                              <input
-                                type="checkbox"
-                                checked={customerDebts.length > 0 && selectedDebtIds.length === customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).length}
-                                onChange={e => {
-                                  if (e.target.checked) {
-                                    setSelectedDebtIds(customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).map(debt => debt.id));
-                                  } else {
-                                    setSelectedDebtIds([]);
-                                  }
-                                }}
-                                className="w-4 h-4"
-                              />
-                            </th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số chứng từ</th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Ngày giao dịch</th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số hóa đơn</th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Ngày hóa đơn</th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Mô tả</th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Hạn thanh toán</th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số tiền</th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số tiền còn lại</th>
-                            <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">Số tiền trả</th>
+                            <td colSpan={10} className="text-center text-gray-400 py-6">{/* Dòng trống */}</td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {/* Ẩn dữ liệu chứng từ công nợ cho đến khi search */}
-                          {(!startDate && !endDate && !selectedCustomer && !selectedCurrency) ? (
-                            <tr>
-                              <td colSpan={10} className="text-center text-gray-400 py-6">Vui lòng nhập thông tin tìm kiếm để hiển thị chứng từ công nợ.</td>
+                        ) : (
+                          customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).map((debt) => (
+                            <tr key={debt.id} className="hover:bg-blue-50">
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedDebtIds.includes(debt.id)}
+                                  onChange={() => handleSelectDebt(debt.id)}
+                                  className="w-4 h-4"
+                                />
+                              </td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soChungTu}</td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.ngayGiaoDich}</td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soHoaDon}</td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.ngayHoaDon}</td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.moTa}</td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.hanThanhToan}</td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soTien.toLocaleString()}</td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soTienConLai.toLocaleString()}</td>
+                              <td className="px-3 py-2 text-[13px] border-b border-gray-300">
+                                <input
+                                  type="number"
+                                  value={debt.soTienTra}
+                                  onChange={(e) => {
+                                    const updatedDebts = customerDebts.map(d =>
+                                      d.id === debt.id ? { ...d, soTienTra: Number(e.target.value) } : d
+                                    );
+                                    setCustomerDebts(updatedDebts);
+                                  }}
+                                  className="w-full border rounded px-2 py-1 text-[13px]"
+                                  min="0"
+                                  max={debt.soTienConLai}
+                                />
+                              </td>
                             </tr>
-                          ) : (
-                            customerDebts.filter(debt => !hideDebt || debt.soTienConLai > 0).map((debt) => (
-                              <tr key={debt.id} className="hover:bg-blue-50">
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedDebtIds.includes(debt.id)}
-                                    onChange={() => handleSelectDebt(debt.id)}
-                                    className="w-4 h-4"
-                                  />
-                                </td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soChungTu}</td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.ngayGiaoDich}</td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soHoaDon}</td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.ngayHoaDon}</td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.moTa}</td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.hanThanhToan}</td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soTien.toLocaleString()}</td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">{debt.soTienConLai.toLocaleString()}</td>
-                                <td className="px-3 py-2 text-[13px] border-b border-gray-300">
-                                  <input
-                                    type="number"
-                                    value={debt.soTienTra}
-                                    onChange={(e) => {
-                                      const updatedDebts = customerDebts.map(d =>
-                                        d.id === debt.id ? { ...d, soTienTra: Number(e.target.value) } : d
-                                      );
-                                      setCustomerDebts(updatedDebts);
-                                    }}
-                                    className="w-full border rounded px-2 py-1 text-[13px]"
-                                    min="0"
-                                    max={debt.soTienConLai}
-                                  />
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
                   </div>
-                )}
+                </div>
 
                 {/* Nút hành động */}
                 <div className="flex justify-between items-center">
