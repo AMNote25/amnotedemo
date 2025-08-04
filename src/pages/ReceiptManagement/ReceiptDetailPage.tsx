@@ -320,9 +320,9 @@ export default function ReceiptDetailPage() {
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         {/* Form nhập chi tiết chứng từ */}
         <h2 className="text-lg font-semibold mb-4">Chi tiết chứng từ</h2>
-        <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 gap-6">
-          {/* Cột 1: 40% (4/10) */}
-          <div className="col-span-1 max-xl:col-span-2 sm:col-span-1 space-y-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          {/* Nhóm 1 */}
+          <div className="space-y-3">
             {/* Họ và tên */}
             <div className="flex flex-col">
               <label className="mb-1 font-medium text-gray-700 text-[13px]">
@@ -364,8 +364,8 @@ export default function ReceiptDetailPage() {
             </div>
           </div>
 
-          {/* Cột 2: 40% (4/10) */}
-          <div className="col-span-1 max-xl:col-span-2 sm:col-span-1 space-y-3">
+          {/* Nhóm 2 */}
+          <div className="space-y-3">
             {/* Tham chiếu */}
             <div className="flex flex-col">
               <label className="mb-1 font-medium text-gray-700 text-[13px]">
@@ -407,8 +407,8 @@ export default function ReceiptDetailPage() {
             </div>
           </div>
 
-          {/* Cột 3: 20% (2/10) */}
-          <div className="col-span-1 max-xl:col-span-2 sm:col-span-1 space-y-3">
+          {/* Nhóm 3 */}
+          <div className="space-y-3">
             {/* Số chứng từ */}
             <div className="flex flex-col">
               <label className="mb-1 font-medium text-gray-700 text-[13px]">
