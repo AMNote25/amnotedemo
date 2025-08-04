@@ -242,7 +242,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
                     }`}
                     title="Click để xem chi tiết"
                   >
-                    <td className="sticky left-0 z-15 bg-white px-4 py-3" onClick={e => e.stopPropagation()}>
+                    <td className=" z-15  px-4 py-3 group-hover:bg-gray-50" onClick={e => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         className="accent-blue-600 w-4 h-4"
