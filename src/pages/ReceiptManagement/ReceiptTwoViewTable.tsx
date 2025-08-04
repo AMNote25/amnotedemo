@@ -5,6 +5,7 @@ import { receiptColumns } from "./receiptConfig";
 import type { ColumnConfig } from "@/types/table";
 import { ReceiptTableToolbar } from "@/components/table/ReceiptTableToolbar";
 import { Printer, Upload, Plus, Edit, Trash2 } from "lucide-react";
+import { receiptPrintConfig } from "./receiptPrintConfig";
 
 interface Receipt {
   id: string;
@@ -53,6 +54,8 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
   const [endDate, setEndDate] = useState<string>("");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showPrintModal, setShowPrintModal] = useState(false);
+  const [printLang, setPrintLang] = useState<"vi" | "en" | "ko">("vi");
   // Lọc dữ liệu theo searchTerm và khoảng ngày giao dịch
   const filteredData = useMemo(() => {
     let result = data;
@@ -144,6 +147,10 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
     setSelectedReceipt(receipt);
   };
 
+  const handlePrint = () => {
+    setShowPrintModal(true);
+  };
+
   // Xử lý chọn tất cả
   const isAllChecked = filteredData.length > 0 && selectedRowIds.length === filteredData.length;
   const isIndeterminate = selectedRowIds.length > 0 && selectedRowIds.length < filteredData.length;
@@ -163,7 +170,11 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
           <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
         </div>
         <div className="m-2 flex space-x-2">
-          <button className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" title="In ấn">
+          <button
+            className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600"
+            title="In ấn"
+            onClick={handlePrint}
+          >
             <Printer className="w-5 h-5" />
           </button>
           <button className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" title="Xuất Excel">
@@ -199,10 +210,84 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
             searchTerm={searchTerm}
             onSearch={setSearchTerm}
             onExport={() => alert("Xuất excel!")}
-            onPrint={() => alert("In ấn!")}
+            onPrint={handlePrint}
             onSettings={() => alert("Thiết lập cột!")}
           />
         </div>
+
+        {/* Modal in ấn */}
+        {showPrintModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl relative">
+              <button
+                className="absolute top-2 right-2 p-2 text-gray-500 hover:text-red-600"
+                onClick={() => setShowPrintModal(false)}
+                title="Đóng"
+              >
+                Đóng
+              </button>
+              <h2 className="text-xl font-bold mb-4 text-center">{receiptPrintConfig.title[printLang]}</h2>
+              <table className="min-w-full table-auto border mb-4">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border px-2 py-1">STT</th>
+                    {Object.keys(receiptPrintConfig.columns).map((key) => (
+                      <th key={key} className="border px-2 py-1">
+                        {receiptPrintConfig.columns[key][printLang]}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData.map((row, idx) => (
+                    <tr key={row.id}>
+                      <td className="border px-2 py-1 text-center">{idx + 1}</td>
+                      {Object.keys(receiptPrintConfig.columns).map((key) => (
+                        <td key={key} className="border px-2 py-1">
+                          {row[key as keyof Receipt] ?? ""}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="flex justify-between mt-6">
+                <div>
+                  <div>{receiptPrintConfig.translations[printLang].footer.preparedBy}</div>
+                  <div className="italic text-xs">{receiptPrintConfig.translations[printLang].footer.signature}</div>
+                </div>
+                <div>
+                  <div>{receiptPrintConfig.translations[printLang].footer.accountant}</div>
+                  <div className="italic text-xs">{receiptPrintConfig.translations[printLang].footer.signature}</div>
+                </div>
+                <div>
+                  <div>{receiptPrintConfig.translations[printLang].footer.director}</div>
+                  <div className="italic text-xs">{receiptPrintConfig.translations[printLang].footer.signature}</div>
+                </div>
+              </div>
+              <div className="mt-4 text-right text-sm text-gray-500">
+                {receiptPrintConfig.translations[printLang].summary.replace("{count}", filteredData.length.toString())}
+              </div>
+              <div className="mt-4 flex justify-end gap-2">
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  onClick={() => window.print()}
+                >
+                  In
+                </button>
+                <select
+                  className="px-2 py-1 border rounded"
+                  value={printLang}
+                  onChange={e => setPrintLang(e.target.value as "vi" | "en" | "ko")}
+                >
+                  <option value="vi">Tiếng Việt</option>
+                  <option value="en">English</option>
+                  <option value="ko">한국어</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Bảng 1 (List View) */}
         <div className="flex-shrink-0" style={{height: '33vh'}}>
