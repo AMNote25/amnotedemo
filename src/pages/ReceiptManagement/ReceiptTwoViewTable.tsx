@@ -4,7 +4,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { receiptColumns } from "./receiptConfig";
 import type { ColumnConfig } from "@/types/table";
 import { ReceiptTableToolbar } from "@/components/table/ReceiptTableToolbar";
-import { Printer, Upload, Plus } from "lucide-react";
+import { Printer, Upload, Plus, Edit, Trash2 } from "lucide-react";
 
 interface Receipt {
   id: string;
@@ -169,7 +169,6 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
           <button className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" title="Xuất Excel">
             <Upload className="w-5 h-5" />
           </button>
-          
           <button 
             onClick={() => window.location.href = '/receipt-management/receipt-detail'}
             className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600" 
@@ -211,7 +210,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
             <table className="min-w-full table-auto text-sm">
               <thead className="sticky top-0 z-1000 bg-[#f5f5f5] border-b border-[#e0e0e0] text-[#212121]">
                 <tr>
-                  <th className="px-2 py-3 text-center w-8">
+                  <th className="sticky left-0 z-20 bg-[#f5f5f5]  px-4 py-3 text-left text-[#212121] font-bold">
                     <input
                       type="checkbox"
                       className="accent-blue-600 w-4 h-4"
@@ -230,6 +229,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
                       {column.displayName}
                     </th>
                   ))}
+                  <th className="sticky right-0 z-10 bg-[#f5f5f5]  px-4 py-3 text-center text-sm font-bold text-[#212121] whitespace-nowrap" style={{ width: '100px', minWidth: '100px', maxWidth: '100px' }}>Thao tác</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -242,7 +242,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
                     }`}
                     title="Click để xem chi tiết"
                   >
-                    <td className="px-2 py-3 text-center w-8" onClick={e => e.stopPropagation()}>
+                    <td className="sticky left-0 z-15 bg-white px-4 py-3" onClick={e => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         className="accent-blue-600 w-4 h-4"
@@ -260,6 +260,34 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
                         {formatValue(getFieldValue(receipt, column.dataField), column)}
                       </td>
                     ))}
+                    <td className="sticky group-hover:bg-gray-50 right-0 z-10 px-1 py-3 text-center" style={{ width: '100px', minWidth: '100px', maxWidth: '100px' }}>
+                      <div className="flex items-center justify-center space-x-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+                        <div className="relative">
+                          <button
+                            className="peer p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            title="Sửa"
+                            onClick={e => { e.stopPropagation(); alert('Sửa phiếu thu!'); }}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 peer-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-30">
+                            Sửa
+                          </div>
+                        </div>
+                        <div className="relative">
+                          <button
+                            className="peer p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Xóa"
+                            onClick={e => { e.stopPropagation(); alert('Xóa phiếu thu!'); }}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 peer-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-30">
+                            Xóa
+                          </div>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
