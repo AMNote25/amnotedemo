@@ -210,6 +210,60 @@ const defaultColumns: ColumnConfig[] = [
 ]
 
 export default function ReceiptDetailPage() {
+  // Thêm danh sách tài khoản Nợ/Có mẫu
+  const [debitCreditAccountsList] = useState([
+    { id: 1, code: "111", name: "Tiền mặt" },
+    { id: 2, code: "112", name: "Tiền gửi ngân hàng" },
+    { id: 3, code: "131", name: "Phải thu khách hàng" },
+    { id: 4, code: "152", name: "Nguyên vật liệu" },
+    { id: 5, code: "211", name: "Tài sản cố định hữu hình" },
+    { id: 6, code: "331", name: "Phải trả người bán" },
+    { id: 7, code: "411", name: "Vốn đầu tư của chủ sở hữu" },
+  ])
+
+  // State cho popup Nợ/Có
+  const [showDebitCreditPopup, setShowDebitCreditPopup] = useState(false)
+  const [selectedDebitCreditRowIndex, setSelectedDebitCreditRowIndex] = useState<number | null>(null)
+  const [currentDebitCreditField, setCurrentDebitCreditField] = useState<string | null>(null) // 'debit' or 'credit'
+  const [debitCreditSearchTerm, setDebitCreditSearchTerm] = useState("")
+  const [debitCreditPage, setDebitCreditPage] = useState(1)
+  const [debitCreditItemsPerPage, setDebitCreditItemsPerPage] = useState(10)
+
+  // Lọc danh sách tài khoản Nợ/Có theo search
+  const filteredDebitCreditList = debitCreditAccountsList.filter((acc: any) => {
+    const term = debitCreditSearchTerm.trim().toLowerCase()
+    if (!term) return true
+    return acc.name.toLowerCase().includes(term) || acc.code.toLowerCase().includes(term)
+  })
+
+  // Phân trang tài khoản Nợ/Có
+  const debitCreditTotalPages = Math.max(1, Math.ceil(filteredDebitCreditList.length / debitCreditItemsPerPage))
+  const debitCreditStartIndex = (debitCreditPage - 1) * debitCreditItemsPerPage
+  const debitCreditEndIndex = debitCreditStartIndex + debitCreditItemsPerPage
+  const pagedDebitCreditList = filteredDebitCreditList.slice(debitCreditStartIndex, debitCreditEndIndex)
+
+  // Hàm mở popup Nợ/Có
+  const handleOpenDebitCreditPopup = (rowIndex: number, fieldId: string) => {
+    setSelectedDebitCreditRowIndex(rowIndex)
+    setCurrentDebitCreditField(fieldId)
+    setShowDebitCreditPopup(true)
+  }
+
+  // Hàm xử lý chọn tài khoản Nợ/Có từ popup
+  const handleSelectDebitCredit = (account: any) => {
+    if (selectedDebitCreditRowIndex !== null && currentDebitCreditField) {
+      const updatedDetails = [...details]
+      updatedDetails[selectedDebitCreditRowIndex] = {
+        ...updatedDetails[selectedDebitCreditRowIndex],
+        [currentDebitCreditField]: account.code, // Lưu mã tài khoản vào ô
+      }
+      setDetails(updatedDetails)
+      console.log("Selected debit/credit account and updated details:", updatedDetails[selectedDebitCreditRowIndex])
+    }
+    setShowDebitCreditPopup(false)
+    setSelectedDebitCreditRowIndex(null)
+    setCurrentDebitCreditField(null)
+  }
   // Danh sách khách hàng mẫu (khai báo đầu function để các state và logic phía dưới dùng được)
   const [customerList] = useState([
     {
@@ -265,6 +319,17 @@ export default function ReceiptDetailPage() {
     { id: 7, code: "CP007", name: "Chi phí Dịch vụ" },
   ])
 
+  // Danh sách quốc gia với ký hiệu cờ
+  const [countryListWithSymbols] = useState([
+    { code: "VN", name: "Việt Nam", symbol: "🇻🇳" },
+    { code: "KR", name: "Hàn Quốc", symbol: "🇰🇷" },
+    { code: "US", name: "Hoa Kỳ", symbol: "🇺🇸" },
+    { code: "TH", name: "Thái Lan", symbol: "🇹🇭" },
+    { code: "SG", name: "Singapore", symbol: "🇸🇬" },
+    { code: "JP", name: "Nhật Bản", symbol: "🇯🇵" },
+    { code: "CN", name: "Trung Quốc", symbol: "🇨🇳" },
+  ])
+
   // State cho search và phân trang popup khách hàng
   const [customerSearchTerm, setCustomerSearchTerm] = useState("")
   const [customerPage, setCustomerPage] = useState(1)
@@ -310,8 +375,9 @@ export default function ReceiptDetailPage() {
   const costObjectEndIndex = costObjectStartIndex + costObjectItemsPerPage
   const pagedCostObjectList = filteredCostObjectList.slice(costObjectStartIndex, costObjectEndIndex)
 
+  // Hook chuyển trang
+  const navigate = useNavigate();
   // Hàm lưu phiếu thu và chi tiết
-  const navigate = useNavigate()
   const handleSave = () => {
     // TODO: Gọi API lưu phiếu thu và chi tiết
     alert("Đã lưu phiếu thu và chi tiết!")
@@ -614,7 +680,7 @@ export default function ReceiptDetailPage() {
       {/* Nút quay lại */}
       <div className="mb-4">
         <button
-          onClick={() => router.back()}
+          onClick={() => navigate(-1)}
           className="inline-flex items-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -898,9 +964,34 @@ export default function ReceiptDetailPage() {
                               readOnly
                               className="w-full border-none focus:outline-none text-[13px] cursor-pointer "
                             />
-                          ) : col.id === "debit" ||
-                            col.id === "credit" ||
-                            col.id === "amount" ||
+                          ) : col.id === "country" ? (
+                            <select
+                              value={""} // Default empty for new row
+                              onChange={(e) => {
+                                const newRow = columns.reduce<Record<string, string>>((acc, c) => {
+                                  acc[c.id] = c.id === col.id ? e.target.value : ""
+                                  return acc
+                                }, {})
+                                setDetails([newRow])
+                              }}
+                              className="w-full border-none focus:outline-none text-[13px]"
+                            >
+                              <option value="">Chọn quốc gia...</option>
+                              {countryListWithSymbols.map((country) => (
+                                <option key={country.code} value={country.name}>
+                                  {country.name} {country.symbol}
+                                </option>
+                              ))}
+                            </select>
+                          ) : col.id === "debit" || col.id === "credit" ? (
+                            <input
+                              type="text"
+                              placeholder={`Chọn ${col.displayName}`}
+                              onClick={() => handleOpenDebitCreditPopup(0, col.id)}
+                              readOnly
+                              className="w-full border-none focus:outline-none text-[13px] cursor-pointer"
+                            />
+                          ) : col.id === "amount" ||
                             col.id === "amountFC" ||
                             col.id === "exchangeRate" ||
                             col.id === "vatTax" ? (
@@ -917,10 +1008,10 @@ export default function ReceiptDetailPage() {
                               className="w-full border-none focus:outline-none text-[13px]"
                               min="0"
                             />
-                          ) : col.id === "moTa2_vi" ||
+                          ) : col.id === "customerCode" ||
+                            col.id === "moTa2_vi" ||
                             col.id === "moTa2_en" ||
                             col.id === "moTa2_ko" ||
-                            col.id === "country" ||
                             col.id === "inventory" ||
                             col.id === "assetPrepaid" ||
                             col.id === "contractNumber" ||
@@ -974,9 +1065,33 @@ export default function ReceiptDetailPage() {
                               readOnly
                               className="w-full border-none focus:outline-none text-[13px] cursor-pointer "
                             />
-                          ) : col.id === "debit" ||
-                            col.id === "credit" ||
-                            col.id === "amount" ||
+                          ) : col.id === "country" ? (
+                            <select
+                              value={row[col.id] || ""}
+                              onChange={(e) => {
+                                const updatedDetails = [...details]
+                                updatedDetails[idx][col.id] = e.target.value
+                                setDetails(updatedDetails)
+                              }}
+                              className="w-full border-none focus:outline-none text-[13px]"
+                            >
+                              <option value="">Chọn quốc gia...</option>
+                              {countryListWithSymbols.map((country) => (
+                                <option key={country.code} value={country.name}>
+                                  {country.name} {country.symbol}
+                                </option>
+                              ))}
+                            </select>
+                          ) : col.id === "debit" || col.id === "credit" ? (
+                            <input
+                              type="text"
+                              value={row[col.id] || ""}
+                              placeholder={`Chọn ${col.displayName}`}
+                              onClick={() => handleOpenDebitCreditPopup(idx, col.id)}
+                              readOnly
+                              className="w-full border-none focus:outline-none text-[13px] cursor-pointer"
+                            />
+                          ) : col.id === "amount" ||
                             col.id === "amountFC" ||
                             col.id === "exchangeRate" ||
                             col.id === "vatTax" ? (
@@ -991,10 +1106,10 @@ export default function ReceiptDetailPage() {
                               className="w-full border-none focus:outline-none text-[13px]"
                               min="0"
                             />
-                          ) : col.id === "moTa2_vi" ||
+                          ) : col.id === "customerCode" ||
+                            col.id === "moTa2_vi" ||
                             col.id === "moTa2_en" ||
                             col.id === "moTa2_ko" ||
-                            col.id === "country" ||
                             col.id === "inventory" ||
                             col.id === "assetPrepaid" ||
                             col.id === "contractNumber" ||
@@ -1197,6 +1312,83 @@ export default function ReceiptDetailPage() {
                   onItemsPerPageChange={setCostObjectItemsPerPage}
                   startIndex={costObjectStartIndex}
                   endIndex={costObjectEndIndex}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showDebitCreditPopup && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl shadow-lg w-11/12 max-w-4xl max-h-[80vh] overflow-hidden flex flex-col">
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">
+                    Chọn {currentDebitCreditField === "debit" ? "Tài khoản Nợ" : "Tài khoản Có"}
+                  </h3>
+                  <button
+                    onClick={() => setShowDebitCreditPopup(false)}
+                    className="text-gray-500 hover:text-gray-700 text-xl font-bold"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              <div className="">
+                <TableToolbar
+                  searchTerm={debitCreditSearchTerm}
+                  onSearch={setDebitCreditSearchTerm}
+                  isRefreshing={false}
+                  onRefresh={async () => {}}
+                  onSettings={() => {}}
+                  selectedCount={0}
+                />
+              </div>
+              <div className="p-6 pt-0 overflow-y-auto max-h-[40vh]">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border border-gray-200">
+                    <thead className="bg-[#f5f5f5]">
+                      <tr>
+                        <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">
+                          Số
+                        </th>
+                        <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">
+                          Mô tả
+                        </th>
+                        <th className="px-3 py-2 text-left text-[13px] font-semibold text-[#212121] border-b border-gray-300">
+                          Hành động
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pagedDebitCreditList.map((account: any) => (
+                        <tr key={account.id} className="hover:bg-blue-50">
+                          <td className="px-3 py-2 text-[13px] border-b border-gray-300">{account.code}</td>
+                          <td className="px-3 py-2 text-[13px] border-b border-gray-300">{account.name}</td>
+                          <td className="px-3 py-2 text-[13px] border-b border-gray-300">
+                            <button
+                              onClick={() => handleSelectDebitCredit(account)}
+                              className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-[13px]"
+                            >
+                              Chọn
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="">
+                <Pagination
+                  currentPage={debitCreditPage}
+                  totalPages={debitCreditTotalPages}
+                  totalItems={filteredDebitCreditList.length}
+                  itemsPerPage={debitCreditItemsPerPage}
+                  onPageChange={setDebitCreditPage}
+                  onItemsPerPageChange={setDebitCreditItemsPerPage}
+                  startIndex={debitCreditStartIndex}
+                  endIndex={debitCreditEndIndex}
                 />
               </div>
             </div>
