@@ -5,7 +5,8 @@ import { receiptColumns } from "./receiptConfig"
 import type { ColumnConfig } from "@/types/table"
 import { ReceiptTableToolbar } from "@/components/table/ReceiptTableToolbar"
 import { Printer, Upload, Plus, Edit, Trash2 } from "lucide-react"
-import { receiptPrintConfig } from "./receiptPrintConfig"
+import ReceiptPrintModal from "./ReceiptPrintModal"
+import PrintOptionModal from "./PrintOptionModal"
 import { useNavigate } from "react-router-dom"
 import Pagination from "@/components/table/Pagination" // Import Pagination component
 
@@ -42,13 +43,57 @@ interface Receipt {
   inventory?: string
 }
 
-interface ReceiptTwoViewTableProps {
-  data: Receipt[]
-  onAddNew?: () => void
-  onRefreshData?: () => Promise<void> | void
+// Hàm sinh mock data phiếu thu
+const generateReceiptData = (count: number): Receipt[] => {
+  const names = ["Nguyễn Văn A", "Trần Thị B", "Lê Văn C", "Phạm Thị D", "Hoàng Văn E", "Vũ Thị F"]
+  const data: Receipt[] = []
+  for (let i = 1; i <= count; i++) {
+    data.push({
+      id: i.toString(),
+      receiptNo: `PT${i.toString().padStart(4, "0")}`,
+      transactionDate: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1)
+        .toISOString()
+        .split("T")[0],
+      amount: Math.floor(Math.random() * 10000000) + 100000,
+      description1: `Phiếu thu số ${i}`,
+      description2: `Ghi chú cho phiếu thu ${i}`,
+      receiverName: names[i % names.length],
+      modifiedDate: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1)
+        .toISOString()
+        .split("T")[0],
+      isLocked: Math.random() > 0.5 ? "true" : "false",
+      email: `user${i}@mail.com`,
+      attachment: "",
+      createdBy: "admin",
+      currentEditor: "",
+      costCenter1: "213",
+      costCenter2: "214",
+      debit: "111",
+      debitAccountName: "Tiền mặt",
+      credit: "511",
+      creditAccountName: "Doanh thu",
+      amountSecond: Math.floor(Math.random() * 1000),
+      fcAmount: Math.floor(Math.random() * 1000),
+      country: "VN",
+      customerCode: `CUST${i.toString().padStart(3, "0")}`,
+      customerName: names[i % names.length],
+      bankName: "Vietcombank",
+      manageCode: "MC01",
+      manageCode2: "MC02",
+      note1: "",
+      note2: "",
+      inventory: "Kho A",
+    })
+  }
+  return data
 }
 
-export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: ReceiptTwoViewTableProps) {
+interface ReceiptTwoViewTableProps {
+  // Không cần data, onRefreshData nữa
+}
+
+export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
+  const [data, setData] = useState<Receipt[]>(() => generateReceiptData(50))
   const [selectedReceipt, setSelectedReceipt] = useState<Receipt | null>(null)
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([])
   const [startDate, setStartDate] = useState<string>("")
@@ -56,10 +101,23 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [showPrintModal, setShowPrintModal] = useState(false)
-  const [printLang, setPrintLang] = useState<"vi" | "en" | "ko">("vi")
+  const [printLang, setPrintLang] = useState<string>("vi")
+  const [printTemplate, setPrintTemplate] = useState<string>("receipt-foreign")
+  const [printReceipt, setPrintReceipt] = useState<Receipt | null>(null)
+  const [showPrintOption, setShowPrintOption] = useState(false)
   const [currentPage, setCurrentPage] = useState(1) // State cho trang hiện tại
   const [itemsPerPage, setItemsPerPage] = useState(10) // State cho số mục mỗi trang
   const navigate = useNavigate()
+
+  // Hàm reload dữ liệu (mock)
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
+    await new Promise((resolve) => setTimeout(resolve, 800))
+    setData(generateReceiptData(50))
+    setSelectedReceipt(null) // Reset table 2 khi reload
+    setSelectedRowIds([])   // Reset checkbox chọn dòng
+    setIsRefreshing(false)
+  }
 
   // Lọc dữ liệu theo searchTerm và khoảng ngày giao dịch
   const filteredData = useMemo(() => {
@@ -166,7 +224,22 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
     setSelectedReceipt(receipt)
   }
 
+  // In phiếu thu theo layout riêng
+  // Khi bấm in: hiện modal chọn ngôn ngữ/mẫu phiếu trước
   const handlePrint = () => {
+    if (selectedReceipt) {
+      setShowPrintOption(true)
+    } else {
+      alert("Vui lòng chọn phiếu thu để in!")
+    }
+  }
+
+  // Xác nhận chọn ngôn ngữ/mẫu phiếu
+  const handlePrintOptionConfirm = (lang: string, template: string) => {
+    setPrintLang(lang)
+    setPrintTemplate(template)
+    setPrintReceipt(selectedReceipt)
+    setShowPrintOption(false)
     setShowPrintModal(true)
   }
 
@@ -179,6 +252,14 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
   }
   const handleCheckRow = (id: string, checked: boolean) => {
     setSelectedRowIds((prev) => (checked ? [...prev, id] : prev.filter((i) => i !== id)))
+    if (checked) {
+      // Khi chọn checkbox, set luôn selectedReceipt để nút in hoạt động
+      const found = filteredData.find((r) => r.id === id)
+      if (found) setSelectedReceipt(found)
+    } else {
+      // Nếu bỏ chọn dòng hiện tại thì bỏ selectedReceipt nếu nó trùng id
+      if (selectedReceipt?.id === id) setSelectedReceipt(null)
+    }
   }
 
   return (
@@ -222,13 +303,7 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
             onStartDateChange={setStartDate}
             onEndDateChange={setEndDate}
             isRefreshing={isRefreshing}
-            onRefresh={async () => {
-              setIsRefreshing(true)
-              if (onRefreshData) {
-                await onRefreshData()
-              }
-              setIsRefreshing(false)
-            }}
+            onRefresh={handleRefresh}
             searchTerm={searchTerm}
             onSearch={setSearchTerm}
             onExport={() => alert("Xuất excel!")}
@@ -237,85 +312,31 @@ export default function ReceiptTwoViewTable({ data, onAddNew, onRefreshData }: R
           />
         </div>
 
+        {/* Modal chọn ngôn ngữ/mẫu phiếu trước khi in */}
+        {showPrintOption && (
+          <PrintOptionModal
+            open={showPrintOption}
+            onClose={() => setShowPrintOption(false)}
+            onConfirm={handlePrintOptionConfirm}
+            defaultLang={printLang}
+            defaultTemplate={printTemplate}
+          />
+        )}
         {/* Modal in ấn */}
-        {showPrintModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl relative">
-              <button
-                className="absolute top-2 right-2 p-2 text-gray-500 hover:text-red-600"
-                onClick={() => setShowPrintModal(false)}
-                title="Đóng"
-              >
-                Đóng
-              </button>
-              <h2 className="text-xl font-bold mb-4 text-center">{receiptPrintConfig.title[printLang]}</h2>
-              <table className="min-w-full table-auto border mb-4">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border px-2 py-1">STT</th>
-                    {Object.keys(receiptPrintConfig.columns).map((key) => (
-                      <th key={key} className="border px-2 py-1">
-                        {receiptPrintConfig.columns[key][printLang]}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredData.map((row, idx) => (
-                    <tr key={row.id}>
-                      <td className="border px-2 py-1 text-center">{idx + 1}</td>
-                      {Object.keys(receiptPrintConfig.columns).map((key) => (
-                        <td key={key} className="border px-2 py-1">
-                          {row[key as keyof Receipt] ?? ""}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="flex justify-between mt-6">
-                <div>
-                  <div>{receiptPrintConfig.translations[printLang].footer.preparedBy}</div>
-                  <div className="italic text-xs">{receiptPrintConfig.translations[printLang].footer.signature}</div>
-                </div>
-                <div>
-                  <div>{receiptPrintConfig.translations[printLang].footer.accountant}</div>
-                  <div className="italic text-xs">{receiptPrintConfig.translations[printLang].footer.signature}</div>
-                </div>
-                <div>
-                  <div>{receiptPrintConfig.translations[printLang].footer.director}</div>
-                  <div className="italic text-xs">{receiptPrintConfig.translations[printLang].footer.signature}</div>
-                </div>
-              </div>
-              <div className="mt-4 text-right text-sm text-gray-500">
-                {receiptPrintConfig.translations[printLang].summary.replace("{count}", filteredData.length.toString())}
-              </div>
-              <div className="mt-4 flex justify-end gap-2">
-                <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                  onClick={() => window.print()}
-                >
-                  In
-                </button>
-                <select
-                  className="px-2 py-1 border rounded"
-                  value={printLang}
-                  onChange={(e) => setPrintLang(e.target.value as "vi" | "en" | "ko")}
-                >
-                  <option value="vi">Tiếng Việt</option>
-                  <option value="en">English</option>
-                  <option value="ko">한국어</option>
-                </select>
-              </div>
-            </div>
-          </div>
+        {showPrintModal && printReceipt && (
+          <ReceiptPrintModal
+            receipt={printReceipt}
+            onClose={() => setShowPrintModal(false)}
+            lang={printLang as "vi" | "en" | "ko"}
+            setLang={setPrintLang}
+          />
         )}
 
         {/* Bảng 1 (List View) */}
         <div className="flex-1 flex flex-col min-h-0">
           <div className="relative flex-1 overflow-y-auto">
             <table className="min-w-full table-auto text-sm">
-              <thead className="sticky top-0 z-1000 bg-[#f5f5f5] border-b border-[#e0e0e0] text-[#212121]">
+              <thead className="sticky top-0 z-[30] bg-[#f5f5f5] border-b border-[#e0e0e0] text-[#212121]">
                 <tr>
                   <th className="sticky left-0 z-30 bg-[#f5f5f5]  px-4 py-3 text-left text-[#212121] font-bold">
                     <input
