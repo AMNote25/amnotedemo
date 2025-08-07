@@ -102,10 +102,10 @@ const ReceiptPrintModal: React.FC<ReceiptPrintModalProps> = ({ receipt, onClose,
           }
           
           .print-header {
-            text-align: center;
+            text-align: left;
             margin-bottom: 20px;
             padding-bottom: 12px;
-            border-bottom: 2px solid #1f2937;
+            border-bottom: 1px solid #1f2937;
           }
           
           .print-header h1 {
@@ -122,26 +122,37 @@ const ReceiptPrintModal: React.FC<ReceiptPrintModalProps> = ({ receipt, onClose,
           }
           
           .print-title {
-            text-align: center;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
             margin-bottom: 16px;
           }
-          
+          .print-title-left {
+            flex: 1;
+          }
+          .print-title-center {
+            flex: 1;
+            text-align: center;
+          }
+          .print-title-right {
+            flex: 1;
+            text-align: right;
+            font-size: 13px;
+            font-weight: 600;
+          }
           .print-title h2 {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.2em;
+            color: #d32f2f;
           }
-          
           .print-title .date {
             font-size: 15px;
             font-weight: 600;
             margin-bottom: 4px;
-          }
-          
-          .print-title .receipt-no {
-            font-size: 13px;
           }
           
           .print-info {
@@ -243,9 +254,23 @@ const ReceiptPrintModal: React.FC<ReceiptPrintModalProps> = ({ receipt, onClose,
 
           <!-- Title -->
           <div class="print-title">
-            <h2>PHIẾU THU</h2>
-            <div class="date">Ngày ${receipt.transactionDate}</div>
-            <div class="receipt-no">Số chứng từ: <strong>${receipt.receiptNo}</strong></div>
+            <div class="print-title-left"></div>
+            <div class="print-title-center">
+              <h2>PHIẾU THU</h2>
+              <div class="date">
+                ${(() => {
+                  // Format ngày dạng 'Ngày DD Tháng MM Năm YYYY' (in hoa chữ đầu)
+                  const d = receipt.transactionDate ? new Date(receipt.transactionDate) : new Date();
+                  const day = d.getDate();
+                  const month = d.getMonth() + 1;
+                  const year = d.getFullYear();
+                  return `Ngày ${day} Tháng ${month} Năm ${year}`;
+                })()}
+              </div>
+            </div>
+            <div class="print-title-right">
+              Số chứng từ: <strong>${receipt.receiptNo}</strong>
+            </div>
           </div>
 
           <!-- Receipt Info -->
@@ -286,7 +311,20 @@ const ReceiptPrintModal: React.FC<ReceiptPrintModalProps> = ({ receipt, onClose,
               </tbody>
             </table>
           </div>
-
+          <!-- Date above signatures -->
+          <div style="width:100%;display:flex;justify-content:flex-end;margin-bottom:8px;">
+            <div style="font-size:13px;">
+              ${(() => {
+                // Format ngày dạng 'Ngày DD Tháng MM Năm YYYY' (in hoa chữ đầu)
+                const d = receipt.transactionDate ? new Date(receipt.transactionDate) : new Date();
+                const day = d.getDate();
+                const month = d.getMonth() + 1;
+                const year = d.getFullYear();
+                return `Ngày ${day} Tháng ${month} Năm ${year}`;
+              })()}
+            </div>
+          </div>
+            <!-- Date at the bottom right -->
           <!-- Footer - Signatures -->
           <div class="print-footer">
             <div class="signature-grid">
@@ -370,7 +408,7 @@ const ReceiptPrintModal: React.FC<ReceiptPrintModalProps> = ({ receipt, onClose,
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-30 print:bg-transparent print:static">
-      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-[900px] relative print:shadow-none print:p-0 print:rounded-none print:w-auto print:max-w-none print:bg-white">
+      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-[900px] relative print:shadow-none print:p-0 print:rounded-none print:w-auto print:max-w-none print:bg-white flex flex-col max-h-[90vh]">
         {/* Nút đóng */}
         <button
           className="absolute top-2 right-2 p-2 text-gray-500 hover:text-red-600 print:hidden"
@@ -379,75 +417,105 @@ const ReceiptPrintModal: React.FC<ReceiptPrintModalProps> = ({ receipt, onClose,
         >
           <X className="w-5 h-5" />
         </button>
-        {/* Header công ty */}
-        <div className="text-center mb-4 border-b-2 border-gray-800 pb-2">
-          <div className="text-[16px] font-bold uppercase tracking-wide">{defaultCompanyInfo.name}</div>
-          <div className="text-[13px] mt-1">{defaultCompanyInfo.address}</div>
-          <div className="text-[13px]">M.S.T : {defaultCompanyInfo.taxCode}</div>
-        </div>
-        {/* Tiêu đề phiếu */}
-        <div className="text-center mt-2 mb-4">
-          <div className="text-[18px] font-bold uppercase tracking-widest mb-1">PHIẾU THU</div>
-          <div className="text-[15px] font-semibold">Ngày {receipt.transactionDate}</div>
-          <div className="text-[13px] mt-1">Số chứng từ: <span className="font-semibold">{receipt.receiptNo}</span></div>
-        </div>
-        {/* Thông tin chính */}
-        <div className="mb-4 text-[13px]">
-          <div><span className="inline-block w-28">Đơn vị:</span> <span className="font-semibold">{receipt.customerName}</span></div>
-          <div><span className="inline-block w-28">Địa chỉ:</span> <span className="font-semibold">{receipt.country || ""}</span></div>
-          <div><span className="inline-block w-28">Nội dung:</span> <span className="font-semibold">{receipt.description1}</span></div>
-          <div><span className="inline-block w-28">Số tiền:</span> <span className="font-semibold">{receipt.amount?.toLocaleString()} VND</span></div>
-          <div><span className="inline-block w-28">Viết bằng chữ:</span> <span className="italic">{numberToWords(receipt.amount)}</span></div>
-          <div><span className="inline-block w-28">Kèm theo:</span> ............................................. Chứng từ gốc</div>
-        </div>
-        {/* Bảng chi tiết */}
-        <div className="mb-4">
-          <table className="w-full border border-black text-[13px]">
-            <thead>
-              <tr className="bg-[#f5f5f5]">
-                <th className="border border-black px-2 py-1 font-semibold">Mô tả</th>
-                <th className="border border-black px-2 py-1 font-semibold">Nợ</th>
-                <th className="border border-black px-2 py-1 font-semibold">Có</th>
-                <th className="border border-black px-2 py-1 font-semibold">Số tiền</th>
-                <th className="border border-black px-2 py-1 font-semibold">FC Số tiền</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-black px-2 py-1">{receipt.description1}</td>
-                <td className="border border-black px-2 py-1">{receipt.debit}</td>
-                <td className="border border-black px-2 py-1">{receipt.credit}</td>
-                <td className="border border-black px-2 py-1 text-right">{receipt.amount?.toLocaleString()}</td>
-                <td className="border border-black px-2 py-1 text-right">{receipt.fcAmount?.toLocaleString() || "0"}</td>
-              </tr>
-              <tr className="font-bold">
-                <td className="border border-black px-2 py-1 text-right" colSpan={3}>Tổng cộng</td>
-                <td className="border border-black px-2 py-1 text-right">{receipt.amount?.toLocaleString()}</td>
-                <td className="border border-black px-2 py-1 text-right">{receipt.fcAmount?.toLocaleString() || "0"}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        {/* Footer ký tên */}
-        <div className="grid grid-cols-3 gap-8 mt-8 text-[13px]">
-          <div className="text-center">
-            <div className="font-semibold">Người lập biểu</div>
-            <div className="italic text-xs">(Ký, họ tên)</div>
-            <div className="mt-12">&nbsp;</div>
+        {/* Nội dung scrollable */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          {/* Header công ty */}
+          <div className="text-left mb-4 border-b border-gray-800 pb-2">
+            <div className="text-[16px] font-bold uppercase tracking-wide">{defaultCompanyInfo.name}</div>
+            <div className="text-[13px] mt-1">{defaultCompanyInfo.address}</div>
+            <div className="text-[13px]">M.S.T : {defaultCompanyInfo.taxCode}</div>
           </div>
-          <div className="text-center">
-            <div className="font-semibold">Kế toán trưởng</div>
-            <div className="italic text-xs">(Ký, họ tên)</div>
-            <div className="mt-12">&nbsp;</div>
+          {/* Tiêu đề phiếu - layout 3 phần */}
+          <div className="flex flex-row items-start justify-between mt-2 mb-4">
+            <div className="flex-1"></div>
+            <div className="flex-1 text-center">
+              <div className="text-[18px] font-bold uppercase tracking-widest mb-1 text-red-600">PHIẾU THU</div>
+              <div className="text-[15px] ">
+                {(() => {
+                  // Format ngày dạng 'Ngày DD Tháng MM Năm YYYY' (in hoa chữ đầu)
+                  const d = receipt.transactionDate ? new Date(receipt.transactionDate) : new Date();
+                  const day = d.getDate();
+                  const month = d.getMonth() + 1;
+                  const year = d.getFullYear();
+                  return `Ngày ${day} Tháng ${month} Năm ${year}`;
+                })()}
+              </div>
+            </div>
+            <div className="flex-1 text-right">
+              <div className="text-[13px] mt-1">Số chứng từ: <span className="font-semibold">{receipt.receiptNo}</span></div>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="font-semibold">Giám đốc</div>
-            <div className="italic text-xs">(Ký, họ tên, đóng dấu)</div>
-            <div className="mt-12">&nbsp;</div>
+          {/* Thông tin chính */}
+          <div className="mb-4 text-[13px]">
+            <div><span className="inline-block w-28">Đơn vị:</span> <span className="font-semibold">{receipt.customerName}</span></div>
+            <div><span className="inline-block w-28">Địa chỉ:</span> <span className="font-semibold">{receipt.country || ""}</span></div>
+            <div><span className="inline-block w-28">Nội dung:</span> <span className="font-semibold">{receipt.description1}</span></div>
+            <div><span className="inline-block w-28">Số tiền:</span> <span className="font-semibold">{receipt.amount?.toLocaleString()} VND</span></div>
+            <div><span className="inline-block w-28">Viết bằng chữ:</span> <span className="italic">{numberToWords(receipt.amount)}</span></div>
+            <div><span className="inline-block w-28">Kèm theo:</span> ............................................. Chứng từ gốc</div>
+          </div>
+          {/* Bảng chi tiết */}
+          <div className="mb-4">
+            <table className="w-full border border-black text-[13px]">
+              <thead>
+                <tr className="bg-[#f5f5f5]">
+                  <th className="border border-black px-2 py-1 font-semibold">Mô tả</th>
+                  <th className="border border-black px-2 py-1 font-semibold">Nợ</th>
+                  <th className="border border-black px-2 py-1 font-semibold">Có</th>
+                  <th className="border border-black px-2 py-1 font-semibold">Số tiền</th>
+                  <th className="border border-black px-2 py-1 font-semibold">FC Số tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-black px-2 py-1">{receipt.description1}</td>
+                  <td className="border border-black px-2 py-1">{receipt.debit}</td>
+                  <td className="border border-black px-2 py-1">{receipt.credit}</td>
+                  <td className="border border-black px-2 py-1 text-right">{receipt.amount?.toLocaleString()}</td>
+                  <td className="border border-black px-2 py-1 text-right">{receipt.fcAmount?.toLocaleString() || "0"}</td>
+                </tr>
+                <tr className="font-bold">
+                  <td className="border border-black px-2 py-1 text-right" colSpan={3}>Tổng cộng</td>
+                  <td className="border border-black px-2 py-1 text-right">{receipt.amount?.toLocaleString()}</td>
+                  <td className="border border-black px-2 py-1 text-right">{receipt.fcAmount?.toLocaleString() || "0"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          {/* Ngày tháng bên phải khi in, phía trên khu vực ký tên */}
+          <div className="w-full flex justify-end mb-2">
+            <div className="text-[13px]">
+              {(() => {
+                // Format ngày dạng 'Ngày DD Tháng MM Năm YYYY' (in hoa chữ đầu)
+                const d = receipt.transactionDate ? new Date(receipt.transactionDate) : new Date();
+                const day = d.getDate();
+                const month = d.getMonth() + 1;
+                const year = d.getFullYear();
+                return `Ngày ${day} Tháng ${month} Năm ${year}`;
+              })()}
+            </div>
+          </div>
+          {/* Footer ký tên */}
+          <div className="grid grid-cols-3 gap-8 mt-8 text-[13px] flex-shrink-0">
+            <div className="text-center">
+              <div className="font-semibold">Người lập biểu</div>
+              <div className="italic text-xs">(Ký, họ tên)</div>
+              <div className="mt-12">&nbsp;</div>
+            </div>
+            <div className="text-center">
+              <div className="font-semibold">Kế toán trưởng</div>
+              <div className="italic text-xs">(Ký, họ tên)</div>
+              <div className="mt-12">&nbsp;</div>
+            </div>
+            <div className="text-center">
+              <div className="font-semibold">Giám đốc</div>
+              <div className="italic text-xs">(Ký, họ tên, đóng dấu)</div>
+              <div className="mt-12">&nbsp;</div>
+            </div>
           </div>
         </div>
-        {/* Ngày in và nút in */}
-        <div className="mt-8 flex justify-between items-center print:hidden">
+        {/* Ngày in và nút in - luôn cố định dưới popup */}
+        <div className="mt-8 flex justify-between items-center print:hidden flex-shrink-0">
           <div className="text-sm text-gray-500">Ngày in: {currentDate}</div>
           <div className="flex gap-2">
             <button
