@@ -9,7 +9,7 @@ const summarySubMenus = [
     icon: <FileText size={32} />,
     slug: "/documents",
     description: "Quản lý chứng từ kế toán, phiếu thu chi, mua bán...",
-    color: "from-blue-500 to-blue-600",
+    color: "from-red-500 to-red-600",
   },
   {
     id: "receipt",
@@ -133,40 +133,51 @@ export default function SummaryPage() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
         {summarySubMenus.map((item) => (
           <div
             key={item.id}
             onClick={() => navigate(item.slug)}
-            className="group relative bg-white rounded-lg border border-gray-200 p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 active:scale-95"
+            className="group relative bg-white rounded-lg border border-gray-200 p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-red-300 hover:bg-gradient-to-br hover:from-white hover:to-red-50 active:scale-95"
           >
-            {/* Icon compact hơn */}
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-105 transition-all duration-200 shadow-sm">
-              <div className="text-white scale-75">
-                {item.icon}
+            <div className="flex flex-row items-center gap-4">
+              {/* Icon trái */}
+              <div className="w-14 h-14 bg-white border border-gray-300 rounded-lg flex items-center justify-center group-hover:scale-105 transition-all duration-200 shadow-sm">
+                <div className="text-black group-hover:text-red-600">
+                  {React.isValidElement(item.icon)
+                    ? React.cloneElement(item.icon as React.ReactElement, { className: "w-5 h-5 text-black group-hover:text-red-700" })
+                    : item.icon}
+                </div>
               </div>
-            </div>
-            
-            {/* Content compact */}
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors duration-200 leading-tight line-clamp-2">
-                {item.title}
-              </h3>
-              <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
-                {item.description}
-              </p>
+              
+              {/* Nội dung phải */}
+              <div className="flex-1 space-y-1">
+                <div className="relative group">
+                  <h3
+                    className="text-sm font-semibold text-gray-900 group-hover:text-red-700 transition-colors duration-200 leading-relaxed line-clamp-1"
+                  >
+                    {item.title}
+                  </h3>
+                  <div className="absolute top-0 left-0 transform  -translate-y-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                    {item.title}
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
+                  {item.description}
+                </p>
+              </div>
             </div>
             
             {/* Action indicator - compact */}
             <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <ArrowUpRight
                 size={14}
-                className="text-blue-600"
+                className="text-red-600"
               />
             </div>
             
             {/* Hover effect border */}
-            <div className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-blue-200 transition-colors duration-200 pointer-events-none"></div>
+            <div className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-red-200 transition-colors duration-200 pointer-events-none"></div>
           </div>
         ))}
       </div>

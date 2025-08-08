@@ -175,44 +175,7 @@ export default function BasicDataManagement() {
           </div>
         </div>
         
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-blue-50 rounded-lg p-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Building2 className="text-blue-600" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-blue-600 font-medium">Tổng chức năng</p>
-                <p className="text-2xl font-bold text-blue-700">{menuItems.length}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-green-50 rounded-lg p-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <Users className="text-green-600" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-green-600 font-medium">Đã cấu hình</p>
-                <p className="text-2xl font-bold text-green-700">12</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-amber-50 rounded-lg p-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-                <Target className="text-amber-600" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-amber-600 font-medium">Cần thiết lập</p>
-                <p className="text-2xl font-bold text-amber-700">3</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
 
       {/* Menu Grid */}
@@ -221,33 +184,46 @@ export default function BasicDataManagement() {
           <div
             key={item.id}
             onClick={() => handleMenuClick(item.slug)}
-            className="group bg-white rounded-xl shadow-sm border border-gray-200 p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-gray-300"
+            className="group relative bg-white rounded-lg border border-gray-200 p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-red-300 hover:bg-gradient-to-br hover:from-white hover:to-red-50 active:scale-95"
           >
-            {/* Icon with unified gradient background */}
-            <div className="w-16 h-16 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <div className="text-white">
-                {item.icon}
+            <div className="flex flex-row items-center gap-4">
+              {/* Icon trái */}
+              <div className="w-14 h-14 bg-white border border-gray-300 rounded-lg flex items-center justify-center group-hover:scale-105 transition-all duration-200 shadow-sm">
+                <div className="text-black group-hover:text-red-600">
+                  {React.isValidElement(item.icon)
+                    ? React.cloneElement(item.icon as React.ReactElement, { className: "w-5 h-5 text-black group-hover:text-red-700" })
+                    : item.icon}
+                </div>
+              </div>
+
+              {/* Nội dung phải */}
+              <div className="flex-1 space-y-1">
+                <div className="relative group">
+                  <h3
+                    className="text-sm font-semibold text-gray-900 group-hover:text-red-700 transition-colors duration-200 leading-relaxed line-clamp-1"
+                  >
+                    {item.title}
+                  </h3>
+                <div className="absolute top-0 left-0 transform  -translate-y-full px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                    {item.title}
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
+                  {item.description}
+                </p>
               </div>
             </div>
-            
-            {/* Content */}
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-red-600 transition-colors duration-300">
-                {item.title}
-              </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {item.description}
-              </p>
-            </div>
-            
-            {/* Arrow indicator */}
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-              <span className="text-xs text-gray-500 font-medium">Nhấn để truy cập</span>
-              <ChevronRight 
-                size={16} 
-                className="text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" 
+
+            {/* Action indicator - compact */}
+            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <ChevronRight
+                size={14}
+                className="text-red-600"
               />
             </div>
+
+            {/* Hover effect border */}
+            <div className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-red-200 transition-colors duration-200 pointer-events-none"></div>
           </div>
         ))}
       </div>
