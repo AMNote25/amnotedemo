@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { BarChart3, FileText, ChevronRight, Receipt, Wallet, FileMinus2, FilePlus2, ShoppingCart, Handshake, ArrowLeftRight, Layers, Lock } from "lucide-react";
+import { BarChart3, FileText, ChevronRight, Receipt, Wallet, FileMinus2, FilePlus2, ShoppingCart, Handshake, ArrowLeftRight, Layers, Lock, ArrowUpRight } from "lucide-react";
 
 const summarySubMenus = [
   {
@@ -133,34 +133,40 @@ export default function SummaryPage() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
         {summarySubMenus.map((item) => (
           <div
             key={item.id}
             onClick={() => navigate(item.slug)}
-            className="group bg-white rounded-xl shadow-sm border border-gray-200 p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-gray-300"
+            className="group relative bg-white rounded-lg border border-gray-200 p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 hover:bg-gradient-to-br hover:from-white hover:to-blue-50 active:scale-95"
           >
-            {/* Icon với nền gradient slate đồng bộ */}
-            <div className="w-16 h-16 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <div className="text-white">
+            {/* Icon compact hơn */}
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-105 transition-all duration-200 shadow-sm">
+              <div className="text-white scale-75">
                 {item.icon}
               </div>
             </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-red-600 transition-colors duration-300">
+            
+            {/* Content compact */}
+            <div className="space-y-1">
+              <h3 className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors duration-200 leading-tight line-clamp-2">
                 {item.title}
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
                 {item.description}
               </p>
             </div>
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-              <span className="text-xs text-gray-500 font-medium">Nhấn để truy cập</span>
-              <ChevronRight
-                size={16}
-                className="text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300"
+            
+            {/* Action indicator - compact */}
+            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <ArrowUpRight
+                size={14}
+                className="text-blue-600"
               />
             </div>
+            
+            {/* Hover effect border */}
+            <div className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-blue-200 transition-colors duration-200 pointer-events-none"></div>
           </div>
         ))}
       </div>
