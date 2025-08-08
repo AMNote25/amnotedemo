@@ -368,16 +368,18 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {paginatedData.map((receipt) => (
+                {paginatedData.map((receipt, idx) => (
                   <tr
                     key={receipt.id}
                     onClick={() => handleRowClick(receipt)}
-                    className={`group hover:bg-gray-50 transition-colors cursor-pointer ${
-                      selectedReceipt?.id === receipt.id ? "bg-gray-100" : ""
-                    }`}
+                    className={`group transition-colors cursor-pointer 
+                      ${selectedReceipt?.id === receipt.id ? "bg-red-50" : ""}
+                      ${idx % 2 === 1 ? "bg-gray-50" : ""}
+                      hover:bg-red-50`
+                    }
                     title="Click để xem chi tiết"
                   >
-                    <td className=" z-15  px-4 py-3 group-hover:bg-gray-50" onClick={(e) => e.stopPropagation()}>
+                    <td className="z-15 px-4 py-3 group-hover:bg-red-50" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         className="accent-blue-600 w-4 h-4"
@@ -389,14 +391,14 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                     {listViewColumns.map((column) => (
                       <td
                         key={column.dataField}
-                        className="px-4 py-3 group-hover:bg-gray-50 truncate whitespace-nowrap"
+                        className="px-4 py-3 group-hover:bg-red-50 truncate whitespace-nowrap"
                         style={{ width: column.width, minWidth: column.width }}
                       >
                         {formatValue(getFieldValue(receipt, column.dataField), column)}
                       </td>
                     ))}
                     <td
-                      className="sticky group-hover:bg-gray-50 right-0 z-10 px-1 py-3 text-center"
+                      className="sticky group-hover:bg-red-50 right-0 z-10 px-1 py-3 text-center"
                       style={{ width: "100px", minWidth: "100px", maxWidth: "100px" }}
                     >
                       <div className="flex items-center justify-center space-x-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100">
