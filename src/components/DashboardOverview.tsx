@@ -1,6 +1,5 @@
 import React from 'react';
 import KPICard from './KPICard';
-import Chart from './Chart';
 import DataTable from './DataTable';
 import ProductTable from './ProductTable';
 import AlertPanel from './AlertPanel';
@@ -285,16 +284,16 @@ export default function DashboardOverview() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex justify-center">
           <div className="w-full">
             <h2 className="text-lg font-semibold mb-2 text-center">Tỷ Lệ Lợi Nhuận (Quản lý Tài khoản)</h2>
-            <div className="max-w-xs mx-auto">
-              <Pie data={pieData} options={pieOptions} height={20} />
+            <div className="max-w-md mx-auto">
+              <Pie data={pieData} options={pieOptions} className="w-full h-auto max-h-[300px]" />
             </div>
           </div>
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex justify-center">
           <div className="w-full">
             <h2 className="text-lg font-semibold mb-2 text-center">Đối tượng Tập hợp Chi phí</h2>
-            <div className="max-w-xs mx-auto">
-              <Pie data={partnerPieData} options={partnerPieOptions} height={20} />
+            <div className="max-w-md mx-auto">
+              <Pie data={partnerPieData} options={partnerPieOptions} className="w-full h-auto max-h-[300px]" />
             </div>
           </div>
         </div>
