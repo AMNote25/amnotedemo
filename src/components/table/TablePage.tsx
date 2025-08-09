@@ -375,6 +375,7 @@ export function TablePage<T extends BaseTableItem>({
                 aria-label="In ấn"
               >
                 <Icons.Printer size={16} />
+                <span className="ml-2 hidden sm:inline">In ấn</span>
               </button>
               <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
                 In ấn
@@ -390,6 +391,7 @@ export function TablePage<T extends BaseTableItem>({
                 aria-label="Nhập Excel"
               >
                 <Icons.Upload size={16} />
+                <span className="ml-2 hidden sm:inline">Nhập Excel</span>
               </button>
               <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
                 Nhập Excel
@@ -401,10 +403,11 @@ export function TablePage<T extends BaseTableItem>({
             <div className="relative group">
               <button
                 onClick={handleAddClick}
-                className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
+                className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
                 aria-label="Thêm mới"
               >
                 <Icons.Plus size={16} />
+                <span className="ml-2 hidden sm:inline">Thêm mới</span>
               </button>
               <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
                 Thêm mới

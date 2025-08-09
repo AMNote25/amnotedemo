@@ -271,24 +271,27 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
         </div>
         <div className="m-2 flex space-x-2">
           <button
-            className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600"
+            className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
             title="In ấn"
             onClick={handlePrint}
           >
             <Printer className="w-5 h-5" />
+            <span className="ml-2 hidden sm:inline">In ấn</span>
           </button>
           <button
-            className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600"
-            title="Xuất Excel"
+            className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
+            title="Nhập Excel"
           >
             <Upload className="w-5 h-5" />
+            <span className="ml-2 hidden sm:inline">Nhập Excel</span>
           </button>
           <button
             onClick={() => navigate("/receipt-management/receipt-detail")}
-            className="p-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-blue-600 hover:text-white hover:border-blue-600"
+            className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
             title="Thêm mới"
           >
             <Plus className="w-5 h-5" />
+            <span className="ml-2 hidden sm:inline">Thêm mới</span>
           </button>
         </div>
       </div>
