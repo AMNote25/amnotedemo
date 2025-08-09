@@ -19,7 +19,7 @@ import CompanyManagementPage from "./pages/CompanyManagement";
 import CompanyManagement from "./pages/Company";
 import ReceiptManagementPage from "./pages/ReceiptManagement";
 import ReceiptDetailPage from "./pages/ReceiptManagement/ReceiptDetailPage";
-
+import Documents from "./pages/Documents";
 
 function findMenuTitleById(menuId: string) {
   // Duyệt qua menuGroups để tìm title theo id (hỗ trợ cả subItems nhiều cấp)
@@ -222,7 +222,7 @@ function AppContent() {
             <Route path="/utilities" element={<ModuleContent moduleId="utilities" />} />
             
             {/* Add routes for the submenus under 'summary' */}
-            <Route path="/documents" element={<ModuleContent moduleId="documents" />} />
+            <Route path="/documents" element={<Documents />} />
             <Route path="/receipt" element={<ReceiptManagementPage />} />
             <Route path="/receipt-management/receipt-detail" element={<ReceiptDetailPage />} />
             <Route path="/payment" element={<ModuleContent moduleId="payment" />} />
