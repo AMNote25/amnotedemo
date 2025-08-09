@@ -5,6 +5,10 @@ import DataTable from './DataTable';
 import ProductTable from './ProductTable';
 import AlertPanel from './AlertPanel';
 import { KPICard as KPICardType, ChartData, TableData, Product } from '../types';
+import { Bar, Line, Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, LineElement, PointElement, ArcElement } from 'chart.js';
+
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, LineElement, PointElement, ArcElement);
 
 const kpiData: KPICardType[] = [
   {
@@ -74,6 +78,36 @@ const partnerExpenseData: ChartData[] = [
   { label: 'Nghiên cứu phát triển', value: 10 }
 ];
 
+// Chuẩn hóa data cho Pie chart Đối tượng Tập hợp Chi phí
+const partnerPieData = {
+  labels: partnerExpenseData.map((d) => d.label),
+  datasets: [
+    {
+      label: 'Đối tượng Tập hợp Chi phí',
+      data: partnerExpenseData.map((d) => d.value),
+      backgroundColor: [
+        'rgba(37,99,235,0.7)', // blue
+        'rgba(220,38,38,0.7)', // red
+        'rgba(251,191,36,0.7)', // yellow
+        'rgba(16,185,129,0.7)', // green
+      ],
+      borderColor: '#fff',
+      borderWidth: 2,
+    },
+  ],
+};
+const partnerPieOptions = {
+  responsive: true,
+  plugins: {
+    legend: { display: true, position: 'right' as const },
+    tooltip: { enabled: true },
+  },
+  animation: {
+    duration: 1200,
+    easing: 'easeOutQuart' as const,
+  },
+};
+
 const receivableData: TableData[] = [
   { id: '1', name: 'Công ty TNHH ABC', amount: 150000000, dueDate: '15/12/2024', status: 'overdue' },
   { id: '2', name: 'Công ty XYZ Ltd', amount: 89000000, dueDate: '20/12/2024', status: 'due-soon' },
@@ -97,6 +131,134 @@ const bestSellingProducts: Product[] = [
 ];
 
 export default function DashboardOverview() {
+  // Responsive legend position for Pie chart
+  const [pieLegendPosition, setPieLegendPosition] = React.useState<'right' | 'bottom'>('right');
+  React.useEffect(() => {
+    function handleResize() {
+      setPieLegendPosition(window.innerWidth < 768 ? 'bottom' : 'right');
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const pieOptions = {
+    responsive: true,
+    plugins: {
+      legend: { display: true, position: pieLegendPosition },
+      tooltip: { enabled: true },
+    },
+    animation: {
+      duration: 1200,
+      easing: 'easeOutQuart' as const,
+    },
+  };
+
+  const partnerPieOptions = {
+   responsive: true,
+    plugins: {
+      legend: { display: true, position: pieLegendPosition },
+      tooltip: { enabled: true },
+    },
+    animation: {
+      duration: 1200,
+      easing: 'easeOutQuart' as const,
+    },
+  };
+  // Chuẩn hóa data cho Bar chart
+  const barData = {
+    labels: revenueExpenseData.map((d) => d.label),
+    datasets: [
+      {
+        label: 'Doanh Thu & Chi Phí',
+        data: revenueExpenseData.map((d) => d.value),
+        backgroundColor: 'rgba(220,38,38,0.7)',
+        borderRadius: 6,
+        maxBarThickness: 32,
+      },
+    ],
+  };
+  const barOptions = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true },
+    },
+    animation: {
+      duration: 1200,
+      easing: 'easeOutQuart' as const,
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { font: { family: 'Noto Sans', size: 13 } },
+      },
+      y: {
+        beginAtZero: true,
+        grid: { color: '#e0e0e0' },
+        ticks: { font: { family: 'Noto Sans', size: 13 } },
+      },
+    },
+  };
+
+  // Chuẩn hóa data cho Line chart
+  const lineData = {
+    labels: cashFlowData.map((d) => d.label),
+    datasets: [
+      {
+        label: 'Dòng Tiền',
+        data: cashFlowData.map((d) => d.value),
+        borderColor: 'rgba(37,99,235,1)',
+        backgroundColor: 'rgba(37,99,235,0.1)',
+        tension: 0.4,
+        pointBackgroundColor: 'rgba(37,99,235,1)',
+        pointBorderColor: '#fff',
+        pointRadius: 5,
+        fill: true,
+      },
+    ],
+  };
+  const lineOptions = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true },
+    },
+    animation: {
+      duration: 1200,
+      easing: 'easeOutQuart' as const,
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { font: { family: 'Noto Sans', size: 13 } },
+      },
+      y: {
+        beginAtZero: true,
+        grid: { color: '#e0e0e0' },
+        ticks: { font: { family: 'Noto Sans', size: 13 } },
+      },
+    },
+  };
+
+  // Chuẩn hóa data cho Pie chart
+  const pieData = {
+    labels: profitData.map((d) => d.label),
+    datasets: [
+      {
+        label: 'Tỷ Lệ Lợi Nhuận',
+        data: profitData.map((d) => d.value),
+        backgroundColor: [
+          'rgba(37,99,235,0.7)', // blue
+          'rgba(220,38,38,0.7)', // red
+          'rgba(16,185,129,0.7)', // green
+        ],
+        borderColor: '#fff',
+        borderWidth: 2,
+      },
+    ],
+  };
+
   return (
     <div className="space-y-6">
       {/* KPI Cards */}
@@ -108,14 +270,34 @@ export default function DashboardOverview() {
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Chart title="Doanh Thu & Chi Phí" data={revenueExpenseData} type="bar" />
-        <Chart title="Dòng Tiền (Quản lý Tài khoản)" data={cashFlowData} type="line" />
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+          <h2 className="text-lg font-semibold mb-2">Doanh Thu & Chi Phí</h2>
+          <Bar data={barData} options={barOptions} height={100} />
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+          <h2 className="text-lg font-semibold mb-2">Dòng Tiền (Quản lý Tài khoản)</h2>
+          <Line data={lineData} options={lineOptions} height={100} />
+        </div>
       </div>
 
       {/* Second Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Chart title="Tỷ Lệ Lợi Nhuận (Quản lý Tài khoản)" data={profitData} type="pie" />
-        <Chart title="Đối tượng Tập hợp Chi phí" data={partnerExpenseData} type="pie" />
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex justify-center">
+          <div className="w-full">
+            <h2 className="text-lg font-semibold mb-2 text-center">Tỷ Lệ Lợi Nhuận (Quản lý Tài khoản)</h2>
+            <div className="max-w-xs mx-auto">
+              <Pie data={pieData} options={pieOptions} height={20} />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex justify-center">
+          <div className="w-full">
+            <h2 className="text-lg font-semibold mb-2 text-center">Đối tượng Tập hợp Chi phí</h2>
+            <div className="max-w-xs mx-auto">
+              <Pie data={partnerPieData} options={partnerPieOptions} height={20} />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Tables Row */}
