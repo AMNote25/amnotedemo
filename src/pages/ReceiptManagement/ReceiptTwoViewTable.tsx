@@ -270,29 +270,47 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
           <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
         </div>
         <div className="m-2 flex space-x-2">
-          <button
-            className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
-            title="In ấn"
-            onClick={handlePrint}
-          >
-            <Printer className="w-5 h-5" />
-            <span className="ml-2 hidden sm:inline">In ấn</span>
-          </button>
-          <button
-            className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
-            title="Nhập Excel"
-          >
-            <Upload className="w-5 h-5" />
-            <span className="ml-2 hidden sm:inline">Nhập Excel</span>
-          </button>
-          <button
-            onClick={() => navigate("/receipt-management/receipt-detail")}
-            className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
-            title="Thêm mới"
-          >
-            <Plus className="w-5 h-5" />
-            <span className="ml-2 hidden sm:inline">Thêm mới</span>
-          </button>
+          {/* Nút In ấn */}
+          <div className="relative group">
+            <button
+              className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-red-600 hover:border-red-600 transition-all"
+              aria-label="In ấn"
+              onClick={handlePrint}
+            >
+              <Printer className="w-4 h-4" />
+              <span className="ml-2 hidden sm:inline">In ấn</span>
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+              In ấn
+            </div>
+          </div>
+          {/* Nút Nhập Excel */}
+          <div className="relative group">
+            <button
+              className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-red-600 hover:border-red-600 transition-all"
+              aria-label="Nhập Excel"
+            >
+              <Upload className="w-4 h-4" />
+              <span className="ml-2 hidden sm:inline">Nhập Excel</span>
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+              Nhập Excel
+            </div>
+          </div>
+          {/* Nút Thêm mới */}
+          <div className="relative group">
+            <button
+              onClick={() => navigate("/receipt-management/receipt-detail")}
+              className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-black hover:text-white hover:border-black transition-all"
+              aria-label="Thêm mới"
+            >
+              <Plus className="w-4 h-4" />
+              <span className="ml-2 hidden sm:inline">Thêm mới</span>
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+              Thêm mới
+            </div>
+          </div>
         </div>
       </div>
 
