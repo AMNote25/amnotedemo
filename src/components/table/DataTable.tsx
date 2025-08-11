@@ -245,7 +245,7 @@ export function DataTable<T extends BaseTableItem>({
                     </td>
                   ))}
                   <td
-                    className="sticky group-hover:bg-gray-50 right-0 z-10 px-1 py-3 text-center"
+                    className="sticky group-hover:bg-gray-50 right-0  px-1 py-3 text-center"
                     style={{ width: "100px", minWidth: "100px", maxWidth: "100px" }}
                   >
                     <div className="flex items-center justify-center space-x-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100">
