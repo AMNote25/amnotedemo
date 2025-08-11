@@ -363,7 +363,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                     </th>
                   ))}
                   <th
-                    className="sticky right-0 z-25 bg-[#f5f5f5]  px-4 py-3 text-center text-sm font-bold text-[#212121] whitespace-nowrap"
+                    className="sticky right-0  bg-[#f5f5f5]  px-4 py-3 text-center text-sm font-bold text-[#212121] whitespace-nowrap"
                     style={{ width: "100px", minWidth: "100px", maxWidth: "100px" }}
                   >
                     Thao tác
