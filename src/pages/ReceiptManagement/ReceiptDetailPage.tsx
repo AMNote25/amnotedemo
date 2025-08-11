@@ -684,7 +684,7 @@ export default function ReceiptDetailPage() {
           className="inline-flex items-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Quay lại danh sách
+          Quay lại 
         </button>
       </div>
       {/* Gộp form nhập chi tiết và bảng danh sách chi tiết vào cùng 1 khối */}

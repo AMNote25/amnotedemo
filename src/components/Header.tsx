@@ -157,7 +157,7 @@ export default function Header({ onToggleSidebar, onLogout, onMenuSelect, curren
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-3 h-[50px] flex items-center z-[9999]">
+    <header className="bg-white border-b border-gray-200 px-6 py-3 h-[50px] flex items-center z-[98]">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center space-x-4">
           <button

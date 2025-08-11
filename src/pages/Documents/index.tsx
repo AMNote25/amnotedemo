@@ -115,7 +115,7 @@ export default function DocumentsPage() {
                   >
                     {item.title}
                   </h3>
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                  <div className="absolute top-0 left-0 transform -translate-x-0 -translate-y-full px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
                     {item.title}
                   </div>
                 </div>

@@ -574,7 +574,7 @@ export default function Sidebar({
         {/* Floating expanded sidebar overlay on hover */}
         {isSidebarHovered && (
           <div
-            className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 shadow-lg z-50 flex flex-col"
+            className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 shadow-lg z-[99] flex flex-col"
             onMouseEnter={() => setSidebarHovered(true)}
             onMouseLeave={() => setSidebarHovered(false)}
             style={{ pointerEvents: 'auto' }}
