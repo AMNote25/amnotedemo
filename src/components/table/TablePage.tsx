@@ -403,7 +403,7 @@ export function TablePage<T extends BaseTableItem>({
             <div className="relative group">
               <button
                 onClick={handleAddClick}
-                className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-500 hover:text-white hover:border-red-500 transition-all"
+                className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 hover:text-white hover:border-red-700 transition-all"
                 aria-label="Thêm mới"
               >
                 <Icons.Plus size={16} />

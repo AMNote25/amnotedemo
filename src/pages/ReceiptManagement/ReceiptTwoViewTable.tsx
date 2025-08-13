@@ -301,7 +301,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
           <div className="relative group">
             <button
               onClick={() => navigate("/receipt-management/receipt-detail")}
-              className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-500 hover:text-white hover:border-red-500 transition-all"
+              className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 hover:text-white hover:border-red-700 transition-all"
               aria-label="Thêm mới"
             >
               <Plus className="w-4 h-4" />
