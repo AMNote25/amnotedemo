@@ -208,7 +208,14 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             </div>
 
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className=" font-bold text-red-600">AMnote</span>
+              <span className=" font-bold text-red-600">
+                <img
+                  src="/img/amnote_logo.svg"
+                  alt="AMnote Logo"
+                  className="w-14 h-14 object-contain"
+                  draggable={false}
+                />
+              </span>
             </div>
           </div>
 
