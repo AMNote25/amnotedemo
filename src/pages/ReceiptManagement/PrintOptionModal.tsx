@@ -76,7 +76,7 @@ export default function PrintOptionModal({ open, onClose, onConfirm, defaultLang
           ))}
         </div>
         <button
-          className="w-full py-1.5 mt-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-semibold"
+          className="w-full py-1.5 mt-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold"
           onClick={() => onConfirm(lang, template)}
         >
           In

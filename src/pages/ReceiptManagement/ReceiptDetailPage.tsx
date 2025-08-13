@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { TableSettings } from "@/components/table/TableSettings";
 import { useNavigate } from "react-router-dom";
-import { Save, Plus, ArrowLeft, Filter, Banknote, Receipt, X } from "lucide-react";
+import { Save, Plus, ArrowLeft, Filter, Banknote, Receipt, X, Search } from "lucide-react";
 import { TableToolbar } from "@/components/table/TableToolbar";
 import Pagination from "@/components/table/Pagination";
 
@@ -681,7 +681,7 @@ export default function ReceiptDetailPage() {
       <div className="mb-4">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666]  hover:border-red-600 hover:text-red-600 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Quay lại 
@@ -867,7 +867,7 @@ export default function ReceiptDetailPage() {
         <div className="flex justify-end mt-4 gap-2">
           <button
             type="button"
-            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:border-red-600 hover:text-red-600 transition-colors text-[13px]"
             // TODO: Thêm logic thu tiền khách hàng
           >
             <Banknote className="w-4 h-4" />
@@ -875,7 +875,7 @@ export default function ReceiptDetailPage() {
           </button>
           <button
             type="button"
-            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:border-red-600 hover:text-red-600 transition-colors text-[13px]"
             onClick={handleOpenPaymentPopup}
           >
             <Receipt className="w-4 h-4" />
@@ -883,7 +883,7 @@ export default function ReceiptDetailPage() {
           </button>
           <button
             onClick={handleAddDetail}
-            className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors text-[13px]"
+            className="flex items-center justify-center gap-2 px-4 py-2 border border-red-600 rounded-lg bg-red-600 text-white hover:bg-red-700 hover:border-red-700  transition-colors text-[13px]"
             title={editingIndex !== null ? "Cập nhật dòng" : "Thêm dòng"}
           >
             <Plus className="w-4 h-4" />
@@ -898,12 +898,12 @@ export default function ReceiptDetailPage() {
             {/* Nút mở popup cài đặt cột dạng slide phải */}
             <button
               onClick={() => setShowSettings(true)}
-              className="p-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors relative group"
+              className="p-2 border border-[#ccc] rounded-lg bg-white text-[#666] hover:border-red-600 hover:text-red-600 transition-colors relative group"
               title="Cài đặt cột"
               aria-label="Cài đặt cột"
               type="button"
             >
-              <Filter size={20} />
+              <Filter size={20} className="group-hover:text-red-600 transition-colors" />
               {/* Tooltip */}
               <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-50 px-2 py-1 rounded bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition-all">
                 Cài đặt cột
@@ -1140,7 +1140,7 @@ export default function ReceiptDetailPage() {
           <div className="flex justify-end mt-6">
             <button
               onClick={handleSave}
-              className="flex items-center justify-center gap-2 px-4 py-2 border border-[#ccc] rounded-lg bg-white text-[#666] text-[13px] hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors"
+              className="flex items-center justify-center gap-2 px-4 py-2 border border-red-600 rounded-lg bg-red-600 text-white text-[13px] hover:bg-red-700 hover:border-red-700 transition-colors"
               title="Lưu phiếu thu"
             >
               <Save className="w-4 h-4" />
@@ -1212,7 +1212,7 @@ export default function ReceiptDetailPage() {
                           <td className="px-3 py-2 text-[13px] border-b border-gray-300">
                             <button
                               onClick={() => handleSelectCustomer(customer)}
-                              className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-[13px]"
+                              className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-[13px]"
                             >
                               Chọn
                             </button>
@@ -1290,7 +1290,7 @@ export default function ReceiptDetailPage() {
                           <td className="px-3 py-2 text-[13px] border-b border-gray-300">
                             <button
                               onClick={() => handleSelectCostObject(costObject)}
-                              className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-[13px]"
+                              className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-[13px]"
                             >
                               Chọn
                             </button>
@@ -1368,7 +1368,7 @@ export default function ReceiptDetailPage() {
                           <td className="px-3 py-2 text-[13px] border-b border-gray-300">
                             <button
                               onClick={() => handleSelectDebitCredit(account)}
-                              className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-[13px]"
+                              className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-[13px]"
                             >
                               Chọn
                             </button>
@@ -1580,23 +1580,11 @@ export default function ReceiptDetailPage() {
                   <div className="flex justify-end mt-4">
                     <button
                       onClick={handleSearch}
-                      className="flex items-center gap-2 px-5 py-2 rounded-lg border border-blue-600 bg-blue-600 text-white text-[13px] font-[Noto Sans] font-semibold shadow hover:bg-blue-700 hover:border-blue-700 transition-colors"
+                      className="flex items-center gap-2 px-5 py-2 rounded-lg border border-red-600 bg-red-600 text-white text-[13px] font-[Noto Sans] font-semibold shadow hover:bg-red-700 hover:border-red-700 transition-colors"
                       type="button"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
-                        />
-                      </svg>
+                      {/* Icon tìm kiếm dùng lucide-react */}
+                      <Search className="w-4 h-4" />
                       <span>Tìm kiếm</span>
                     </button>
                   </div>
@@ -1725,7 +1713,7 @@ export default function ReceiptDetailPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setHideDebt(!hideDebt)}
-                      className={`px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:bg-blue-600 hover:border-blue-600 hover:text-white ${hideDebt ? "bg-blue-600 border-blue-600 text-white" : ""}`}
+                      className={`px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:text-red-600 hover:border-red-600 ${hideDebt ? "bg-blue-600 border-blue-600 text-white" : ""}`}
                     >
                       {hideDebt ? "Hiện tất cả" : "Ẩn công nợ"}
                     </button>
@@ -1733,14 +1721,14 @@ export default function ReceiptDetailPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setShowPaymentPopup(false)}
-                      className="px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:bg-blue-600 hover:border-blue-600 hover:text-white"
+                      className="px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:bg-gray-300 hover:border-gray-300 hover:text-gray-500"
                     >
                       Hủy
                     </button>
                     <button
                       onClick={handlePayment}
                       disabled={selectedDebtIds.length === 0}
-                      className={`px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:bg-blue-600 hover:border-blue-600 hover:text-white ${selectedDebtIds.length > 0 ? "" : "bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300 hover:bg-gray-300 hover:border-gray-300 hover:text-gray-500"}`}
+                      className={`px-4 py-2 rounded-lg text-[13px] font-[Noto Sans] border border-[#ccc] bg-white text-[#666] transition-colors hover:bg-red-600 hover:border-red-600 hover:text-white ${selectedDebtIds.length > 0 ? "" : "bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300 hover:bg-gray-300 hover:border-gray-300 hover:text-gray-500"}`}
                     >
                       Thanh toán
                     </button>
