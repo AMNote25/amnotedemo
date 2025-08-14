@@ -35,7 +35,14 @@ Mỗi module/trang phải có đầy đủ:
   - Nền: trắng  
   - Border: `#ccc`  
   - Màu chữ: `#666`  
-  - Hover: `bg-blue-600`, `border-blue-600`, chữ trắng  
+  - Hover: `bg-red-600`, `border-red-600`, chữ trắng  
+- Font: `Noto Sans`, size `13px`.
+### 🔹 Button red:
+- Style mặc định:  
+  - Nền: bg-red-600  
+  - Border: border-red-600
+  - Màu chữ: white
+  - Hover: `bg-red-700`, `border-red-700`, 
 - Font: `Noto Sans`, size `13px`.
 
 ### 🔹 Header:
