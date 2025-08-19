@@ -131,7 +131,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
 
     const handleMouseMove = (e: MouseEvent) => {
       const newHeight = startHeight + (e.clientY - startY)
-      const minHeight = 200
+      const minHeight = 100
       const maxHeight = window.innerHeight - 300 // Để lại không gian cho các phần khác
       
       if (newHeight >= minHeight && newHeight <= maxHeight) {
