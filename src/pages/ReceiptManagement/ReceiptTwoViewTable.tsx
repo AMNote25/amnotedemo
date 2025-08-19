@@ -406,7 +406,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                     }
                     title="Click để xem chi tiết"
                   >
-                    <td className="z-15 px-4 py-3 group-hover:bg-red-50" onClick={(e) => e.stopPropagation()}>
+                    <td className="z-15 px-4 py-0 group-hover:bg-red-50" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         className="accent-blue-600 w-4 h-4"
@@ -418,7 +418,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                     {listViewColumns.map((column) => (
                       <td
                         key={column.dataField}
-                        className="px-4 py-3 group-hover:bg-red-50 truncate whitespace-nowrap"
+                        className="px-4 py-0 group-hover:bg-red-50 truncate whitespace-nowrap"
                         style={{ width: column.width, minWidth: column.width }}
                       >
                         {formatValue(getFieldValue(receipt, column.dataField), column)}
@@ -509,15 +509,15 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
 
         {/* Bảng 2 (Detail View) */}
         {showDetailTable && (
-          <div className="flex-1 overflow-hidden border-t border-gray-200" style={{ height: `calc(100vh - ${table1Height + 200}px)` }}>
+          <div className="flex-1 overflow-hidden " style={{ height: `calc(100vh - ${table1Height + 200}px)` }}>
             <div className="h-full overflow-y-auto">
               <table className="min-w-full table-auto">
-                <thead className="sticky top-0 z-10 bg-[#f5f5f5] border-t border-b border-l border-gray-300 text-[#212121] whitespace-nowrap text-sm">
+                <thead className="sticky top-0 z-10 bg-[#f5f5f5]  text-[#212121] whitespace-nowrap text-sm">
                   <tr>
                     {detailViewColumns.map((column) => (
                       <th
                         key={column.dataField}
-                        className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t  border-b border-[#e0e0e0] text-[#212121]"
+                        className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5]  text-[#212121]"
                       >
                         {column.displayName}
                       </th>
