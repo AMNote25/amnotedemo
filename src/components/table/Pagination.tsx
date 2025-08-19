@@ -84,7 +84,7 @@ export default function Pagination({
 
   return (
     <div className={`bg-white border-t border-gray-200 ${className}`}>
-      <div className="px-4 py-3 sm:px-6">
+      <div className="px-1 py-1 sm:px-6">
         {/* Mobile View */}
         <div className="flex items-center justify-between sm:hidden">
           <div className="flex-1">

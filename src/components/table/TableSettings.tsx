@@ -241,8 +241,8 @@ export function TableSettings({ columns, onColumnChange, onClose, onReset, stick
                 <span>Đặt lại</span>
               </button>
               <button 
-                onClick={onClose} 
-                className="flex-1 px-3 py-2.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center space-x-1.5 shadow-sm font-medium"
+                onClick={onClose}
+                className="flex-1 px-3 py-2.5 text-[13px] font-[Noto Sans] bg-red-600 border border-red-600 text-white rounded-lg hover:bg-red-700 hover:border-red-700 transition-all duration-200 flex items-center justify-center space-x-1.5 shadow-sm font-medium"
               >
                 <Icons.Check size={14} />
                 <span>Hoàn tất</span>

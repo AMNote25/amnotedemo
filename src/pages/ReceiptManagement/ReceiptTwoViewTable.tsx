@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useMemo, useRef, useEffect } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { receiptColumns } from "./receiptConfig"
 import type { ColumnConfig } from "@/types/table"
 import { ReceiptTableToolbar } from "@/components/table/ReceiptTableToolbar"
-import { Printer, Upload, Plus, Edit, Trash2 } from "lucide-react"
+import { Printer, Upload, Plus, Edit, Trash2, ChevronUp, ChevronDown } from "lucide-react"
 import ReceiptPrintModal from "./ReceiptPrintModal"
 import PrintOptionModal from "./PrintOptionModal"
 import { useNavigate } from "react-router-dom"
@@ -94,6 +94,7 @@ interface ReceiptTwoViewTableProps {
 
 export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
   const [data, setData] = useState<Receipt[]>(() => generateReceiptData(50))
+  const [showDetailTable, setShowDetailTable] = useState(true)
   const [selectedReceipt, setSelectedReceipt] = useState<Receipt | null>(null)
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([])
   const [startDate, setStartDate] = useState<string>("")
@@ -107,6 +108,8 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
   const [showPrintOption, setShowPrintOption] = useState(false)
   const [currentPage, setCurrentPage] = useState(1) // State cho trang hiện tại
   const [itemsPerPage, setItemsPerPage] = useState(10) // State cho số mục mỗi trang
+  const [table1Height, setTable1Height] = useState(400) // Chiều cao bảng 1
+  const [isResizing, setIsResizing] = useState(false) // Trạng thái đang resize
   const navigate = useNavigate()
 
   // Hàm reload dữ liệu (mock)
@@ -117,6 +120,33 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
     setSelectedReceipt(null) // Reset table 2 khi reload
     setSelectedRowIds([])   // Reset checkbox chọn dòng
     setIsRefreshing(false)
+  }
+
+  // Xử lý resize bảng bằng cách kéo
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setIsResizing(true)
+    const startY = e.clientY
+    const startHeight = table1Height
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const newHeight = startHeight + (e.clientY - startY)
+      const minHeight = 200
+      const maxHeight = window.innerHeight - 300 // Để lại không gian cho các phần khác
+      
+      if (newHeight >= minHeight && newHeight <= maxHeight) {
+        setTable1Height(newHeight)
+      }
+    }
+
+    const handleMouseUp = () => {
+      setIsResizing(false)
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
   }
 
   // Lọc dữ liệu theo searchTerm và khoảng ngày giao dịch
@@ -163,30 +193,6 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
   useEffect(() => {
     setCurrentPage(1)
   }, [searchTerm, startDate, endDate, itemsPerPage])
-
-  // Scroll cho bảng 1: tính toán chiều cao động (có thể không cần thiết với flex-1 và overflow-y-auto)
-  const table1WrapperRef = useRef<HTMLDivElement>(null)
-  const [table1MaxHeight, setTable1MaxHeight] = useState<number>(400)
-
-  useEffect(() => {
-    function updateHeight() {
-      // Chiều cao các thành phần khác
-      const headerHeight = 72 // Tiêu đề + các nút action
-      const toolbarHeight = 56 // ReceiptTableToolbar
-      const detailTableHeight = 300 // Bảng 2 (ước lượng)
-      const paginationHeight = 80 // Chiều cao của component Pagination
-      const padding = 10 // Padding container
-      const windowH = window.innerHeight
-
-      // Tính maxHeight cho bảng 1
-      const maxH = windowH - (headerHeight + toolbarHeight + detailTableHeight + paginationHeight + padding)
-      setTable1MaxHeight(maxH > 200 ? maxH : 200)
-    }
-
-    updateHeight()
-    window.addEventListener("resize", updateHeight)
-    return () => window.removeEventListener("resize", updateHeight)
-  }, [])
 
   // Tự động filter các cột theo thuộc tính visible
   const listViewColumns = useMemo(() => {
@@ -263,7 +269,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
   }
 
   return (
-    <div className="flex flex-col md:h-[calc(100vh-100px)]">
+  <div className="flex flex-col md:h-[calc(100vh-100px)]">
       {/* Tiêu đề và các nút action */}
       <div className="flex-shrink-0 pb-4 border-b border-gray-200 flex justify-between items-center">
         <div>
@@ -314,8 +320,8 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
         </div>
       </div>
 
-      {/* Container cho Toolbar, Bảng 1 và Bảng 2 */}
-      <div className="bg-white rounded-lg shadow flex flex-col flex-1 overflow-hidden">
+  {/* Container cho Toolbar, Bảng 1 và Bảng 2 */}
+  <div className="bg-white rounded-lg shadow flex flex-col flex-1 overflow-hidden">
         {/* Toolbar */}
         <div className="flex-shrink-0">
           <ReceiptTableToolbar
@@ -353,8 +359,8 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
           />
         )}
 
-        {/* Bảng 1 (List View) */}
-        <div className="flex-1 flex flex-col min-h-0">
+  {/* Bảng 1 (List View) */}
+  <div className={`flex flex-col min-h-0 ${!showDetailTable ? "h-full" : ""}`} style={{ height: showDetailTable ? `${table1Height}px` : 'auto' }}>
           <div className="relative flex-1 overflow-y-auto">
             <table className="min-w-full table-auto text-sm">
               <thead className="sticky top-0 z-[1] bg-[#f5f5f5] border-b border-[#e0e0e0] text-[#212121]">
@@ -472,48 +478,79 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
             endIndex={endIndex}
             className="flex-shrink-0" // Đảm bảo pagination không bị co lại
           />
+          
+        </div>
+
+        {/* Nút thu gọn/mở rộng bảng 2 */}
+        <div 
+          className="flex justify-center items-center py-2 relative" 
+          style={{ backgroundColor: "#eee", cursor: "row-resize" }}
+          onMouseDown={handleMouseDown}
+        >
+          <button
+            type="button"
+            className="px-4 py-1 bg-gray-900 text-white rounded shadow flex items-center gap-2 text-[13px] font-[Noto Sans] hover:bg-gray-700 transition-all"
+            style={{ position: "absolute", left: "50%", top: "-9px", transform: "translateX(-50%)" }}
+            onClick={() => setShowDetailTable((prev) => !prev)}
+          >
+            {showDetailTable ? (
+              <>
+                <ChevronUp className="w-4 h-4" />
+                <span>Thu gọn</span>
+              </>
+            ) : (
+              <>
+                <ChevronDown className="w-4 h-4" />
+                <span>Mở rộng</span>
+              </>
+            )}
+          </button>
         </div>
 
         {/* Bảng 2 (Detail View) */}
-        <div className="h-auto md:flex-1 overflow-auto border-t border-gray-200">
-          <table className="min-w-full table-auto">
-            <thead className="bg-[#f5f5f5] border-t border-b border-l border-gray-300 text-[#212121] whitespace-nowrap text-sm">
-              <tr>
-                {detailViewColumns.map((column) => (
-                  <th
-                    key={column.dataField}
-                    className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t  border-b border-[#e0e0e0] text-[#212121]"
-                  >
-                    {column.displayName}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 text-sm whitespace-nowrap border-b border-[#e0e0e0]">
-              {selectedReceipt
-                ? // Luôn render 4 dòng giống nhau, đều là dữ liệu của selectedReceipt
-                  [0, 1, 2, 3].map((rowIdx) => (
-                    <tr key={rowIdx} className="group hover:bg-gray-50">
-                      {detailViewColumns.map((column) => (
-                        <td key={column.dataField} className="px-4 py-3 group-hover:bg-gray-50">
-                          {formatValue(getFieldValue(selectedReceipt, column.dataField), column)}
-                        </td>
+        {showDetailTable && (
+          <div className="flex-1 overflow-hidden border-t border-gray-200" style={{ height: `calc(100vh - ${table1Height + 200}px)` }}>
+            <div className="h-full overflow-y-auto">
+              <table className="min-w-full table-auto">
+                <thead className="sticky top-0 z-10 bg-[#f5f5f5] border-t border-b border-l border-gray-300 text-[#212121] whitespace-nowrap text-sm">
+                  <tr>
+                    {detailViewColumns.map((column) => (
+                      <th
+                        key={column.dataField}
+                        className="px-4 py-3 text-left text-sm font-bold select-none group bg-[#f5f5f5] border-t  border-b border-[#e0e0e0] text-[#212121]"
+                      >
+                        {column.displayName}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 text-sm whitespace-nowrap border-b border-[#e0e0e0]">
+                  {selectedReceipt
+                    ? // Luôn render 4 dòng giống nhau, đều là dữ liệu của selectedReceipt
+                      [0, 1, 2, 3].map((rowIdx) => (
+                        <tr key={rowIdx} className="group hover:bg-gray-50">
+                          {detailViewColumns.map((column) => (
+                            <td key={column.dataField} className="px-4 py-3 group-hover:bg-gray-50">
+                              {formatValue(getFieldValue(selectedReceipt, column.dataField), column)}
+                            </td>
+                          ))}
+                        </tr>
+                      ))
+                    : // Nếu chưa chọn thì render 4 dòng trống
+                      [0, 1, 2, 3].map((rowIdx) => (
+                        <tr key={rowIdx} className="group hover:bg-gray-50">
+                          {detailViewColumns.map((column) => (
+                            <td key={column.dataField} className="px-4 py-3 group-hover:bg-gray-50 h-[44px]">
+                              {/* Để trống */}
+                            </td>
+                          ))}
+                        </tr>
                       ))}
-                    </tr>
-                  ))
-                : // Nếu chưa chọn thì render 4 dòng trống
-                  [0, 1, 2, 3].map((rowIdx) => (
-                    <tr key={rowIdx} className="group hover:bg-gray-50">
-                      {detailViewColumns.map((column) => (
-                        <td key={column.dataField} className="px-4 py-3 group-hover:bg-gray-50 h-[44px]">
-                          {/* Để trống */}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-            </tbody>
-          </table>
-        </div>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
