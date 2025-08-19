@@ -175,7 +175,7 @@ function AppContent() {
           currentMenuTitle={currentMenuTitle}
         />
         
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-3">
           <Routes>
             <Route path="/" element={<DashboardOverview />} />
             <Route path="/dashboard" element={<Navigate to="/" replace />} />
