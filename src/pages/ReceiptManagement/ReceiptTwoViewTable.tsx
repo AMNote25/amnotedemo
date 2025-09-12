@@ -122,31 +122,38 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
     setIsRefreshing(false)
   }
 
-  // Xử lý resize bảng bằng cách kéo
-  const handleMouseDown = (e: React.MouseEvent) => {
+  // Xử lý resize bảng bằng cách kéo (hỗ trợ cả chuột & cảm ứng)
+  const handleResizeStart = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault()
     setIsResizing(true)
-    const startY = e.clientY
+    // Lấy vị trí Y bắt đầu từ chuột hoặc cảm ứng
+    const startY = 'touches' in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY
     const startHeight = table1Height
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const newHeight = startHeight + (e.clientY - startY)
+    // Hàm xử lý di chuyển (chuột hoặc cảm ứng)
+    const handleMove = (ev: MouseEvent | TouchEvent) => {
+      const clientY = 'touches' in ev ? ev.touches[0].clientY : (ev as MouseEvent).clientY
+      const newHeight = startHeight + (clientY - startY)
       const minHeight = 100
-      const maxHeight = window.innerHeight - 300 // Để lại không gian cho các phần khác
-      
+      const maxHeight = window.innerHeight - 300
       if (newHeight >= minHeight && newHeight <= maxHeight) {
         setTable1Height(newHeight)
       }
     }
 
-    const handleMouseUp = () => {
+    // Hàm kết thúc resize
+    const handleEnd = () => {
       setIsResizing(false)
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('mousemove', handleMove)
+      document.removeEventListener('mouseup', handleEnd)
+      document.removeEventListener('touchmove', handleMove)
+      document.removeEventListener('touchend', handleEnd)
     }
 
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('mousemove', handleMove)
+    document.addEventListener('mouseup', handleEnd)
+    document.addEventListener('touchmove', handleMove, { passive: false })
+    document.addEventListener('touchend', handleEnd)
   }
 
   // Lọc dữ liệu theo searchTerm và khoảng ngày giao dịch
@@ -271,35 +278,35 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
   return (
   <div className="flex flex-col md:h-[calc(100vh-100px)]">
       {/* Tiêu đề và các nút action */}
-      <div className="flex-shrink-0 pb-4 border-b border-gray-200 flex justify-between items-center">
+      <div className="flex items-center justify-between flex-shrink-0 pb-4 border-b border-gray-200">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Danh sách phiếu thu</h1>
         </div>
-        <div className="m-2 flex space-x-2">
+        <div className="flex m-2 space-x-2">
           {/* Nút In ấn */}
           <div className="relative group">
             <button
-              className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-red-600 hover:border-red-600 transition-all"
+              className="inline-flex items-center justify-center px-4 py-2 text-sm text-gray-600 transition-all bg-white border border-gray-300 rounded-lg hover:bg-white hover:text-red-600 hover:border-red-600"
               aria-label="In ấn"
               onClick={handlePrint}
             >
               <Printer className="w-4 h-4" />
-              <span className="ml-2 hidden sm:inline">In ấn</span>
+              <span className="hidden ml-2 sm:inline">In ấn</span>
             </button>
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+            <div className="absolute z-20 px-3 py-1 mt-2 text-xs text-white transition-opacity duration-200 -translate-x-1/2 bg-gray-800 rounded shadow-lg opacity-0 pointer-events-none left-1/2 whitespace-nowrap group-hover:opacity-100">
               In ấn
             </div>
           </div>
           {/* Nút Nhập Excel */}
           <div className="relative group">
             <button
-              className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-red-600 hover:border-red-600 transition-all"
+              className="inline-flex items-center justify-center px-4 py-2 text-sm text-gray-600 transition-all bg-white border border-gray-300 rounded-lg hover:bg-white hover:text-red-600 hover:border-red-600"
               aria-label="Nhập Excel"
             >
               <Upload className="w-4 h-4" />
-              <span className="ml-2 hidden sm:inline">Nhập Excel</span>
+              <span className="hidden ml-2 sm:inline">Nhập Excel</span>
             </button>
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+            <div className="absolute z-20 px-3 py-1 mt-2 text-xs text-white transition-opacity duration-200 -translate-x-1/2 bg-gray-800 rounded shadow-lg opacity-0 pointer-events-none left-1/2 whitespace-nowrap group-hover:opacity-100">
               Nhập Excel
             </div>
           </div>
@@ -307,13 +314,13 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
           <div className="relative group">
             <button
               onClick={() => navigate("/receipt-management/receipt-detail")}
-              className="inline-flex items-center justify-center bg-red-600 border border-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 hover:text-white hover:border-red-700 transition-all"
+              className="inline-flex items-center justify-center px-4 py-2 text-sm text-white transition-all bg-red-600 border border-red-600 rounded-lg hover:bg-red-700 hover:text-white hover:border-red-700"
               aria-label="Thêm mới"
             >
               <Plus className="w-4 h-4" />
-              <span className="ml-2 hidden sm:inline">Thêm mới</span>
+              <span className="hidden ml-2 sm:inline">Thêm mới</span>
             </button>
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 z-20 whitespace-nowrap px-3 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
+            <div className="absolute z-20 px-3 py-1 mt-2 text-xs text-white transition-opacity duration-200 -translate-x-1/2 bg-gray-800 rounded shadow-lg opacity-0 pointer-events-none left-1/2 whitespace-nowrap group-hover:opacity-100">
               Thêm mới
             </div>
           </div>
@@ -321,7 +328,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
       </div>
 
   {/* Container cho Toolbar, Bảng 1 và Bảng 2 */}
-  <div className="bg-white rounded-lg shadow flex flex-col flex-1 overflow-hidden">
+  <div className="flex flex-col flex-1 overflow-hidden bg-white rounded-lg shadow">
         {/* Toolbar */}
         <div className="flex-shrink-0">
           <ReceiptTableToolbar
@@ -362,13 +369,13 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
   {/* Bảng 1 (List View) */}
   <div className={`flex flex-col min-h-0 ${!showDetailTable ? "h-full" : ""}`} style={{ height: showDetailTable ? `${table1Height}px` : 'auto' }}>
           <div className="relative flex-1 overflow-y-auto">
-            <table className="min-w-full table-auto text-sm">
+            <table className="min-w-full text-sm table-auto">
               <thead className="sticky top-0 z-[1] bg-[#f5f5f5] border-b border-[#e0e0e0] text-[#212121]">
                 <tr>
                   <th className="sticky left-0  bg-[#f5f5f5]  px-4 py-3 text-left text-[#212121] font-bold">
                     <input
                       type="checkbox"
-                      className="accent-blue-600 w-4 h-4"
+                      className="w-4 h-4 accent-blue-600"
                       checked={isAllChecked}
                       ref={(el) => {
                         if (el) el.indeterminate = isIndeterminate
@@ -380,7 +387,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                   {listViewColumns.map((column) => (
                     <th
                       key={column.dataField}
-                      className="px-4 py-3 text-left text-sm font-bold select-none group whitespace-nowrap"
+                      className="px-4 py-3 text-sm font-bold text-left select-none group whitespace-nowrap"
                       style={{ width: column.width, minWidth: column.width, maxWidth: column.width }}
                     >
                       {column.displayName}
@@ -406,10 +413,10 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                     }
                     title="Click để xem chi tiết"
                   >
-                    <td className="z-15 px-4 py-0 group-hover:bg-red-50" onClick={(e) => e.stopPropagation()}>
+                    <td className="px-4 py-0 z-15 group-hover:bg-red-50" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
-                        className="accent-blue-600 w-4 h-4"
+                        className="w-4 h-4 accent-blue-600"
                         checked={selectedRowIds.includes(receipt.id)}
                         onChange={(e) => handleCheckRow(receipt.id, e.target.checked)}
                         title="Chọn dòng này"
@@ -418,14 +425,14 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                     {listViewColumns.map((column) => (
                       <td
                         key={column.dataField}
-                        className="px-4 py-0 group-hover:bg-red-50 truncate whitespace-nowrap"
+                        className="px-4 py-0 truncate group-hover:bg-red-50 whitespace-nowrap"
                         style={{ width: column.width, minWidth: column.width }}
                       >
                         {formatValue(getFieldValue(receipt, column.dataField), column)}
                       </td>
                     ))}
                     <td
-                      className="sticky group-hover:bg-red-50 right-0 z-2 px-1 py-3 text-center"
+                      className="sticky right-0 px-1 py-3 text-center group-hover:bg-red-50 z-2"
                       style={{ width: "100px", minWidth: "100px", maxWidth: "100px" }}
                     >
                       <div className="flex items-center justify-center space-x-2 transition-opacity duration-200 opacity-0 group-hover:opacity-100">
@@ -440,7 +447,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                           >
                             <Edit className="w-4 h-4" />
                           </button>
-                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 peer-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-30">
+                          <div className="absolute z-30 px-2 py-1 mb-2 text-xs text-white transition-opacity transform -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none bottom-full left-1/2 peer-hover:opacity-100 whitespace-nowrap">
                             Sửa
                           </div>
                         </div>
@@ -455,7 +462,7 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
-                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 peer-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-30">
+                          <div className="absolute z-30 px-2 py-1 mb-2 text-xs text-white transition-opacity transform -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none bottom-full left-1/2 peer-hover:opacity-100 whitespace-nowrap">
                             Xóa
                           </div>
                         </div>
@@ -483,9 +490,10 @@ export default function ReceiptTwoViewTable({}: ReceiptTwoViewTableProps) {
 
         {/* Nút thu gọn/mở rộng bảng 2 */}
         <div 
-          className="flex justify-center items-center py-2 relative" 
-          style={{ backgroundColor: "#eee", cursor: "row-resize" }}
-          onMouseDown={handleMouseDown}
+          className="relative flex items-center justify-center py-2 select-none" 
+          style={{ backgroundColor: "#eee", cursor: "row-resize", touchAction: "none" }}
+          onMouseDown={handleResizeStart}
+          onTouchStart={handleResizeStart}
         >
           <button
             type="button"
