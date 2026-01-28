@@ -270,7 +270,7 @@ export default function DashboardOverview() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="p-4 bg-white border border-gray-200 shadow-sm rounded-xl">
-          <h2 className="mb-2 text-lg font-semibold">Doanh Thu & Chi Phí 2</h2>
+          <h2 className="mb-2 text-lg font-semibold">Doanh Thu & Chi Phí 3</h2>
           <Bar data={barData} options={barOptions} height={100} />
         </div>
         <div className="p-4 bg-white border border-gray-200 shadow-sm rounded-xl">
