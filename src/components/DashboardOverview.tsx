@@ -261,37 +261,37 @@ export default function DashboardOverview() {
   return (
     <div className="space-y-6">
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {kpiData.map((kpi, index) => (
           <KPICard key={index} {...kpi} />
         ))}
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-          <h2 className="text-lg font-semibold mb-2">Doanh Thu & Chi Phí</h2>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="p-4 bg-white border border-gray-200 shadow-sm rounded-xl">
+          <h2 className="mb-2 text-lg font-semibold">Doanh Thu & Chi Phí 2</h2>
           <Bar data={barData} options={barOptions} height={100} />
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-          <h2 className="text-lg font-semibold mb-2">Dòng Tiền (Quản lý Tài khoản)</h2>
+        <div className="p-4 bg-white border border-gray-200 shadow-sm rounded-xl">
+          <h2 className="mb-2 text-lg font-semibold">Dòng Tiền (Quản lý Tài khoản)</h2>
           <Line data={lineData} options={lineOptions} height={100} />
         </div>
       </div>
 
       {/* Second Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex justify-center">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="flex justify-center p-4 bg-white border border-gray-200 shadow-sm rounded-xl">
           <div className="w-full">
-            <h2 className="text-lg font-semibold mb-2 text-center">Tỷ Lệ Lợi Nhuận (Quản lý Tài khoản)</h2>
+            <h2 className="mb-2 text-lg font-semibold text-center">Tỷ Lệ Lợi Nhuận (Quản lý Tài khoản)</h2>
             <div className="max-w-md mx-auto">
               <Pie data={pieData} options={pieOptions} className="w-full h-auto max-h-[300px]" />
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex justify-center">
+        <div className="flex justify-center p-4 bg-white border border-gray-200 shadow-sm rounded-xl">
           <div className="w-full">
-            <h2 className="text-lg font-semibold mb-2 text-center">Đối tượng Tập hợp Chi phí</h2>
+            <h2 className="mb-2 text-lg font-semibold text-center">Đối tượng Tập hợp Chi phí</h2>
             <div className="max-w-md mx-auto">
               <Pie data={partnerPieData} options={partnerPieOptions} className="w-full h-auto max-h-[300px]" />
             </div>
@@ -300,13 +300,13 @@ export default function DashboardOverview() {
       </div>
 
       {/* Tables Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <DataTable title="Công nợ phải thu" data={receivableData} type="receivable" />
         <DataTable title="Công nợ phải trả" data={payableData} type="payable" />
       </div>
 
       {/* Bottom Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <ProductTable title="Sản phẩm bán chạy nhất" products={bestSellingProducts} />
         </div>
